@@ -1,5 +1,5 @@
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_framework/http.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_framework/http.dart';
 
 main() async {
   var app = Angel();
@@ -7,7 +7,7 @@ main() async {
   app.get('/', (req, res) => res.write('Hello, world!'));
 
   app.get('/headers', (req, res) {
-    req.headers.forEach((key, values) {
+    req.headers?.forEach((key, values) {
       res.write('$key=$values');
       res.writeln();
     });
@@ -16,7 +16,7 @@ main() async {
   app.post('/greet', (req, res) async {
     await req.parseBody();
 
-    var name = req.bodyAsMap['name'] as String;
+    var name = req.bodyAsMap['name'] as String?;
 
     if (name == null) {
       throw AngelHttpException.badRequest(message: 'Missing name.');

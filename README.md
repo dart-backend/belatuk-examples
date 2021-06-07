@@ -1,9 +1,8 @@
 # Angel3 Examples
 A collection of thoroughly-commented example projects running on Angel 3.
 
-
 ## Getting Started
-The source code for [Getting Started] (https://angel3-docs.dukefirehawk.com/guides/getting-started)
+The source code for [Getting Started](https://angel3-docs.dukefirehawk.com/guides/getting-started)
 
 ## auth
 Simple example of user authentication, storing a token in a `token` cookie.
