@@ -1,8 +1,8 @@
 import 'package:dchan/src/config/plugins/orm.dart';
 import 'package:dchan/models.dart';
-import 'package:angel_configuration/angel_configuration.dart';
-import 'package:angel_migration_runner/angel_migration_runner.dart';
-import 'package:angel_migration_runner/postgres.dart';
+import 'package:angel3_configuration/angel3_configuration.dart';
+import 'package:angel3_migration_runner/angel3_migration_runner.dart';
+import 'package:angel3_migration_runner/postgres.dart';
 import 'package:file/local.dart';
 
 main(List<String> args) async {

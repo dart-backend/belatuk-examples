@@ -1,20 +1,18 @@
-import 'package:angel_migration/angel_migration.dart';
-import 'package:angel_serialize/angel_serialize.dart';
-import 'package:angel_orm/angel_orm.dart';
+import 'package:angel3_migration/angel3_migration.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
+import 'package:angel3_orm/angel3_orm.dart';
+import 'package:optional/optional.dart';
 import 'attachment.dart';
 part 'post.g.dart';
 
 @serializable
 @orm
 abstract class _Post extends Model {
-  @nullable
-  String get text;
+  String? get text;
 
-  @nullable
-  String get userHash;
+  String? get userHash;
 
-  @nullable
-  int get inReplyTo;
+  int? get inReplyTo;
 
   @hasMany
   List<Attachment> get attachments;

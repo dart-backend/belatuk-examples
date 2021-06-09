@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:dchan/src/pretty_logging.dart';
 import 'package:dchan/dchan.dart';
-import 'package:angel_container/mirrors.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_hot/angel_hot.dart';
+import 'package:angel3_container/mirrors.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_hot/angel3_hot.dart';
 import 'package:logging/logging.dart';
 
 main() async {
@@ -13,7 +13,7 @@ main() async {
     await app.configure(configureServer);
     hierarchicalLoggingEnabled = true;
     app.logger = new Logger('angel');
-    var sub = app.logger.onRecord.listen(prettyLog);
+    var sub = app.logger!.onRecord.listen(prettyLog);
     app.shutdownHooks.add((_) => sub.cancel());
     return app;
   }, [

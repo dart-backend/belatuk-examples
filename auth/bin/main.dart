@@ -1,12 +1,12 @@
-import 'package:angel_auth/angel_auth.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_framework/http.dart';
-import 'package:angel_static/angel_static.dart';
+import 'package:angel3_auth/angel3_auth.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_framework/http.dart';
+import 'package:angel3_static/angel3_static.dart';
 import 'package:auth/auth.dart';
 import 'package:file/local.dart';
 import 'package:logging/logging.dart';
 
-main() async {
+void main() async {
   var app = Angel();
 
   // Note: the `secureCookies` flag is important during development,
@@ -37,7 +37,7 @@ main() async {
   // Return `null` on a failed attempt.
   auth.strategies['pw'] = LocalAuthStrategy((username, password) {
     var user = users.firstWhere((u) => u.username == username);
-    return user.validate(password) ? user : null;
+    return user.validate(password ?? '') ? user : null;
   });
 
   // On every request, allow the authenticator to try to parse a JWT.
@@ -52,7 +52,7 @@ main() async {
 
   // In addition, already logged in users should be sent home when they try log in again.
   app.get('/login.html', (req, res) {
-    if (req.container.has<User>()) {
+    if (req.container?.has<User>() ?? false) {
       res.redirect('/');
     } else {
       return true;

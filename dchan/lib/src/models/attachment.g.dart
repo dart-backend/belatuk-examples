@@ -8,9 +8,9 @@ part of 'attachment.dart';
 
 class AttachmentMigration extends Migration {
   @override
-  up(Schema schema) {
+  void up(Schema schema) {
     schema.create('attachments', (table) {
-      table.serial('id')..primaryKey();
+      table.serial('id').primaryKey();
       table.integer('size_in_bytes');
       table.varChar('path');
       table.varChar('filename');
@@ -23,7 +23,7 @@ class AttachmentMigration extends Migration {
   }
 
   @override
-  down(Schema schema) {
+  void down(Schema schema) {
     schema.drop('attachments');
   }
 }
@@ -32,30 +32,30 @@ class AttachmentMigration extends Migration {
 // OrmGenerator
 // **************************************************************************
 
-class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
-  AttachmentQuery({Set<String> trampoline}) {
-    trampoline ??= Set();
+class AttachmentQuery extends Query<Attachment?, AttachmentQueryWhere> {
+  AttachmentQuery({Set<String>? trampoline}) {
+    trampoline ??= <String>{};
     trampoline.add(tableName);
-    _where = new AttachmentQueryWhere(this);
+    _where = AttachmentQueryWhere(this);
   }
 
   @override
-  final AttachmentQueryValues values = new AttachmentQueryValues();
+  final AttachmentQueryValues values = AttachmentQueryValues();
 
-  AttachmentQueryWhere _where;
+  AttachmentQueryWhere? _where;
 
   @override
-  get casts {
+  Map<String, String> get casts {
     return {};
   }
 
   @override
-  get tableName {
+  String get tableName {
     return 'attachments';
   }
 
   @override
-  get fields {
+  List<String> get fields {
     return const [
       'id',
       'size_in_bytes',
@@ -70,49 +70,48 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
   }
 
   @override
-  AttachmentQueryWhere get where {
+  AttachmentQueryWhere? get where {
     return _where;
   }
 
   @override
   AttachmentQueryWhere newWhereClause() {
-    return new AttachmentQueryWhere(this);
+    return AttachmentQueryWhere(this);
   }
 
-  static Attachment parseRow(List row) {
+  static Attachment? parseRow(List row) {
     if (row.every((x) => x == null)) return null;
-    var model = new Attachment(
+    var model = Attachment(
         id: row[0].toString(),
-        sizeInBytes: (row[1] as int),
-        path: (row[2] as String),
-        filename: (row[3] as String),
-        postId: (row[4] as int),
-        index: (row[5] as int),
-        contentTypeString: (row[6] as String),
-        createdAt: (row[7] as DateTime),
-        updatedAt: (row[8] as DateTime));
+        sizeInBytes: (row[1] as int?),
+        path: (row[2] as String?),
+        filename: (row[3] as String?),
+        postId: (row[4] as int?),
+        index: (row[5] as int?),
+        contentTypeString: (row[6] as String?),
+        createdAt: (row[7] as DateTime?),
+        updatedAt: (row[8] as DateTime?));
     return model;
   }
 
   @override
-  deserialize(List row) {
-    return parseRow(row);
+  Optional<Attachment?> deserialize(List row) {
+    return Optional.of(parseRow(row));
   }
 }
 
 class AttachmentQueryWhere extends QueryWhere {
   AttachmentQueryWhere(AttachmentQuery query)
-      : id = new NumericSqlExpressionBuilder<int>(query, 'id'),
-        sizeInBytes =
-            new NumericSqlExpressionBuilder<int>(query, 'size_in_bytes'),
-        path = new StringSqlExpressionBuilder(query, 'path'),
-        filename = new StringSqlExpressionBuilder(query, 'filename'),
-        postId = new NumericSqlExpressionBuilder<int>(query, 'post_id'),
-        index = new NumericSqlExpressionBuilder<int>(query, 'index'),
+      : id = NumericSqlExpressionBuilder<int>(query, 'id'),
+        sizeInBytes = NumericSqlExpressionBuilder<int>(query, 'size_in_bytes'),
+        path = StringSqlExpressionBuilder(query, 'path'),
+        filename = StringSqlExpressionBuilder(query, 'filename'),
+        postId = NumericSqlExpressionBuilder<int>(query, 'post_id'),
+        index = NumericSqlExpressionBuilder<int>(query, 'index'),
         contentTypeString =
-            new StringSqlExpressionBuilder(query, 'content_type_string'),
-        createdAt = new DateTimeSqlExpressionBuilder(query, 'created_at'),
-        updatedAt = new DateTimeSqlExpressionBuilder(query, 'updated_at');
+            StringSqlExpressionBuilder(query, 'content_type_string'),
+        createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
+        updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at');
 
   final NumericSqlExpressionBuilder<int> id;
 
@@ -133,7 +132,7 @@ class AttachmentQueryWhere extends QueryWhere {
   final DateTimeSqlExpressionBuilder updatedAt;
 
   @override
-  get expressionBuilders {
+  List<SqlExpressionBuilder> get expressionBuilders {
     return [
       id,
       sizeInBytes,
@@ -150,55 +149,55 @@ class AttachmentQueryWhere extends QueryWhere {
 
 class AttachmentQueryValues extends MapQueryValues {
   @override
-  get casts {
+  Map<String, String> get casts {
     return {};
   }
 
-  int get id {
-    return (values['id'] as int);
+  int? get id {
+    return (values['id'] as int?);
   }
 
-  set id(int value) => values['id'] = value;
-  int get sizeInBytes {
-    return (values['size_in_bytes'] as int);
+  set id(int? value) => values['id'] = value;
+  int? get sizeInBytes {
+    return (values['size_in_bytes'] as int?);
   }
 
-  set sizeInBytes(int value) => values['size_in_bytes'] = value;
-  String get path {
-    return (values['path'] as String);
+  set sizeInBytes(int? value) => values['size_in_bytes'] = value;
+  String? get path {
+    return (values['path'] as String?);
   }
 
-  set path(String value) => values['path'] = value;
-  String get filename {
-    return (values['filename'] as String);
+  set path(String? value) => values['path'] = value;
+  String? get filename {
+    return (values['filename'] as String?);
   }
 
-  set filename(String value) => values['filename'] = value;
-  int get postId {
-    return (values['post_id'] as int);
+  set filename(String? value) => values['filename'] = value;
+  int? get postId {
+    return (values['post_id'] as int?);
   }
 
-  set postId(int value) => values['post_id'] = value;
-  int get index {
-    return (values['index'] as int);
+  set postId(int? value) => values['post_id'] = value;
+  int? get index {
+    return (values['index'] as int?);
   }
 
-  set index(int value) => values['index'] = value;
-  String get contentTypeString {
-    return (values['content_type_string'] as String);
+  set index(int? value) => values['index'] = value;
+  String? get contentTypeString {
+    return (values['content_type_string'] as String?);
   }
 
-  set contentTypeString(String value) => values['content_type_string'] = value;
-  DateTime get createdAt {
-    return (values['created_at'] as DateTime);
+  set contentTypeString(String? value) => values['content_type_string'] = value;
+  DateTime? get createdAt {
+    return (values['created_at'] as DateTime?);
   }
 
-  set createdAt(DateTime value) => values['created_at'] = value;
-  DateTime get updatedAt {
-    return (values['updated_at'] as DateTime);
+  set createdAt(DateTime? value) => values['created_at'] = value;
+  DateTime? get updatedAt {
+    return (values['updated_at'] as DateTime?);
   }
 
-  set updatedAt(DateTime value) => values['updated_at'] = value;
+  set updatedAt(DateTime? value) => values['updated_at'] = value;
   void copyFrom(Attachment model) {
     sizeInBytes = model.sizeInBytes;
     path = model.path;
@@ -229,43 +228,43 @@ class Attachment extends _Attachment {
       this.updatedAt});
 
   @override
-  final String id;
+  final String? id;
 
   @override
-  final int sizeInBytes;
+  final int? sizeInBytes;
 
   @override
-  final String path;
+  final String? path;
 
   @override
-  final String filename;
+  final String? filename;
 
   @override
-  final int postId;
+  final int? postId;
 
   @override
-  final int index;
+  final int? index;
 
   @override
-  final String contentTypeString;
+  final String? contentTypeString;
 
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Attachment copyWith(
-      {String id,
-      int sizeInBytes,
-      String path,
-      String filename,
-      int postId,
-      int index,
-      String contentTypeString,
-      DateTime createdAt,
-      DateTime updatedAt}) {
-    return new Attachment(
+      {String? id,
+      int? sizeInBytes,
+      String? path,
+      String? filename,
+      int? postId,
+      int? index,
+      String? contentTypeString,
+      DateTime? createdAt,
+      DateTime? updatedAt}) {
+    return Attachment(
         id: id ?? this.id,
         sizeInBytes: sizeInBytes ?? this.sizeInBytes,
         path: path ?? this.path,
@@ -277,6 +276,7 @@ class Attachment extends _Attachment {
         updatedAt: updatedAt ?? this.updatedAt);
   }
 
+  @override
   bool operator ==(other) {
     return other is _Attachment &&
         other.id == id &&
@@ -316,30 +316,27 @@ class Attachment extends _Attachment {
 
 abstract class AttachmentSerializer {
   static Attachment fromMap(Map map) {
-    return new Attachment(
-        id: map['id'] as String,
-        sizeInBytes: map['size_in_bytes'] as int,
-        path: map['path'] as String,
-        filename: map['filename'] as String,
-        postId: map['post_id'] as int,
-        index: map['index'] as int,
-        contentTypeString: map['content_type_string'] as String,
+    return Attachment(
+        id: map['id'] as String?,
+        sizeInBytes: map['size_in_bytes'] as int?,
+        path: map['path'] as String?,
+        filename: map['filename'] as String?,
+        postId: map['post_id'] as int?,
+        index: map['index'] as int?,
+        contentTypeString: map['content_type_string'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime)
+                ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime)
+                ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
             : null);
   }
 
   static Map<String, dynamic> toMap(_Attachment model) {
-    if (model == null) {
-      return null;
-    }
     return {
       'id': model.id,
       'size_in_bytes': model.sizeInBytes,
@@ -355,7 +352,7 @@ abstract class AttachmentSerializer {
 }
 
 abstract class AttachmentFields {
-  static const List<String> allFields = const <String>[
+  static const List<String> allFields = <String>[
     id,
     sizeInBytes,
     path,

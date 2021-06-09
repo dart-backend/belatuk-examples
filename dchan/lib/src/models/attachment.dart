@@ -1,26 +1,27 @@
-import 'package:angel_migration/angel_migration.dart';
-import 'package:angel_serialize/angel_serialize.dart';
-import 'package:angel_orm/angel_orm.dart';
+import 'package:angel3_migration/angel3_migration.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
+import 'package:angel3_orm/angel3_orm.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:kilobyte/kilobyte.dart';
+import 'package:filesize/filesize.dart';
+import 'package:optional/optional.dart';
 part 'attachment.g.dart';
 
 @serializable
 @orm
 abstract class _Attachment extends Model {
-  int get postId;
+  int? get postId;
 
-  int get index;
+  int? get index;
 
-  int sizeInBytes;
+  int? sizeInBytes;
 
-  Size get size => Size(bytes: sizeInBytes);
+  String get size => filesize(sizeInBytes);
 
-  String path;
+  String? path;
 
-  String filename;
+  String? filename;
 
-  String get contentTypeString;
+  String? get contentTypeString;
 
-  MediaType get contentType => MediaType.parse(contentTypeString);
+  MediaType get contentType => MediaType.parse(contentTypeString!);
 }

@@ -13,7 +13,7 @@ class User {
 
   factory User.deserialize(String deserialized) {
     var params = Uri.splitQueryString(deserialized);
-    return new User._(params['username'], params['password']);
+    return new User._(params['username'] ?? '', params['password'] ?? '');
   }
 
   bool validate(String pw) => bCrypt.checkpw(pw, hashedPassword);
