@@ -103,7 +103,7 @@ Future<void> configureServer(Angel app) async {
         video = await service.create(video);
 
         // Redirect to the watch page
-        res.redirect('/watch/${video.id}');
+        await res.redirect('/watch/${video.id}');
       },
     ]),
   );

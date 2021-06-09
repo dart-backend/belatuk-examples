@@ -24,4 +24,4 @@ import 'package:angel3_production/angel3_production.dart';
 // so in the meantime, visit the Angel chat for further questions:
 //
 // https://gitter.im/angel_dart/discussion
-main(List<String> args) => Runner('dchan', configureServer).run(args);
+void main(List<String> args) => Runner('dchan', configureServer).run(args);

@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 void main() async {
   var app = Angel();
   var http = AngelHttp(app);
-  var ws = AngelWebSocket(app, sendErrors: !app.isProduction);
+  var ws = AngelWebSocket(app, sendErrors: !app.environment.isProduction);
 
   // Mount the necessary routes
   app.get('/ws', ws.handleRequest);

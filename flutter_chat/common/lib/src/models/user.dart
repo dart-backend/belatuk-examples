@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 part 'user.g.dart';
 
-@Serializable(autoIdAndDateFields: false)
+@Serializable()
 abstract class _User {
   @required
   String? get name;

@@ -32,6 +32,7 @@ class Message implements _Message {
         timestamp: timestamp ?? this.timestamp);
   }
 
+  @override
   bool operator ==(other) {
     return other is _Message &&
         other.user == user &&

@@ -37,7 +37,7 @@ class _ChatHomeState extends f.State<ChatHome> {
         chatState.newStateTransition('send_auth', [isConnected], hasSentAuth);
     setUser = chatState.newStateTransition('set_user', [hasSentAuth], hasUser);
     setError = chatState.newStateTransition('set_error', [State.any], hasError);
-    setUser.listen((details) {
+    setUser.stream.listen((details) {
       setState(() {
         user = details.payload as User;
       });

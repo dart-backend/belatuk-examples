@@ -15,7 +15,7 @@ void main() async {
   // `localhost` cannot use `Secure` cookies, if it's not over HTTPS, which it often isn't.
   var auth = AngelAuth<User>(
       jwtKey: 'abcdefghijklmnopqrstuvwxyz012345',
-      secureCookies: app.isProduction);
+      secureCookies: app.environment.isProduction);
 
   var fs = LocalFileSystem();
 

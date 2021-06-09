@@ -3,7 +3,7 @@ import 'package:angel_framework/http.dart';
 import 'package:logging/logging.dart';
 import 'package:yewtube/yewtube.dart' as yewtube;
 
-main() async {
+void main() async {
   var app = Angel(), http = AngelHttp(app);
   app.logger = Logger('yewtube')
     ..onRecord.listen((rec) {

@@ -14,8 +14,8 @@ class ChatScaffold extends StatefulWidget {
 
 class _ChatScaffoldState extends State<ChatScaffold> {
   var messages = <Message>[];
-  var users = Set<User>();
-  var _subs = <StreamSubscription>[];
+  var users = <User>{};
+  final _subs = <StreamSubscription>[];
 
   @override
   void initState() {

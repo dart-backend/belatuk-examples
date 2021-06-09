@@ -8,7 +8,6 @@ import 'package:crypto/crypto.dart';
 import 'package:dchan/models.dart';
 import 'package:file/file.dart';
 import 'package:markdown/markdown.dart' as markdown;
-import 'package:optional/optional.dart';
 import 'package:path/path.dart' as p;
 
 AngelConfigurer configureServer(FileSystem fileSystem) {
@@ -170,8 +169,8 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.get('/post/int:id', (req, res) async {
       var id = req.params['id'] as int;
       var query = PostQuery()..where!.id.equals(id);
-      Optional<Post?> post = await query.getOne(executor!);
-      if (post == null) throw AngelHttpException.notFound();
+      var post = await query.getOne(executor!);
+      //if (post == null) throw AngelHttpException.notFound();
       List<Post?> comments;
 
       if (post.value!.inReplyTo != -1) {

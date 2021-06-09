@@ -46,7 +46,7 @@ class Video extends _Video {
       String mimeType,
       DateTime createdAt,
       DateTime updatedAt}) {
-    return new Video(
+    return Video(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
@@ -56,6 +56,7 @@ class Video extends _Video {
         updatedAt: updatedAt ?? this.updatedAt);
   }
 
+  @override
   bool operator ==(other) {
     return other is _Video &&
         other.id == id &&
@@ -84,7 +85,7 @@ class Video extends _Video {
 
 abstract class VideoSerializer {
   static Video fromMap(Map map) {
-    return new Video(
+    return Video(
         id: map['id'] as String,
         title: map['title'] as String,
         description: map['description'] as String,
@@ -119,7 +120,7 @@ abstract class VideoSerializer {
 }
 
 abstract class VideoFields {
-  static const List<String> allFields = const <String>[
+  static const List<String> allFields = <String>[
     id,
     title,
     description,

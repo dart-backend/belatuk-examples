@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'user.dart';
 part 'message.g.dart';
 
-@Serializable(autoIdAndDateFields: false)
+@Serializable()
 abstract class _Message {
   @required
   User? get user;

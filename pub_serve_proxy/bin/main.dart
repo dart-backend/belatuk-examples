@@ -13,7 +13,7 @@ Future configureServer(Angel app) async {
   // In development, proxy to localhost:8080 (pub serve).
   //
   // The proxy also supports WebSockets, so it works with webpack-dev-server, etc.
-  if (!app.isProduction) {
+  if (!app.environment.isProduction) {
     var proxy = Proxy(
       http.IOClient(),
       Uri.parse('http://localhost:8080'),
