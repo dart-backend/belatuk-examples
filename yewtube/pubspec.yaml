@@ -1,4 +1,10 @@
 name: yewtube
+version: 1.0.0
+description: An streaming video application.
+publish_to: none # Ensure we don't accidentally publish our private code! ;)
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+homepage: https://github.com/dukefirehawk/angel3-examples
 dependencies:
   angel_configuration: ^2.0.0
   angel_file_service: ^2.0.0

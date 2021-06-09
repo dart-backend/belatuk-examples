@@ -1,2 +1,2 @@
 # yewtube
-An example of video stream app
+An example of video stream application

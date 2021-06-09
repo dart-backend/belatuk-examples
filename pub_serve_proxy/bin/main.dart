@@ -6,7 +6,8 @@ import 'package:angel_static/angel_static.dart';
 import 'package:file/local.dart';
 import 'package:http/io_client.dart' as http;
 
-main(List<String> args) => Runner('examples-v2', configureServer).run(args);
+void main(List<String> args) =>
+    Runner('examples-v2', configureServer).run(args);
 
 Future configureServer(Angel app) async {
   // In development, proxy to localhost:8080 (pub serve).

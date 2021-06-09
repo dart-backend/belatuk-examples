@@ -4,7 +4,7 @@ import 'package:angel_websocket/server.dart';
 import 'package:common/common.dart';
 import 'package:logging/logging.dart';
 
-main() async {
+void main() async {
   var app = Angel(), http = AngelHttp(app);
   var ws = AngelWebSocket(app, sendErrors: !app.isProduction);
 
