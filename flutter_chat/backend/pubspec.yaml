@@ -3,10 +3,10 @@ version: 1.0.0
 description: A flutter backend
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 homepage: https://github.com/dukefirehawk/angel3-examples
 dependencies:
-  angel_framework: ^2.0.0-alpha
-  angel_websocket: ^2.0.0
+  angel3_framework: ^4.0.0
+  angel3_websocket: ^4.0.0
   common:
     path: ../common

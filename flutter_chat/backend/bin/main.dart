@@ -1,11 +1,12 @@
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_framework/http.dart';
-import 'package:angel_websocket/server.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_framework/http.dart';
+import 'package:angel3_websocket/server.dart';
 import 'package:common/common.dart';
 import 'package:logging/logging.dart';
 
 void main() async {
-  var app = Angel(), http = AngelHttp(app);
+  var app = Angel();
+  var http = AngelHttp(app);
   var ws = AngelWebSocket(app, sendErrors: !app.isProduction);
 
   // Mount the necessary routes
@@ -20,9 +21,9 @@ void main() async {
 
     // Let everyone know when the user signs on.
     socket.on['sign_in'].listen((data) {
-      if (!req.container.has<User>()) {
-        var user = UserSerializer.fromMap(data);
-        req.container.registerSingleton(user);
+      if (!req.container!.has<User>()) {
+        var user = UserSerializer.fromMap(data!);
+        req.container!.registerSingleton(user);
         socket.send('signed_in', user);
         ws.batchEvent(WebSocketEvent(eventName: 'user_joined', data: user));
       }
@@ -30,10 +31,10 @@ void main() async {
 
     // Listen for when the user sends a message, and simply broadcast it to the world.
     socket.on['message'].listen((data) {
-      if (req.container.has<User>()) {
+      if (req.container!.has<User>()) {
         // Make sure they are signed in
-        var user = req.container.make<User>();
-        var message = MessageSerializer.fromMap(data);
+        var user = req.container!.make<User>();
+        var message = MessageSerializer.fromMap(data!);
 
         // Attach user info to the message
         message = message.copyWith(user: user);
@@ -45,8 +46,8 @@ void main() async {
 
     // Broadcast an event when the user leaves.
     socket.onClose.listen((_) {
-      if (req.container.has<User>()) {
-        var user = req.container.make<User>();
+      if (req.container!.has<User>()) {
+        var user = req.container!.make<User>();
         ws.batchEvent(WebSocketEvent(eventName: 'user_left', data: user));
       }
     });
