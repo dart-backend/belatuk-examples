@@ -6,12 +6,12 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0
+version: 2.0.0
 publish_to: none
 environment:
   sdk: ">=2.10.0 <3.0.0"
 dependencies:
-  angel_websocket: ^2.0.0
+  angel3_websocket: ^4.0.0
   common:
     path: ../common
   flutter:

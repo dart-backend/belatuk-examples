@@ -18,34 +18,34 @@ class Video extends _Video {
       this.updatedAt});
 
   @override
-  final String id;
+  final String? id;
 
   @override
-  final String title;
+  final String? title;
 
   @override
-  final String description;
+  final String? description;
 
   @override
-  final String filePath;
+  final String? filePath;
 
   @override
-  final String mimeType;
+  final String? mimeType;
 
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Video copyWith(
-      {String id,
-      String title,
-      String description,
-      String filePath,
-      String mimeType,
-      DateTime createdAt,
-      DateTime updatedAt}) {
+      {String? id,
+      String? title,
+      String? description,
+      String? filePath,
+      String? mimeType,
+      DateTime? createdAt,
+      DateTime? updatedAt}) {
     return Video(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -86,27 +86,24 @@ class Video extends _Video {
 abstract class VideoSerializer {
   static Video fromMap(Map map) {
     return Video(
-        id: map['id'] as String,
-        title: map['title'] as String,
-        description: map['description'] as String,
-        filePath: map['file_path'] as String,
-        mimeType: map['mime_type'] as String,
+        id: map['id'] as String?,
+        title: map['title'] as String?,
+        description: map['description'] as String?,
+        filePath: map['file_path'] as String?,
+        mimeType: map['mime_type'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime)
+                ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime)
+                ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
             : null);
   }
 
   static Map<String, dynamic> toMap(_Video model) {
-    if (model == null) {
-      return null;
-    }
     return {
       'id': model.id,
       'title': model.title,

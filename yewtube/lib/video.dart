@@ -1,14 +1,14 @@
-import 'package:angel_model/angel_model.dart';
-import 'package:angel_serialize/angel_serialize.dart';
+import 'package:angel3_model/angel3_model.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
 part 'video.g.dart';
 
 @serializable
 abstract class _Video extends Model {
-  String get title;
+  String? get title;
 
-  String get description;
+  String? get description;
 
-  String get filePath;
+  String? get filePath;
 
-  String get mimeType;
+  String? get mimeType;
 }

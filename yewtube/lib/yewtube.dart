@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:angel_configuration/angel_configuration.dart';
-import 'package:angel_file_service/angel_file_service.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_jael/angel_jael.dart';
-import 'package:angel_static/angel_static.dart';
-import 'package:angel_validate/server.dart';
+import 'package:angel3_configuration/angel3_configuration.dart';
+import 'package:angel3_file_service/angel3_file_service.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_jael/angel3_jael.dart';
+import 'package:angel3_static/angel3_static.dart';
+import 'package:angel3_validate/server.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:file/local.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
@@ -16,7 +17,7 @@ Future<void> configureServer(Angel app) async {
   await app.configure(configuration(fs));
 
   // Find our upload dir.
-  var uploadPath = app.configuration['upload_dir'] as String;
+  var uploadPath = app.configuration['upload_dir'] as String?;
   var uploadDir = fs.directory(uploadPath);
 
   // We'll use this to name files.
@@ -27,7 +28,7 @@ Future<void> configureServer(Angel app) async {
 
   // Create a service that reads a JSON file @ db.json,
   // and map it to the Video class
-  var service = JsonFileService(fs.file('db.json'))
+  Service<String?, Video> service = JsonFileService(fs.file('db.json'))
       .map(VideoSerializer.fromMap, VideoSerializer.toMap);
 
   // The index page just lists videos
@@ -39,12 +40,12 @@ Future<void> configureServer(Angel app) async {
   // This page allows a user to watch a video.
   app.get('/watch/:id', (req, res) async {
     // Find the corresponding video.
-    var id = req.params['id'] as String;
+    var id = req.params['id'] as String?;
     var video = await service.read(id);
 
     // Resolve the public path to the video file.
     var publicPath = p.relative(
-      p.join(uploadPath, video.filePath),
+      p.join(uploadPath!, video.filePath),
       from: 'web',
     );
 
@@ -68,17 +69,16 @@ Future<void> configureServer(Angel app) async {
       })),
       (req, res) async {
         // Find the first file the user uploaded.
-        var file = req.uploadedFiles.firstWhere(
-            (v) => v.contentType.type == 'video',
-            orElse: () => null);
+        var file = req.uploadedFiles!.firstWhereOrNull(
+            (v) => v.contentType.type == 'video');
 
         if (file == null) {
           throw AngelHttpException.badRequest(message: 'Missing video file.');
         }
 
         // Fetch the validated data from the body
-        var title = req.bodyAsMap['title'] as String;
-        var description = req.bodyAsMap['description'] as String;
+        var title = req.bodyAsMap['title'] as String?;
+        var description = req.bodyAsMap['description'] as String?;
 
         // Assume that for a video of type video/x, the extension is .x
         var filePath =

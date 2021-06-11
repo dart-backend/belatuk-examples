@@ -1,5 +1,5 @@
 name: auth
-version: 1.0.0
+version: 2.0.0
 description: A simple Auth application
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:

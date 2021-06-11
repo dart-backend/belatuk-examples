@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:angel_websocket/flutter.dart';
+import 'package:angel3_websocket/flutter.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 

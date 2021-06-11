@@ -1,5 +1,5 @@
 name: pub_serve_proxy
-version: 4.0.0
+version: 2.0.0
 description: An application for serving pub through proxy
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
