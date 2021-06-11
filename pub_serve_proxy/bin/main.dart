@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_production/angel_production.dart';
-import 'package:angel_proxy/angel_proxy.dart';
-import 'package:angel_static/angel_static.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_production/angel3_production.dart';
+import 'package:angel3_proxy/angel3_proxy.dart';
+import 'package:angel3_static/angel3_static.dart';
 import 'package:file/local.dart';
 import 'package:http/io_client.dart' as http;
 
@@ -15,8 +15,8 @@ Future configureServer(Angel app) async {
   // The proxy also supports WebSockets, so it works with webpack-dev-server, etc.
   if (!app.environment.isProduction) {
     var proxy = Proxy(
-      http.IOClient(),
       Uri.parse('http://localhost:8080'),
+      httpClient: http.IOClient(),
       recoverFrom404: false,
       recoverFromDead: false,
     );
