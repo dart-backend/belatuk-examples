@@ -1,6 +1,6 @@
 # Angel3 Examples
 
-[![Logo](./img/angel_logo.png)](https://github.com/dukefirehawk/angel3-examples)
+[![Logo](./logo3.png)](https://github.com/dukefirehawk/angel3-examples)
 
 [![version](https://img.shields.io/badge/pub-v2.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
