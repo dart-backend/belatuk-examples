@@ -10,63 +10,82 @@ part of 'droid.dart';
 class Droid extends _Droid {
   Droid(
       {this.id,
-      this.name,
-      List<Episode>? appearsIn,
-      List<Character>? friends,
+      this.error,
       this.createdAt,
-      this.updatedAt})
-      : this.appearsIn = new List.unmodifiable(appearsIn ?? []),
-        this.friends = new List.unmodifiable(friends ?? []);
+      this.updatedAt,
+      this.name,
+      List<Episode> appearsIn = const [],
+      List<Character> friends = const []})
+      : appearsIn = List.unmodifiable(appearsIn),
+        friends = List.unmodifiable(friends);
+
+  /// A unique identifier corresponding to this item.
+  @override
+  String? id;
 
   @override
-  final String? id;
+  String? error;
+
+  /// The time at which this item was created.
+  @override
+  DateTime? createdAt;
+
+  /// The last time at which this item was updated.
+  @override
+  DateTime? updatedAt;
 
   @override
-  final String? name;
+  String? name;
 
   @override
-  final List<Episode> appearsIn;
+  List<Episode> appearsIn;
 
+  /// Doc comments automatically become GraphQL descriptions.
   @override
-  final List<Character> friends;
-
-  @override
-  final DateTime? createdAt;
-
-  @override
-  final DateTime? updatedAt;
+  List<Character> friends;
 
   Droid copyWith(
       {String? id,
+      String? error,
+      DateTime? createdAt,
+      DateTime? updatedAt,
       String? name,
       List<Episode>? appearsIn,
-      List<Character>? friends,
-      DateTime? createdAt,
-      DateTime? updatedAt}) {
-    return new Droid(
+      List<Character>? friends}) {
+    return Droid(
         id: id ?? this.id,
+        error: error ?? this.error,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
         name: name ?? this.name,
         appearsIn: appearsIn ?? this.appearsIn,
-        friends: friends ?? this.friends,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt);
+        friends: friends ?? this.friends);
   }
 
+  @override
   bool operator ==(other) {
     return other is _Droid &&
         other.id == id &&
-        other.name == name &&
-        const ListEquality<Episode>(const DefaultEquality<Episode>())
-            .equals(other.appearsIn, appearsIn) &&
-        const ListEquality<Character>(const DefaultEquality<Character>())
-            .equals(other.friends, friends) &&
+        other.error == error &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.id == id &&
+        other.name == name &&
+        ListEquality<Episode>(DefaultEquality<Episode>())
+            .equals(other.appearsIn, appearsIn) &&
+        ListEquality<Character>(DefaultEquality<Character>())
+            .equals(other.friends, friends);
   }
 
   @override
   int get hashCode {
-    return hashObjects([id, name, appearsIn, friends, createdAt, updatedAt]);
+    return hashObjects(
+        [id, error, createdAt, updatedAt, id, name, appearsIn, friends]);
+  }
+
+  @override
+  String toString() {
+    return 'Droid(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends)';
   }
 
   Map<String, dynamic> toJson() {
@@ -78,37 +97,64 @@ class Droid extends _Droid {
 // SerializerGenerator
 // **************************************************************************
 
-abstract class DroidSerializer {
+const DroidSerializer droidSerializer = DroidSerializer();
+
+class DroidEncoder extends Converter<Droid, Map> {
+  const DroidEncoder();
+
+  @override
+  Map convert(Droid model) => DroidSerializer.toMap(model);
+}
+
+class DroidDecoder extends Converter<Map, Droid> {
+  const DroidDecoder();
+
+  @override
+  Droid convert(Map map) => DroidSerializer.fromMap(map);
+}
+
+class DroidSerializer extends Codec<Droid, Map> {
+  const DroidSerializer();
+
+  @override
+  DroidEncoder get encoder => const DroidEncoder();
+  @override
+  DroidDecoder get decoder => const DroidDecoder();
   static Droid fromMap(Map map) {
-    return new Droid(
+    return Droid(
         id: map['id'] as String?,
-        name: map['name'] as String?,
-        appearsIn: map['appears_in'] is Iterable
-            ? (map['appears_in'] as Iterable).cast<Episode>().toList()
-            : null,
-        friends: map['friends'] is Iterable
-            ? (map['friends'] as Iterable).cast<Character>().toList()
-            : null,
+        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime?)
+                ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime?)
+                ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null);
+            : null,
+        name: map['name'] as String?,
+        appearsIn: map['appears_in'] is Iterable
+            ? (map['appears_in'] as Iterable).cast<Episode>().toList()
+            : [],
+        friends: map['friends'] is Iterable
+            ? (map['friends'] as Iterable).cast<Character>().toList()
+            : []);
   }
 
-  static Map<String, dynamic> toMap(_Droid model) {
+  static Map<String, dynamic> toMap(_Droid? model) {
+    if (model == null) {
+      return {};
+    }
     return {
       'id': model.id,
+      'error': model.error,
+      'created_at': model.createdAt?.toIso8601String(),
+      'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
       'appears_in': model.appearsIn,
-      'friends': model.friends,
-      'created_at': model.createdAt?.toIso8601String(),
-      'updated_at': model.updatedAt?.toIso8601String()
+      'friends': model.friends
     };
   }
 }
@@ -116,24 +162,28 @@ abstract class DroidSerializer {
 abstract class DroidFields {
   static const List<String> allFields = <String>[
     id,
+    error,
+    createdAt,
+    updatedAt,
+    id,
     name,
     appearsIn,
-    friends,
-    createdAt,
-    updatedAt
+    friends
   ];
 
   static const String id = 'id';
+
+  static const String error = 'error';
+
+  static const String createdAt = 'created_at';
+
+  static const String updatedAt = 'updated_at';
 
   static const String name = 'name';
 
   static const String appearsIn = 'appears_in';
 
   static const String friends = 'friends';
-
-  static const String createdAt = 'created_at';
-
-  static const String updatedAt = 'updated_at';
 }
 
 // **************************************************************************
@@ -149,13 +199,15 @@ final GraphQLObjectType droidGraphQLType = objectType('Droid',
     ],
     fields: [
       field('id', graphQLString),
+      field('error', graphQLString),
+      field('created_at', graphQLDate),
+      field('updated_at', graphQLDate),
+      field('id', graphQLString),
       field('name', graphQLString),
       field('appears_in', listOf(episodeGraphQLType),
           description: 'The list of episodes this droid appears in.'),
       field('friends', listOf(characterGraphQLType),
           description:
               'Doc comments automatically become GraphQL descriptions.'),
-      field('created_at', graphQLDate),
-      field('updated_at', graphQLDate),
       field('idAsInt', graphQLInt)
     ]);

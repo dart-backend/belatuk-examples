@@ -10,10 +10,6 @@ part 'droid.g.dart';
 @graphQLClass
 @GraphQLDocumentation(description: 'Beep! Boop!')
 abstract class _Droid extends Model implements Character {
-  String? get id;
-
-  String? get name;
-
   @GraphQLDocumentation(
       description: 'The list of episodes this droid appears in.')
   List<Episode> get appearsIn;
