@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_hot/angel_hot.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_hot/angel3_hot.dart';
 import 'package:logging/logging.dart';
-import 'package:star_wars/src/pretty_logging.dart' as star_wars;
+import 'package:angel3_pretty_logging/angel3_pretty_logging.dart' as star_wars;
 import 'package:star_wars/star_wars.dart' as star_wars;
 
 void main() async {

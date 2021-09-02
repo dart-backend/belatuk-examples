@@ -11,18 +11,18 @@ class Droid extends _Droid {
   Droid(
       {this.id,
       this.name,
-      List<Episode> appearsIn,
-      List<Character> friends,
+      List<Episode>? appearsIn,
+      List<Character>? friends,
       this.createdAt,
       this.updatedAt})
       : this.appearsIn = new List.unmodifiable(appearsIn ?? []),
         this.friends = new List.unmodifiable(friends ?? []);
 
   @override
-  final String id;
+  final String? id;
 
   @override
-  final String name;
+  final String? name;
 
   @override
   final List<Episode> appearsIn;
@@ -31,18 +31,18 @@ class Droid extends _Droid {
   final List<Character> friends;
 
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Droid copyWith(
-      {String id,
-      String name,
-      List<Episode> appearsIn,
-      List<Character> friends,
-      DateTime createdAt,
-      DateTime updatedAt}) {
+      {String? id,
+      String? name,
+      List<Episode>? appearsIn,
+      List<Character>? friends,
+      DateTime? createdAt,
+      DateTime? updatedAt}) {
     return new Droid(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -81,8 +81,8 @@ class Droid extends _Droid {
 abstract class DroidSerializer {
   static Droid fromMap(Map map) {
     return new Droid(
-        id: map['id'] as String,
-        name: map['name'] as String,
+        id: map['id'] as String?,
+        name: map['name'] as String?,
         appearsIn: map['appears_in'] is Iterable
             ? (map['appears_in'] as Iterable).cast<Episode>().toList()
             : null,
@@ -91,20 +91,17 @@ abstract class DroidSerializer {
             : null,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime)
+                ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime)
+                ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
             : null);
   }
 
   static Map<String, dynamic> toMap(_Droid model) {
-    if (model == null) {
-      return null;
-    }
     return {
       'id': model.id,
       'name': model.name,

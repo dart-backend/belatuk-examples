@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_graphql/angel_graphql.dart';
-import 'package:graphql_schema/graphql_schema.dart';
-import 'package:graphql_server/graphql_server.dart';
-import 'package:graphql_server/mirrors.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_graphql/angel3_graphql.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
+import 'package:graphql_server2/graphql_server2.dart';
+import 'package:graphql_server2/mirrors.dart';
 import 'src/models/models.dart';
 
 Future configureServer(Angel app) async {
@@ -95,7 +95,9 @@ Future configureServer(Angel app) async {
   // The `mirrorsFieldResolver` is unnecessary in this case, because we are using
   // `Map`s only, but if our services returned concrete Dart objects, we'd need
   // this to allow GraphQL to read field values.
-  var graphQL = GraphQL(schema, defaultFieldResolver: mirrorsFieldResolver);
+  var graphQL = GraphQL(schema,
+      defaultFieldResolver: mirrorsFieldResolver as FutureOr<T> Function<T>(
+          T, String?, Map<String, dynamic>)?);
 
   // Mount the GraphQL endpoint.
   app.all('/graphql', graphQLHttp(graphQL));
@@ -140,7 +142,9 @@ GraphQLFieldResolver randomHeroResolver(
     var allHeroes = [];
     var allDroids = await droidService.index();
     var allHumans = await humansService.index();
-    allHeroes..addAll(allDroids)..addAll(allHumans);
+    allHeroes
+      ..addAll(allDroids)
+      ..addAll(allHumans);
 
     // Ignore the annoying cast here, hopefully Dart 2 fixes cases like this
     allHeroes = allHeroes

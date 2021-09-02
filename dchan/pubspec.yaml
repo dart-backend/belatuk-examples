@@ -1,29 +1,28 @@
 name: dchan
-version: 2.0.0
+version: 2.0.1
 description: An app that's going to be amazing pretty soon.
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
   sdk: '>=2.12.0 <3.0.0'
-homepage: https://github.com/dukefirehawk/angel3-examples
 dependencies:
   angel3_auth: ^4.0.3
   angel3_configuration: ^4.0.0
   angel3_framework: ^4.0.4
   angel3_jael: ^4.0.0
-  angel3_migration: ^4.0.0-beta.2
-  angel3_orm: ^4.0.0-beta.2
-  angel3_orm_postgres: ^3.0.0-beta.1
+  angel3_migration: ^4.0.0
+  angel3_orm: ^4.0.0
+  angel3_orm_postgres: ^3.0.0
   angel3_serialize: ^4.0.0
   angel3_production: ^3.0.1
   angel3_static: ^4.0.0
   angel3_validate: ^4.0.1
   filesize: ^2.0.1
   markdown: ^4.0.0
-  optional: ^6.0.0-nullsafety.1
+  optional: ^6.0.0
 dev_dependencies:
   angel3_hot: ^4.0.0
-  angel3_migration_runner: ^4.0.0-beta.1
-  angel3_orm_generator: ^4.0.0-beta.2
+  angel3_migration_runner: ^4.0.0
+  angel3_orm_generator: ^4.0.0
   angel3_serialize_generator: ^4.0.1
   angel3_test: ^4.0.2
   build_runner: ^2.0.4

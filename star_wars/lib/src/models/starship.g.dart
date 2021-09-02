@@ -11,26 +11,26 @@ class Starship extends _Starship {
   Starship({this.id, this.name, this.length, this.createdAt, this.updatedAt});
 
   @override
-  final String id;
+  final String? id;
 
   @override
-  final String name;
+  final String? name;
 
   @override
-  final int length;
+  final int? length;
 
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Starship copyWith(
-      {String id,
-      String name,
-      int length,
-      DateTime createdAt,
-      DateTime updatedAt}) {
+      {String? id,
+      String? name,
+      int? length,
+      DateTime? createdAt,
+      DateTime? updatedAt}) {
     return new Starship(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -65,25 +65,22 @@ class Starship extends _Starship {
 abstract class StarshipSerializer {
   static Starship fromMap(Map map) {
     return new Starship(
-        id: map['id'] as String,
-        name: map['name'] as String,
-        length: map['length'] as int,
+        id: map['id'] as String?,
+        name: map['name'] as String?,
+        length: map['length'] as int?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime)
+                ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime)
+                ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
             : null);
   }
 
   static Map<String, dynamic> toMap(_Starship model) {
-    if (model == null) {
-      return null;
-    }
     return {
       'id': model.id,
       'name': model.name,

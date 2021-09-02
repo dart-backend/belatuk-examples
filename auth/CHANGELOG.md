@@ -1,5 +1,14 @@
-# 2.0.0
-* Migrated to `angel3_` packages
 
-# 1.0.0
+# Change Log
+
+## 2.0.1
+
+* Updated `angel3` packages
+  
+## 2.0.0
+
+* Migrated to `angel3` packages
+
+## 1.0.0
+
 * Initial version for Dart SDK 2.10.x and below

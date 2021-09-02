@@ -1,7 +1,7 @@
-import 'package:angel_model/angel_model.dart';
-import 'package:angel_serialize/angel_serialize.dart';
+import 'package:angel3_model/angel3_model.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
 import 'package:collection/collection.dart';
-import 'package:graphql_schema/graphql_schema.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
 import 'character.dart';
 import 'episode.dart';
 part 'human.g.dart';
@@ -16,15 +16,15 @@ abstract class _Human extends Model implements Character {
   // List<Starship> starships;
   // int totalCredits;
 
-  String get id;
+  String? get id;
 
-  String get name;
+  String? get name;
 
   List<Episode> get appearsIn;
 
   List<Character> get friends;
 
-  int get totalCredits;
+  int? get totalCredits;
 
   // Human(
   //     {this.name,

@@ -1,7 +1,7 @@
-import 'package:angel_model/angel_model.dart';
-import 'package:angel_serialize/angel_serialize.dart';
+import 'package:angel3_model/angel3_model.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
 import 'package:collection/collection.dart';
-import 'package:graphql_schema/graphql_schema.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
 import 'character.dart';
 import 'episode.dart';
 part 'droid.g.dart';
@@ -10,9 +10,9 @@ part 'droid.g.dart';
 @graphQLClass
 @GraphQLDocumentation(description: 'Beep! Boop!')
 abstract class _Droid extends Model implements Character {
-  String get id;
+  String? get id;
 
-  String get name;
+  String? get name;
 
   @GraphQLDocumentation(
       description: 'The list of episodes this droid appears in.')

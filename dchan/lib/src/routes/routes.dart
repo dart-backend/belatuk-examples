@@ -176,7 +176,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       if (post.value!.inReplyTo != -1) {
         comments = [];
       } else {
-        var query = PostQuery()..where!.inReplyTo.equals(post.value!.idAsInt!);
+        var query = PostQuery()..where!.inReplyTo.equals(post.value!.idAsInt);
         comments = await query.get(executor);
       }
 
