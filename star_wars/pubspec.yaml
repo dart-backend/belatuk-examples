@@ -1,12 +1,12 @@
 name: star_wars
-version: 2.0.0
+version: 2.1.0
 description: A graphql sample application
 publish_to: none
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
   #angel_file_service: ^1.0.0
-  angel3_graphql: ^2.0.0
+  angel3_graphql: ^2.1.0
   angel3_hot: ^4.1.0
   angel3_serialize: ^4.0.0
   angel3_pretty_logging: ^3.0.0
@@ -15,6 +15,6 @@ dev_dependencies:
   angel3_serialize_generator: ^4.1.0
   build_runner: ^2.0.0
   graphql_generator2: ^2.1.0
-  pedantic: ^1.11.0
+  lints: ^1.0.0
 
     

@@ -1,11 +1,11 @@
 name: hello_angel
-version: 2.0.0
+version: 2.1.0
 description: A simple Hello World application in Angel3
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
     sdk: '>=2.12.0 <3.0.0'
 homepage: https://github.com/dukefirehawk/angel3-examples
 dependencies:
-    angel3_framework: ^4.0.0
+    angel3_framework: ^4.1.0
 dev_dependencies:
-    pedantic: ^1.11.0
+    lints: ^1.0.0
