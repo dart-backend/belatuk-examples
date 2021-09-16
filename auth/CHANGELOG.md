@@ -1,6 +1,10 @@
 
 # Change Log
 
+## 2.1.0
+
+* Upgraded from `pedantic` to `lints` linter
+
 ## 2.0.1
 
 * Updated `angel3` packages

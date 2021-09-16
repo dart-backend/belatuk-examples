@@ -13,5 +13,5 @@ void main(List<String> args) async {
     PostMigration(),
     AttachmentMigration(),
   ]);
-  return await runMigrations(migrationRunner, args);
+  await runMigrations(migrationRunner, args);
 }

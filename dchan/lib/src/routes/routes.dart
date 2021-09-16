@@ -21,7 +21,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       var posts = await query.get(executor!).then((posts) {
         return posts.map((p) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
-          if (p!.text!.isEmpty) {
+          if (p.text!.isEmpty) {
             return p.copyWith(
               text: '${p.attachments.length} File(s) - [' +
                   p.attachments.map((a) => a.filename).join(', ') +
@@ -77,7 +77,9 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
 
           // If there is no text, there must be at least one file.
           var text = body['text']?.toString().trim() ?? '';
-          if (text.isEmpty && req.uploadedFiles!.isEmpty) {
+          if (text.isEmpty &&
+              (req.uploadedFiles == null ||
+                  req.uploadedFiles?.isEmpty == true)) {
             throw FormatException(
                 'Either a title or uploaded files are required.');
           }
@@ -119,7 +121,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
           // Upload the attachments, if any.
           var i = 0;
           for (var attachment in req.uploadedFiles!) {
-            var file = uploadsDir.childDirectory(post.value!.id!).childFile(
+            var file = uploadsDir.childDirectory(post.value.id!).childFile(
                 p.setExtension(
                     i.toString(),
                     attachment.filename == null
@@ -131,7 +133,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
             var now = DateTime.now();
             var query = AttachmentQuery();
             query.values
-              ..postId = post.value!.idAsInt
+              ..postId = post.value.idAsInt
               ..contentTypeString = attachment.contentType.toString()
               ..filename = attachment.filename ?? 'unknown'
               ..index = i++
@@ -143,13 +145,13 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
           }
 
           // Send the user to either the new thread, or their comment (using URL fragment)
-          if (post.value!.inReplyTo == -1) {
-            var url = Uri(path: '/post/${post.value!.id}');
+          if (post.value.inReplyTo == -1) {
+            var url = Uri(path: '/post/${post.value.id}');
             await res.redirect(url);
           } else {
             var url = Uri(
-              path: '/post/${post.value!.inReplyTo}',
-              fragment: 'comment-${post.value!.id}',
+              path: '/post/${post.value.inReplyTo}',
+              fragment: 'comment-${post.value.id}',
             );
             await res.redirect(url);
           }
@@ -173,10 +175,10 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       //if (post == null) throw AngelHttpException.notFound();
       List<Post?> comments;
 
-      if (post.value!.inReplyTo != -1) {
+      if (post.value.inReplyTo != -1) {
         comments = [];
       } else {
-        var query = PostQuery()..where!.inReplyTo.equals(post.value!.idAsInt);
+        var query = PostQuery()..where!.inReplyTo.equals(post.value.idAsInt);
         comments = await query.get(executor);
       }
 
@@ -196,7 +198,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       var posts = await query.get(executor!).then((posts) {
         return posts.map((p) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
-          if (p!.text!.isEmpty) {
+          if (p.text!.isEmpty) {
             return p.copyWith(
               text: '${p.attachments.length} File(s) - [' +
                   p.attachments.map((a) => a.filename).join(', ') +
