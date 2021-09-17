@@ -69,7 +69,6 @@ class Droid extends _Droid {
         other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.id == id &&
         other.name == name &&
         ListEquality<Episode>(DefaultEquality<Episode>())
             .equals(other.appearsIn, appearsIn) &&
@@ -80,12 +79,12 @@ class Droid extends _Droid {
   @override
   int get hashCode {
     return hashObjects(
-        [id, error, createdAt, updatedAt, id, name, appearsIn, friends]);
+        [id, error, createdAt, updatedAt, name, appearsIn, friends]);
   }
 
   @override
   String toString() {
-    return 'Droid(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends)';
+    return 'Droid(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends)';
   }
 
   Map<String, dynamic> toJson() {
@@ -165,7 +164,6 @@ abstract class DroidFields {
     error,
     createdAt,
     updatedAt,
-    id,
     name,
     appearsIn,
     friends
@@ -202,7 +200,6 @@ final GraphQLObjectType droidGraphQLType = objectType('Droid',
       field('error', graphQLString),
       field('created_at', graphQLDate),
       field('updated_at', graphQLDate),
-      field('id', graphQLString),
       field('name', graphQLString),
       field('appears_in', listOf(episodeGraphQLType),
           description: 'The list of episodes this droid appears in.'),

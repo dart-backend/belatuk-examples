@@ -100,7 +100,7 @@ class Human extends _Human {
 
   @override
   String toString() {
-    return 'Human(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
+    return 'Human(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
   }
 
   Map<String, dynamic> toJson() {
@@ -182,7 +182,6 @@ abstract class HumanFields {
     error,
     createdAt,
     updatedAt,
-    id,
     name,
     appearsIn,
     friends,

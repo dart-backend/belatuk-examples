@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_hot/angel3_hot.dart';
 import 'package:logging/logging.dart';
@@ -12,7 +13,7 @@ void main() async {
     hierarchicalLoggingEnabled = true;
     var logger = Logger.detached('star_wars')
       ..onRecord.listen(star_wars.prettyLog);
-    var app = Angel(logger: logger);
+    var app = Angel(logger: logger, reflector: MirrorsReflector());
     await app.configure(star_wars.configureServer);
     return app;
   }

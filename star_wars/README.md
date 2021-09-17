@@ -1,9 +1,19 @@
-# Star Wars Demo
+# Star Wars
 
-An example GraphQL API built using `package:angel3_graphql`
+A graphQL application build with Angel 3 framework.
 
-## Run
+## For Development
 
-```bash
-dart bin/server.dart
-```
+1. Open a terminal and run the following:
+
+    ```bash
+    dart --enable-vm-service bin/server.dart
+    ```
+
+## For Production
+
+1. Open a terminal and run the following:
+
+    ```bash
+    dart bin/server.dart
+    ```

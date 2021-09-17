@@ -1,6 +1,6 @@
 # dchan
 
-A simple, anonymous text/multimedia board build in Angel3
+A simple, anonymous text/multimedia board build with Angel3 framework
 
 ![screenshot](screenshots/screenshot.png)
 

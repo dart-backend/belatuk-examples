@@ -4,7 +4,6 @@ import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_graphql/angel3_graphql.dart';
 import 'package:graphql_schema2/graphql_schema2.dart';
 import 'package:graphql_server2/graphql_server2.dart';
-import 'package:graphql_server2/mirrors.dart';
 import 'src/models/models.dart';
 
 Future configureServer(Angel app) async {
@@ -95,15 +94,16 @@ Future configureServer(Angel app) async {
   // The `mirrorsFieldResolver` is unnecessary in this case, because we are using
   // `Map`s only, but if our services returned concrete Dart objects, we'd need
   // this to allow GraphQL to read field values.
-  var graphQL = GraphQL(schema,
-      defaultFieldResolver: mirrorsFieldResolver as FutureOr<T> Function<T>(
-          T, String?, Map<String, dynamic>)?);
+  //var graphQL = GraphQL(schema,
+  //    defaultFieldResolver: mirrorsFieldResolver as FutureOr<T> Function<T>(
+  //        T, String?, Map<String, dynamic>));
+  var graphQL = GraphQL(schema);
 
   // Mount the GraphQL endpoint.
   app.all('/graphql', graphQLHttp(graphQL));
 
   // In development, we'll want to mount GraphiQL, for easy management of the database.
-  if (!app.isProduction) {
+  if (!app.environment.isProduction) {
     app.get('/graphiql', graphiQL());
   }
 

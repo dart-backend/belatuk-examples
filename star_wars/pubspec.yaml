@@ -10,6 +10,7 @@ dependencies:
   angel3_hot: ^4.2.0
   angel3_serialize: ^4.0.0
   angel3_pretty_logging: ^3.0.0
+  angel3_container: ^3.0.0
   io: ^1.0.0
 dev_dependencies:
   angel3_serialize_generator: ^4.2.0
