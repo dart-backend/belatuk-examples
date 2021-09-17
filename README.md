@@ -14,11 +14,13 @@ A collection of thoroughly-commented example projects build in Angel 3.
 
 The source code for [`Getting Started`](https://angel3-docs.dukefirehawk.com/guides/getting-started) in Angel3
 
-## auth
+## Examples
+
+### auth
 
 A simple user authentication, storing a token in a `token` cookie in Angel3.
 
-## dchan
+### dchan
 
 A simple, anonymous text/multimedia board build in Angel3.
 
@@ -26,14 +28,19 @@ A simple, anonymous text/multimedia board build in Angel3.
 
 A simple Flutter chatting app powered by backend in Angel3.
 
-## pub_serve_proxy
+### pub_serve_proxy
 
 An example of using reverse proxy with Angel3
 
-## yewtube
+### yewtube
 
 An example of video stream app in Angel3
 
-## star_wars
+### star_wars
 
 An example of using graphQL in Angel3
+
+## TODO
+
+* Fix NNBD issue with star_wars
+* Fix NNBD issue with flutter_chat
