@@ -7,5 +7,5 @@ A video stream application build with Angel3 framework
 1. Open a terminal and run the following:
 
     ```bash
-    dart bin/server.dart
+    dart bin/main.dart
     ```
