@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ChatScaffold extends StatefulWidget {
   final WebSockets app;
 
-  const ChatScaffold({Key key, @required this.app}) : super(key: key);
+  const ChatScaffold({Key? key, required this.app}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ChatScaffoldState();
@@ -39,7 +39,9 @@ class _ChatScaffoldState extends State<ChatScaffold> {
 
   @override
   void deactivate() {
-    _subs.forEach((s) => s.cancel());
+    for (var s in _subs) {
+      s.cancel();
+    }
     super.deactivate();
   }
 

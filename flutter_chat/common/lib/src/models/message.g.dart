@@ -8,20 +8,19 @@ part of 'message.dart';
 
 @generatedSerializable
 class Message implements _Message {
-  const Message(
-      {required this.user, this.imageBytes, this.text, this.timestamp});
+  Message({required this.user, this.imageBytes, this.text, this.timestamp});
 
   @override
-  final User? user;
+  User? user;
 
   @override
-  final Uint8List? imageBytes;
+  Uint8List? imageBytes;
 
   @override
-  final String? text;
+  String? text;
 
   @override
-  final DateTime? timestamp;
+  DateTime? timestamp;
 
   Message copyWith(
       {User? user, Uint8List? imageBytes, String? text, DateTime? timestamp}) {
@@ -36,7 +35,7 @@ class Message implements _Message {
   bool operator ==(other) {
     return other is _Message &&
         other.user == user &&
-        const ListEquality().equals(other.imageBytes, imageBytes) &&
+        ListEquality().equals(other.imageBytes, imageBytes) &&
         other.text == text &&
         other.timestamp == timestamp;
   }
@@ -44,6 +43,11 @@ class Message implements _Message {
   @override
   int get hashCode {
     return hashObjects([user, imageBytes, text, timestamp]);
+  }
+
+  @override
+  String toString() {
+    return 'Message(user=$user, imageBytes=$imageBytes, text=$text, timestamp=$timestamp)';
   }
 
   Map<String, dynamic> toJson() {
@@ -55,7 +59,29 @@ class Message implements _Message {
 // SerializerGenerator
 // **************************************************************************
 
-abstract class MessageSerializer {
+const MessageSerializer messageSerializer = MessageSerializer();
+
+class MessageEncoder extends Converter<Message, Map> {
+  const MessageEncoder();
+
+  @override
+  Map convert(Message model) => MessageSerializer.toMap(model);
+}
+
+class MessageDecoder extends Converter<Map, Message> {
+  const MessageDecoder();
+
+  @override
+  Message convert(Map map) => MessageSerializer.fromMap(map);
+}
+
+class MessageSerializer extends Codec<Message, Map> {
+  const MessageSerializer();
+
+  @override
+  MessageEncoder get encoder => const MessageEncoder();
+  @override
+  MessageDecoder get decoder => const MessageDecoder();
   static Message fromMap(Map map) {
     if (map['user'] == null) {
       throw FormatException("Missing required field 'user' on Message.");
@@ -66,7 +92,7 @@ abstract class MessageSerializer {
             ? UserSerializer.fromMap(map['user'] as Map)
             : null,
         imageBytes: map['image_bytes'] is Uint8List
-            ? (map['image_bytes'] as Uint8List?)
+            ? (map['image_bytes'] as Uint8List)
             : (map['image_bytes'] is Iterable<int>
                 ? Uint8List.fromList(
                     (map['image_bytes'] as Iterable<int>).toList())
@@ -77,20 +103,19 @@ abstract class MessageSerializer {
         text: map['text'] as String?,
         timestamp: map['timestamp'] != null
             ? (map['timestamp'] is DateTime
-                ? (map['timestamp'] as DateTime?)
+                ? (map['timestamp'] as DateTime)
                 : DateTime.parse(map['timestamp'].toString()))
             : null);
   }
 
-  static Map<String, dynamic> toMap(_Message model) {
-    if (model.user == null) {
-      throw FormatException("Missing required field 'user' on Message.");
+  static Map<String, dynamic> toMap(_Message? model) {
+    if (model == null) {
+      return {};
     }
-
     return {
       'user': UserSerializer.toMap(model.user),
       'image_bytes':
-          model.imageBytes == null ? null : base64.encode(model.imageBytes!),
+          model.imageBytes != null ? base64.encode(model.imageBytes!) : null,
       'text': model.text,
       'timestamp': model.timestamp?.toIso8601String()
     };

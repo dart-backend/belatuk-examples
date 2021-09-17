@@ -16,7 +16,7 @@ A reverse proxy application build with `angel3_proxy` package serving contents f
     pub run build_runner serve
     ```
 
-3. Open `https://localhost:3000` in a browser
+3. Open `http://localhost:3000` in a browser
 
 ## For Production
 
@@ -32,3 +32,5 @@ A reverse proxy application build with `angel3_proxy` package serving contents f
     ```bash
     pub run build_runner build --release -o build
     ```
+
+3. Open `http://localhost:3000` in a browser

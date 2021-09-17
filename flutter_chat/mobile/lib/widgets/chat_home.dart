@@ -10,14 +10,14 @@ class ChatHome extends StatefulWidget {
 }
 
 class _ChatHomeState extends f.State<ChatHome> {
-  WebSockets app;
-  User user;
+  WebSockets? app;
+  User? user;
 
   // Because WebSockets are asynchronous in nature,
   // we're using a state machine to manage state changes.
-  StateMachine chatState;
-  State isNotConnected, isConnected, hasSentAuth, hasUser, hasError;
-  StateTransition connect, sendAuth, setUser, setError;
+  late StateMachine chatState;
+  late State isNotConnected, isConnected, hasSentAuth, hasUser, hasError;
+  late StateTransition connect, sendAuth, setUser, setError;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _ChatHomeState extends f.State<ChatHome> {
     chatState.start(isNotConnected);
 
     // Actually connect now...
-    app.connect().then((_) {
+    app?.connect().then((_) {
       setState(connect);
     }).catchError((e, st) {
       setState(setError);
@@ -58,7 +58,7 @@ class _ChatHomeState extends f.State<ChatHome> {
 
   @override
   void deactivate() {
-    app.close();
+    app?.close();
     chatState.dispose();
     super.deactivate();
   }

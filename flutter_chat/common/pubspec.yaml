@@ -1,5 +1,5 @@
 name: common
-version: 2.0.0
+version: 2.1.0
 description: A flutter common
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
@@ -8,5 +8,7 @@ dependencies:
   angel3_model: ^3.0.0
   angel3_serialize: ^4.0.0
 dev_dependencies:
-  angel3_serialize_generator: ^4.0.0
+  angel3_serialize_generator: ^4.2.0
   build_runner: ^2.0.0
+  lints: ^1.0.0
+ 

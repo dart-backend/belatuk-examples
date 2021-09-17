@@ -8,13 +8,13 @@ part of 'user.dart';
 
 @generatedSerializable
 class User implements _User {
-  const User({required this.name, required this.avatarBytes});
+  User({required this.name, required this.avatarBytes});
 
   @override
-  final String? name;
+  String? name;
 
   @override
-  final Uint8List? avatarBytes;
+  Uint8List? avatarBytes;
 
   User copyWith({String? name, Uint8List? avatarBytes}) {
     return User(
@@ -25,7 +25,7 @@ class User implements _User {
   bool operator ==(other) {
     return other is _User &&
         other.name == name &&
-        const ListEquality().equals(other.avatarBytes, avatarBytes);
+        ListEquality().equals(other.avatarBytes, avatarBytes);
   }
 
   @override
@@ -33,7 +33,12 @@ class User implements _User {
     return hashObjects([name, avatarBytes]);
   }
 
-  Map<String, dynamic>? toJson() {
+  @override
+  String toString() {
+    return 'User(name=$name, avatarBytes=$avatarBytes)';
+  }
+
+  Map<String, dynamic> toJson() {
     return UserSerializer.toMap(this);
   }
 }
@@ -42,7 +47,29 @@ class User implements _User {
 // SerializerGenerator
 // **************************************************************************
 
-abstract class UserSerializer {
+const UserSerializer userSerializer = UserSerializer();
+
+class UserEncoder extends Converter<User, Map> {
+  const UserEncoder();
+
+  @override
+  Map convert(User model) => UserSerializer.toMap(model);
+}
+
+class UserDecoder extends Converter<Map, User> {
+  const UserDecoder();
+
+  @override
+  User convert(Map map) => UserSerializer.fromMap(map);
+}
+
+class UserSerializer extends Codec<User, Map> {
+  const UserSerializer();
+
+  @override
+  UserEncoder get encoder => const UserEncoder();
+  @override
+  UserDecoder get decoder => const UserDecoder();
   static User fromMap(Map map) {
     if (map['name'] == null) {
       throw FormatException("Missing required field 'name' on User.");
@@ -55,7 +82,7 @@ abstract class UserSerializer {
     return User(
         name: map['name'] as String?,
         avatarBytes: map['avatar_bytes'] is Uint8List
-            ? (map['avatar_bytes'] as Uint8List?)
+            ? (map['avatar_bytes'] as Uint8List)
             : (map['avatar_bytes'] is Iterable<int>
                 ? Uint8List.fromList(
                     (map['avatar_bytes'] as Iterable<int>).toList())
@@ -65,22 +92,14 @@ abstract class UserSerializer {
                     : null)));
   }
 
-  static Map<String, dynamic>? toMap(_User? model) {
+  static Map<String, dynamic> toMap(_User? model) {
     if (model == null) {
-      return null;
+      return {};
     }
-    if (model.name == null) {
-      throw FormatException("Missing required field 'name' on User.");
-    }
-
-    if (model.avatarBytes == null) {
-      throw FormatException("Missing required field 'avatar_bytes' on User.");
-    }
-
     return {
       'name': model.name,
       'avatar_bytes':
-          model.avatarBytes == null ? null : base64.encode(model.avatarBytes!)
+          model.avatarBytes != null ? base64.encode(model.avatarBytes!) : null
     };
   }
 }

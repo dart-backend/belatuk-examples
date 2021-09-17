@@ -12,26 +12,28 @@ Supports:
 * Image embedding
 * User hashes instead of username/password
 
-## Setup & Usage
+## Settings
 
-You need Dart and PostgreSQL installed.
+### Database Setup (Postgresql)
 
-### Setup database
+1. Open `psql` terminal and run the following command:
 
-* Open psql terminal and run the following command to create a new database:
+    ```sql
+        CREATE USER dchan PASSWORD 'Dchan@1970';
+        CREATE DATABASE dchan_db OWNER dchan ENCODING 'UTF-8';
+        GRANT ALL ON DATABASE dchan_db TO dchan; 
+    ```
 
-```sql
-    CREATE USER dchan PASSWORD 'Dchan@1970';
-    CREATE DATABASE dchan_db OWNER dchan ENCODING 'UTF-8';
-    GRANT ALL ON DATABASE dchan_db TO dchan; 
-```
+2. To use different database, username or password, update `config/default.yaml` file
 
-* To use different database, username or password, update `config/default.yaml` file
+3. Run `dart bin/migrate.dart up` to generate the required tables in the database.
 
-* Run `dart bin/migrate.dart up` to generate the required tables in the database.
+## For Development and Production
 
-### Run
+1. Open a terminal and run the following command
 
-* Run `dart bin/prod.dart` to start the server.
+    ```bash
+        dart bin/prod.dart
+    ```
 
-* Open a browser and run <http://localhost:3000>
+2. Open `http://localhost:3000` in a browser
