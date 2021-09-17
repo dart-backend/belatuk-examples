@@ -1,3 +1,9 @@
-# star_wars
+# Star Wars Demo
 
-An example GraphQL API built using `package:angel_graphql2`
+An example GraphQL API built using `package:angel3_graphql`
+
+## Run
+
+```bash
+dart bin/server.dart
+```

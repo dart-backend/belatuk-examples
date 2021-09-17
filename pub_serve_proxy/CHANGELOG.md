@@ -3,6 +3,7 @@
 ## 2.1.0
 
 * Upgraded from `pedantic` to `lints` linter
+* Updated README
 
 ## 2.0.0
 

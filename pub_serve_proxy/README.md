@@ -1,33 +1,34 @@
-# pub_serve_proxy
+# Reverse Proxy for Pub Serve
 
-Example of how to reverse proxy over `pub run build_runner serve`.
-`package:angel3_proxy` supports proxying over any HTTP server, including WebSocket
-support, so it can be used with `webpack-dev-server` and co. as well.
+This example shows how to use `angel3_proxy` package to build reverse proxy application for serving contents from HTTP server, including WebSocket support, so it can be used with `webpack-dev-server` and co. as well.
 
-## Development
+## For Development
 
-In development, simply run:
+1. In the first terminal, run the proxy server which listen on port 3000.
 
     ```bash
-    # To start the server:
     dart bin/main.dart
     ```
 
+2. In the second terminal, run the web server which listn on port 8080.
+
     ```bash
-    # Run this in a separate terminal/window; starts the dev server:
     pub run build_runner serve
     ```
 
-## Production
+3. Open `https://localhost:3000` in a browser
 
-In production, instead of proxying, our server will serve static files, including our dart2js-compiled app:
+## For Production
+
+1. In the first terminal, run the proxy server which listen on port 3000.
 
     ```bash
-    # Firstly, build the app via dart2js:
-    pub run build_runner build --release -o build
+    set ANGEL_ENV=production 
+    dart bin/main.dart
     ```
 
+2. In the second terminal, run the web server to serve static files, including our dart2js-compiled app on port 8080.
+
     ```bash
-    # Next, just launch the server:
-    ANGEL_ENV=production dart bin/main.dart
+    pub run build_runner build --release -o build
     ```
