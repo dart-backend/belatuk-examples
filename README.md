@@ -24,7 +24,7 @@ A simple user authentication application, storing a token in a `token` cookie, i
 
 A simple, anonymous text/multimedia board application in Angel3.
 
-## [Flutter Chat](https://github.com/dart-backend/belatuk-examples/tree/master/flutter_chat)
+### [Flutter Chat](https://github.com/dart-backend/belatuk-examples/tree/master/flutter_chat)
 
 A simple Flutter chatting application with backend in Angel3.
 
@@ -36,7 +36,7 @@ An example of reverse proxy application in Angel3
 
 An example of video stream application in Angel3
 
-### [Star Wars](https://github.com/dart-backend/belatuk-examples/tree/master/starwars)
+### [Star Wars](https://github.com/dart-backend/belatuk-examples/tree/master/star_wars)
 
 An example of graphQL application in Angel3
 
