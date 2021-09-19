@@ -12,9 +12,17 @@ Supports:
 * Image embedding
 * User hashes instead of username/password
 
-## Settings
+## Setup
 
-### Database Setup (Postgresql)
+### Build
+
+1. Open a terminal and run:
+
+    ```bash
+    dart pub get
+    ```
+
+### Database (Postgresql)
 
 1. Open `psql` terminal and run the following command:
 

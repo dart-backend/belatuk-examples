@@ -2,6 +2,14 @@
 
 A graphQL application build with Angel 3 framework.
 
+## Build
+
+1. Open a terminal and run:
+
+    ```bash
+    dart pub get
+    ```
+
 ## For Development
 
 1. Open a terminal and run the following:

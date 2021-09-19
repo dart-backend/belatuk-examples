@@ -1,18 +1,25 @@
 # Flutter Chat
 
-A simple Flutter chatting app with backend in Angel3
+A Flutter chat application with backend in Angel3
 
-## Settings
+## Build
 
-1. Open a terminal and run the following command
+1. Open a terminal
+2. Go to `common` folder and run:
 
     ```bash
-    dart run build_runner build
+    dart pub get
+    ```
+
+3. Go to `backend` folder and run:
+
+    ```bash
+    dart pub get
     ```
 
 ## For Development/Production
 
-1. Open a terminal and run the following command:
+1. Open a terminal, go to `backend` folder and run the following command:
 
     ```bash
     dart bin/main.dart

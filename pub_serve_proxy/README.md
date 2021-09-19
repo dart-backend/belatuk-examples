@@ -2,6 +2,14 @@
 
 A reverse proxy application build with `angel3_proxy` package serving contents from HTTP server, including WebSocket support, so it can be used with `webpack-dev-server` and co. as well.
 
+## Build
+
+1. Open a terminal and run:
+
+    ```bash
+    dart pub get
+    ```
+
 ## For Development
 
 1. In the first terminal, run the proxy server which listen on port 3000.
