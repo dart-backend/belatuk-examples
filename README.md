@@ -16,31 +16,30 @@ The source code for [`Getting Started`](https://angel3-docs.dukefirehawk.com/gui
 
 ## Examples
 
-### auth
+### [Simple Authentication](https://github.com/dart-backend/belatuk-examples/tree/master/auth)
 
-A simple user authentication, storing a token in a `token` cookie in Angel3.
+A simple user authentication application, storing a token in a `token` cookie, in Angel3.
 
-### dchan
+### [Multimedia Board](https://github.com/dart-backend/belatuk-examples/tree/master/dchan)
 
-A simple, anonymous text/multimedia board build in Angel3.
+A simple, anonymous text/multimedia board application in Angel3.
 
-## flutter_chat
+## [Flutter Chat](https://github.com/dart-backend/belatuk-examples/tree/master/flutter_chat)
 
-A simple Flutter chatting app powered by backend in Angel3.
+A simple Flutter chatting application with backend in Angel3.
 
-### pub_serve_proxy
+### [Reverse Proxy](https://github.com/dart-backend/belatuk-examples/tree/master/pub_serve_proxy)
 
-An example of using reverse proxy with Angel3
+An example of reverse proxy application in Angel3
 
-### yewtube
+### [Video Streaming](https://github.com/dart-backend/belatuk-examples/tree/master/yewtube)
 
-An example of video stream app in Angel3
+An example of video stream application in Angel3
 
-### star_wars
+### [Star Wars](https://github.com/dart-backend/belatuk-examples/tree/master/starwars)
 
-An example of using graphQL in Angel3
+An example of graphQL application in Angel3
 
 ## TODO
 
-* Fix NNBD issue with star_wars
 * Fix NNBD issue with flutter_chat
