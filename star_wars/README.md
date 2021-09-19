@@ -7,7 +7,7 @@ A graphQL application build with Angel 3 framework.
 1. Open a terminal and run the following:
 
     ```bash
-    dart --enable-vm-service bin/server.dart
+    dart --enable-vm-service bin/dev.dart
     ```
 
 ## For Production
@@ -15,5 +15,5 @@ A graphQL application build with Angel 3 framework.
 1. Open a terminal and run the following:
 
     ```bash
-    dart bin/server.dart
+    dart bin/prod.dart
     ```

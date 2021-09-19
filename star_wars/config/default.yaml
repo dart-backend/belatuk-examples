@@ -1,0 +1,4 @@
+# Default server configuration.
+host: 127.0.0.1
+port: 3000
+jwt_secret: "uApMzKScebMvJFZrHSqEpyDT98URh3hU"
