@@ -25,6 +25,7 @@ dev_dependencies:
   angel3_orm_generator: ^4.1.0
   angel3_serialize_generator: ^4.2.0
   angel3_test: ^4.0.2
+  belatuk_pretty_logging: ^4.0.0
   build_runner: ^2.0.4
   io: ^1.0.0
   lints: ^1.0.0

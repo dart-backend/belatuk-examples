@@ -4,6 +4,7 @@
 
 * Migrated to `angel3_` packages
 * Migrated to Dart 2.12.x with NNBD support
+* Replaced `package:state_machine` with `package:statemachine`
 
 ## 1.0.0
 

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:dchan/src/pretty_logging.dart';
+import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
 import 'package:dchan/dchan.dart';
 import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_framework/angel3_framework.dart';

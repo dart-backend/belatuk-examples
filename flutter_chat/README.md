@@ -17,6 +17,12 @@ A Flutter chat application with backend in Angel3
     dart pub get
     ```
 
+4. Go to `flutter_chat` folder and run:
+
+    ```bash
+    flutter pub get
+    ```
+
 ## For Development/Production
 
 1. Open a terminal, go to `backend` folder and run the following command:
