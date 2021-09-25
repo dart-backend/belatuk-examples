@@ -24,7 +24,7 @@ A simple user authentication application, storing a token in a `token` cookie, i
 
 A simple, anonymous text/multimedia board application in Angel3.
 
-### [Merbuk Chat](https://github.com/dart-backend/belatuk-examples/tree/master/merbuk_chat)
+### [Flutter Chat](https://github.com/dart-backend/belatuk-examples/tree/master/flutter_chat)
 
 A simple Flutter chatting application with backend in Angel3.
 
