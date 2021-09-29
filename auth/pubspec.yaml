@@ -5,8 +5,8 @@ publish_to: none
 environment:
     sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  angel3_auth: ^4.0.0
-  angel3_framework: ^4.1.0
+  angel3_auth: ^4.1.0
+  angel3_framework: ^4.2.0
   angel3_static: ^4.1.0
   dbcrypt: ^2.0.0
 dev_dependencies:

@@ -7,7 +7,7 @@ environment:
 dependencies:
   angel3_auth: ^4.0.3
   angel3_configuration: ^4.0.0
-  angel3_framework: ^4.1.0
+  angel3_framework: ^4.2.0
   angel3_jael: ^4.1.0
   angel3_migration: ^4.0.0
   angel3_orm: ^4.0.0

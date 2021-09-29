@@ -44,7 +44,7 @@ void main() async {
 
   // On every request, allow the authenticator to try to parse a JWT.
   // If it succeeds, a `User` instance will be injected into the request container.
-  app.fallback(auth.decodeJwt);
+  //app.fallback(auth.decodeJwt);
 
   // Only authenticated users can access /secret.html.
   //
