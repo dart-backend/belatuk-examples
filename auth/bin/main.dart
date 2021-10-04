@@ -9,10 +9,13 @@ import 'package:logging/logging.dart';
 void main() async {
   var app = Angel();
 
-  // Note: the `secureCookies` flag is important during development,
-  // IF you are using cookies.
+  // Note: the `secureCookies` flag is important during development, iF you are using cookies.
   //
   // `localhost` cannot use `Secure` cookies, if it's not over HTTPS, which it often isn't.
+  //
+  // Add functions to (de)serialize a user for the purposes of representation within a token.
+  // In a real application, instead of serializing the user itself, you can just return its ID,
+  // and when deserializing, perform a database lookup.
   var auth = AngelAuth<User>(
       serializer: (u) => u.serialize(),
       deserializer: (serialized) => User.deserialize(serialized.toString()),
@@ -25,29 +28,30 @@ void main() async {
   var vDir = CachingVirtualDirectory(app, fs, source: fs.directory('web'));
 
   var users = [
-    User('thosakwe', 'foobar'),
-    User('angel-dart', 'framework'),
+    User('demo', 'demo123'),
+    User('admin', 'admin123'),
   ];
-
-  // Add functions to (de)serialize a user for the purposes of representation within a token.
-  // In a real application, instead of serializing the user itself, you can just return its ID,
-  // and when deserializing, perform a database lookup.
-  auth.serializer = (u) => u.serialize();
-  auth.deserializer = (serialized) => User.deserialize(serialized.toString());
 
   // Tell the authenticator how to validate a username+password auth attempt.
   // Return `null` on a failed attempt.
-  auth.strategies['pw'] = LocalAuthStrategy((username, password) {
-    var user = users.firstWhere((u) => u.username == username);
-    return user.validate(password ?? '') ? user : null;
+  auth.strategies['local'] = LocalAuthStrategy((username, password) {
+    var list = users.where((u) => u.username == username);
+    if (list.isEmpty) {
+      print('User = null');
+      return null;
+    }
+    var user = list.first;
+    print('User = ${user.username}');
+    var result = user.validate(password ?? '') ? user : null;
+    print('Validation = ${result ?? "null"}');
+
+    return result;
   });
 
-  // On every request, allow the authenticator to try to parse a JWT.
-  // If it succeeds, a `User` instance will be injected into the request container.
-  //app.fallback(auth.decodeJwt);
+  // Middleware to decode JWT's and inject a user object...
+  await app.configure(auth.configureServer);
 
   // Only authenticated users can access /secret.html.
-  //
   // Place an auth guard in front of it, to deny guests from
   // viewing critical content.
   app.get('/secret.html', requireAuthentication<User>());
@@ -65,7 +69,7 @@ void main() async {
   app.post(
     '/login',
     auth.authenticate(
-      'pw',
+      'local',
       AngelAuthOptions<User>(successRedirect: '/secret.html'),
     ),
   );
@@ -89,7 +93,7 @@ void main() async {
   };
 
   // Add logging.
-  app.logger = Logger('example')
+  app.logger = Logger('auth')
     ..onRecord.listen((rec) {
       print(rec);
       if (rec.error != null) print(rec.error);
@@ -99,5 +103,5 @@ void main() async {
   // Mount the server.
   var http = AngelHttp(app);
   await http.startServer('127.0.0.1', 3000);
-  print('Listening at http://127.0.0.1:3000');
+  print('Auth Listening at http://127.0.0.1:3000');
 }
