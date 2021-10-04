@@ -42,4 +42,15 @@ An example of graphQL application in Angel3
 
 ## TODO
 
-* Fix NNBD issue with flutter_chat
+* Update `auth`
+  * Apply `Bulma` or `Bootstrap` layout
+  * Add `OAuth2` authentication with Google, Facebook and Twitter
+  * Add flutter mobile app
+* Update `flutter_chat`
+  * Change flutter mobile app state management to `package:riverpod`
+* Update `star_wars` app
+  * Add flutter mobile app
+  * Add web app
+* Update `yewtube`
+  * Add flutter mobile app
+  
