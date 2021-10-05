@@ -1,21 +1,20 @@
-# A simple application with Authentication
+# Auth Backend Application
 
 A simple example of user authentication in Angel3 that stores a token in a `token` cookie
 
-## Build
+## Installation and Configuration
 
-1. Open a terminal and run:
+1. Open a terminal and go to `backend` directory
+2. Run:
 
     ```bash
     dart pub get
     ```
 
-## For Development/Production
-
-1. Open a terminal and run the following command:
+3. Run:
 
     ```bash
         dart bin/main.dart
     ```
 
-2. Open `http://localhost:3000` in a browser
+4. Open `http://localhost:3000` in a browser

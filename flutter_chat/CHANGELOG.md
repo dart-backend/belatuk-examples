@@ -1,10 +1,9 @@
 # Change Log
 
-## 2.0.0
+## Backend
 
-* Migrated to `angel3_` packages
-* Migrated to Dart 2.12.x with NNBD support
+See [Change Log](backend/CHANGELOG.md)
 
-## 1.0.0
+## Mobile
 
-* Initial version for Dart SDK 2.10.x and below
+See [Change Log](mobile/CHANGELOG.md)

@@ -2,27 +2,19 @@
 
 A video stream application build with Angel3 framework
 
-## Setup
+## Installation and Configuration
 
-### Build
-
-1. Open a terminal and run:
+1. Open a terminal and go to `backend` directory
+2. Run:
 
     ```bash
     dart pub get
     ```
 
-### Configuration
-
-`web\uploads` - Directory that stores the uploaded video files
-`db.json` - File that stores the uploaded video title, description and filename
-
-## For Development/Production
-
-1. Open a terminal and run the following:
+3. Run:
 
     ```bash
-    dart bin/main.dart
+        dart bin/main.dart
     ```
 
-2. Open `http://localhost:3000` in a browser
+4. Open `http://localhost:3000` in a browser

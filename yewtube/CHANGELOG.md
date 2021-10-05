@@ -1,13 +1,10 @@
+
 # Change Log
 
-## 2.1.0
+## Backend
 
-* Upgraded from `pedantic` to `lints` linter
+See [Change Log](backend/CHANGELOG.md)
 
-## 2.0.0
+## Mobile
 
-* Migrated to `angel3` packages
-
-## 1.0.0
-
-* Initial version for Dart SDK 2.10.x and below
+See [Change Log](mobile/CHANGELOG.md)

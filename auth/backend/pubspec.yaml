@@ -1,6 +1,6 @@
 name: auth
 version: 2.1.0
-description: A simple authentication demo application
+description: A web application backend with authentication enabled
 publish_to: none
 environment:
     sdk: '>=2.12.0 <3.0.0'

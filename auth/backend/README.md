@@ -1,6 +1,6 @@
-# A simple application with Authentication
+# A simple web application
 
-A simple example of user authentication in Angel3 that stores a token in a `token` cookie
+A simple web application with user authentication in Angel3 that stores access token in a `token` cookie
 
 ## Build
 
@@ -10,12 +10,10 @@ A simple example of user authentication in Angel3 that stores a token in a `toke
     dart pub get
     ```
 
-## For Development/Production
-
-1. Open a terminal and run the following command:
+2. Open a terminal and run the following command:
 
     ```bash
         dart bin/main.dart
     ```
 
-2. Open `http://localhost:3000` in a browser
+3. Open `http://localhost:3000` in a browser

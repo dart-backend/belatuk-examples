@@ -1,27 +1,29 @@
-# Flutter Chat
+# A Simple Chat Application
 
 A Flutter chat application with backend in Angel3
 
-## Build
+## Installation and Configuration
 
 1. Open a terminal
-2. Go to `common` folder and run:
+2. Go to `common` directory and run:
 
     ```bash
     dart pub get
     ```
 
-3. Go to `backend` folder and run:
+3. Go to `backend` directory and run:
 
     ```bash
     dart pub get
     ```
 
-4. Go to `flutter_chat` folder and run:
+4. Go to `flutter_chat` directory and run:
 
     ```bash
     flutter pub get
     ```
+
+5. Run flutter app
 
 ## For Development/Production
 

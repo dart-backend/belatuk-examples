@@ -1,15 +1,9 @@
 # Change Log
 
-## 2.1.0
+## Backend
 
-* Upgraded from `pedantic` to `lints` linter
-* Fixed NNBD issues
-* Refactored the code into recommended project structure
+See [Change Log](backend/CHANGELOG.md)
 
-## 2.0.0
+## Mobile
 
-* Migrated to support Dart SDK 2.12.x NNBD
-
-## 1.0.0
-
-* Initial version
+See [Change Log](mobile/CHANGELOG.md)
