@@ -11,11 +11,10 @@ class PostMigration extends Migration {
   void up(Schema schema) {
     schema.create('posts', (table) {
       table.serial('id').primaryKey();
-      table.varChar('error', length: 256);
       table.timeStamp('created_at');
       table.timeStamp('updated_at');
-      table.varChar('text', length: 256);
-      table.varChar('user_hash', length: 256);
+      table.varChar('text', length: 255);
+      table.varChar('user_hash', length: 255);
       table.integer('in_reply_to');
     });
   }
@@ -41,7 +40,6 @@ class PostQuery extends Query<Post, PostQueryWhere> {
         'post_id',
         additionalFields: const [
           'id',
-          'error',
           'created_at',
           'updated_at',
           'size_in_bytes',
@@ -75,7 +73,6 @@ class PostQuery extends Query<Post, PostQueryWhere> {
   List<String> get fields {
     return const [
       'id',
-      'error',
       'created_at',
       'updated_at',
       'text',
@@ -94,29 +91,29 @@ class PostQuery extends Query<Post, PostQueryWhere> {
     return PostQueryWhere(this);
   }
 
-  static Post? parseRow(List row) {
+  static Optional<Post> parseRow(List row) {
     if (row.every((x) => x == null)) {
-      return null;
+      return Optional.empty();
     }
     var model = Post(
         id: row[0].toString(),
-        error: (row[1] as String?),
-        createdAt: (row[2] as DateTime?),
-        updatedAt: (row[3] as DateTime?),
-        text: (row[4] as String?),
-        userHash: (row[5] as String?),
-        inReplyTo: (row[6] as int?));
-    if (row.length > 7) {
-      model = model.copyWith(attachments: [
-        (AttachmentQuery.parseRow(row.skip(7).take(10).toList()) as Attachment)
-      ]);
+        createdAt: (row[1] as DateTime?),
+        updatedAt: (row[2] as DateTime?),
+        text: (row[3] as String?),
+        userHash: (row[4] as String?),
+        inReplyTo: (row[5] as int?));
+    if (row.length > 6) {
+      var modelOpt = AttachmentQuery.parseRow(row.skip(6).take(9).toList());
+      modelOpt.ifPresent((m) {
+        model = model.copyWith(attachments: [m]);
+      });
     }
-    return model;
+    return Optional.of(model);
   }
 
   @override
   Optional<Post> deserialize(List row) {
-    return Optional.ofNullable(parseRow(row));
+    return parseRow(row);
   }
 
   AttachmentQuery get attachments {
@@ -184,7 +181,6 @@ class PostQuery extends Query<Post, PostQueryWhere> {
 class PostQueryWhere extends QueryWhere {
   PostQueryWhere(PostQuery query)
       : id = NumericSqlExpressionBuilder<int>(query, 'id'),
-        error = StringSqlExpressionBuilder(query, 'error'),
         createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
         updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
         text = StringSqlExpressionBuilder(query, 'text'),
@@ -192,8 +188,6 @@ class PostQueryWhere extends QueryWhere {
         inReplyTo = NumericSqlExpressionBuilder<int>(query, 'in_reply_to');
 
   final NumericSqlExpressionBuilder<int> id;
-
-  final StringSqlExpressionBuilder error;
 
   final DateTimeSqlExpressionBuilder createdAt;
 
@@ -207,7 +201,7 @@ class PostQueryWhere extends QueryWhere {
 
   @override
   List<SqlExpressionBuilder> get expressionBuilders {
-    return [id, error, createdAt, updatedAt, text, userHash, inReplyTo];
+    return [id, createdAt, updatedAt, text, userHash, inReplyTo];
   }
 }
 
@@ -222,11 +216,6 @@ class PostQueryValues extends MapQueryValues {
   }
 
   set id(String? value) => values['id'] = value;
-  String? get error {
-    return (values['error'] as String?);
-  }
-
-  set error(String? value) => values['error'] = value;
   DateTime? get createdAt {
     return (values['created_at'] as DateTime?);
   }
@@ -253,7 +242,6 @@ class PostQueryValues extends MapQueryValues {
 
   set inReplyTo(int? value) => values['in_reply_to'] = value;
   void copyFrom(Post model) {
-    error = model.error;
     createdAt = model.createdAt;
     updatedAt = model.updatedAt;
     text = model.text;
@@ -270,7 +258,6 @@ class PostQueryValues extends MapQueryValues {
 class Post extends _Post {
   Post(
       {this.id,
-      this.error,
       this.createdAt,
       this.updatedAt,
       this.text,
@@ -282,9 +269,6 @@ class Post extends _Post {
   /// A unique identifier corresponding to this item.
   @override
   String? id;
-
-  @override
-  String? error;
 
   /// The time at which this item was created.
   @override
@@ -308,7 +292,6 @@ class Post extends _Post {
 
   Post copyWith(
       {String? id,
-      String? error,
       DateTime? createdAt,
       DateTime? updatedAt,
       String? text,
@@ -317,7 +300,6 @@ class Post extends _Post {
       List<Attachment>? attachments}) {
     return Post(
         id: id ?? this.id,
-        error: error ?? this.error,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         text: text ?? this.text,
@@ -330,7 +312,6 @@ class Post extends _Post {
   bool operator ==(other) {
     return other is _Post &&
         other.id == id &&
-        other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.text == text &&
@@ -342,21 +323,13 @@ class Post extends _Post {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      error,
-      createdAt,
-      updatedAt,
-      text,
-      userHash,
-      inReplyTo,
-      attachments
-    ]);
+    return hashObjects(
+        [id, createdAt, updatedAt, text, userHash, inReplyTo, attachments]);
   }
 
   @override
   String toString() {
-    return 'Post(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, text=$text, userHash=$userHash, inReplyTo=$inReplyTo, attachments=$attachments)';
+    return 'Post(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, text=$text, userHash=$userHash, inReplyTo=$inReplyTo, attachments=$attachments)';
   }
 
   Map<String, dynamic> toJson() {
@@ -394,7 +367,6 @@ class PostSerializer extends Codec<Post, Map> {
   static Post fromMap(Map map) {
     return Post(
         id: map['id'] as String?,
-        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
@@ -421,7 +393,6 @@ class PostSerializer extends Codec<Post, Map> {
     }
     return {
       'id': model.id,
-      'error': model.error,
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'text': model.text,
@@ -436,7 +407,6 @@ class PostSerializer extends Codec<Post, Map> {
 abstract class PostFields {
   static const List<String> allFields = <String>[
     id,
-    error,
     createdAt,
     updatedAt,
     text,
@@ -446,8 +416,6 @@ abstract class PostFields {
   ];
 
   static const String id = 'id';
-
-  static const String error = 'error';
 
   static const String createdAt = 'created_at';
 

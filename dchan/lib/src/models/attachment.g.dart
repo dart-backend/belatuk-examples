@@ -11,15 +11,14 @@ class AttachmentMigration extends Migration {
   void up(Schema schema) {
     schema.create('attachments', (table) {
       table.serial('id').primaryKey();
-      table.varChar('error', length: 256);
       table.timeStamp('created_at');
       table.timeStamp('updated_at');
       table.integer('size_in_bytes');
-      table.varChar('path', length: 256);
-      table.varChar('filename', length: 256);
+      table.varChar('path', length: 255);
+      table.varChar('filename', length: 255);
       table.integer('post_id');
       table.integer('index');
-      table.varChar('content_type_string', length: 256);
+      table.varChar('content_type_string', length: 255);
     });
   }
 
@@ -60,7 +59,6 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
   List<String> get fields {
     return const [
       'id',
-      'error',
       'created_at',
       'updated_at',
       'size_in_bytes',
@@ -82,34 +80,32 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
     return AttachmentQueryWhere(this);
   }
 
-  static Attachment? parseRow(List row) {
+  static Optional<Attachment> parseRow(List row) {
     if (row.every((x) => x == null)) {
-      return null;
+      return Optional.empty();
     }
     var model = Attachment(
         id: row[0].toString(),
-        error: (row[1] as String?),
-        createdAt: (row[2] as DateTime?),
-        updatedAt: (row[3] as DateTime?),
-        sizeInBytes: (row[4] as int?),
-        path: (row[5] as String?),
-        filename: (row[6] as String?),
-        postId: (row[7] as int?),
-        index: (row[8] as int?),
-        contentTypeString: (row[9] as String?));
-    return model;
+        createdAt: (row[1] as DateTime?),
+        updatedAt: (row[2] as DateTime?),
+        sizeInBytes: (row[3] as int?),
+        path: (row[4] as String?),
+        filename: (row[5] as String?),
+        postId: (row[6] as int?),
+        index: (row[7] as int?),
+        contentTypeString: (row[8] as String?));
+    return Optional.of(model);
   }
 
   @override
   Optional<Attachment> deserialize(List row) {
-    return Optional.ofNullable(parseRow(row));
+    return parseRow(row);
   }
 }
 
 class AttachmentQueryWhere extends QueryWhere {
   AttachmentQueryWhere(AttachmentQuery query)
       : id = NumericSqlExpressionBuilder<int>(query, 'id'),
-        error = StringSqlExpressionBuilder(query, 'error'),
         createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
         updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
         sizeInBytes = NumericSqlExpressionBuilder<int>(query, 'size_in_bytes'),
@@ -121,8 +117,6 @@ class AttachmentQueryWhere extends QueryWhere {
             StringSqlExpressionBuilder(query, 'content_type_string');
 
   final NumericSqlExpressionBuilder<int> id;
-
-  final StringSqlExpressionBuilder error;
 
   final DateTimeSqlExpressionBuilder createdAt;
 
@@ -144,7 +138,6 @@ class AttachmentQueryWhere extends QueryWhere {
   List<SqlExpressionBuilder> get expressionBuilders {
     return [
       id,
-      error,
       createdAt,
       updatedAt,
       sizeInBytes,
@@ -168,11 +161,6 @@ class AttachmentQueryValues extends MapQueryValues {
   }
 
   set id(String? value) => values['id'] = value;
-  String? get error {
-    return (values['error'] as String?);
-  }
-
-  set error(String? value) => values['error'] = value;
   DateTime? get createdAt {
     return (values['created_at'] as DateTime?);
   }
@@ -214,7 +202,6 @@ class AttachmentQueryValues extends MapQueryValues {
 
   set contentTypeString(String? value) => values['content_type_string'] = value;
   void copyFrom(Attachment model) {
-    error = model.error;
     createdAt = model.createdAt;
     updatedAt = model.updatedAt;
     sizeInBytes = model.sizeInBytes;
@@ -234,7 +221,6 @@ class AttachmentQueryValues extends MapQueryValues {
 class Attachment extends _Attachment {
   Attachment(
       {this.id,
-      this.error,
       this.createdAt,
       this.updatedAt,
       this.sizeInBytes,
@@ -247,9 +233,6 @@ class Attachment extends _Attachment {
   /// A unique identifier corresponding to this item.
   @override
   String? id;
-
-  @override
-  String? error;
 
   /// The time at which this item was created.
   @override
@@ -279,7 +262,6 @@ class Attachment extends _Attachment {
 
   Attachment copyWith(
       {String? id,
-      String? error,
       DateTime? createdAt,
       DateTime? updatedAt,
       int? sizeInBytes,
@@ -290,7 +272,6 @@ class Attachment extends _Attachment {
       String? contentTypeString}) {
     return Attachment(
         id: id ?? this.id,
-        error: error ?? this.error,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         sizeInBytes: sizeInBytes ?? this.sizeInBytes,
@@ -305,7 +286,6 @@ class Attachment extends _Attachment {
   bool operator ==(other) {
     return other is _Attachment &&
         other.id == id &&
-        other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.sizeInBytes == sizeInBytes &&
@@ -320,7 +300,6 @@ class Attachment extends _Attachment {
   int get hashCode {
     return hashObjects([
       id,
-      error,
       createdAt,
       updatedAt,
       sizeInBytes,
@@ -334,7 +313,7 @@ class Attachment extends _Attachment {
 
   @override
   String toString() {
-    return 'Attachment(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, sizeInBytes=$sizeInBytes, path=$path, filename=$filename, postId=$postId, index=$index, contentTypeString=$contentTypeString)';
+    return 'Attachment(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, sizeInBytes=$sizeInBytes, path=$path, filename=$filename, postId=$postId, index=$index, contentTypeString=$contentTypeString)';
   }
 
   Map<String, dynamic> toJson() {
@@ -372,7 +351,6 @@ class AttachmentSerializer extends Codec<Attachment, Map> {
   static Attachment fromMap(Map map) {
     return Attachment(
         id: map['id'] as String?,
-        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
@@ -397,7 +375,6 @@ class AttachmentSerializer extends Codec<Attachment, Map> {
     }
     return {
       'id': model.id,
-      'error': model.error,
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'size_in_bytes': model.sizeInBytes,
@@ -413,7 +390,6 @@ class AttachmentSerializer extends Codec<Attachment, Map> {
 abstract class AttachmentFields {
   static const List<String> allFields = <String>[
     id,
-    error,
     createdAt,
     updatedAt,
     sizeInBytes,
@@ -425,8 +401,6 @@ abstract class AttachmentFields {
   ];
 
   static const String id = 'id';
-
-  static const String error = 'error';
 
   static const String createdAt = 'created_at';
 

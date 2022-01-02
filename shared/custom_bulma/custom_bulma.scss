@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+/*
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script">
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700">
+<link type='text/css' rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'>
+<link type='text/css' rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext'>
+<link type='text/css' rel='stylesheet' href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+*/
+@import url("https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext");
+$family-sans-serif: "Lato", sans-serif;
+$family-primary: "Lato", sans-serif;
+$widescreen-enabled: true;
+$fullhd-enabled: true;
+
+$modal-content-width:50vw;
+//$section-padding: 0.5em 1.5rem;
+
+@import "bulma/sass/utilities/_all";
+@import "bulma/sass/base/_all";
+@import "bulma/sass/elements/_all";
+@import "bulma/sass/form/_all";
+@import "bulma/sass/components/_all";
+@import "bulma/sass/grid/_all";
+@import "bulma/sass/helpers/_all";
+@import "bulma/sass/layout/_all";

@@ -18,10 +18,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     // Configure our application to render Jael templates from the `views/` directory.
     //
     // See: https://github.com/angel-dart/jael
-    await app.configure(jael(
-      fileSystem.directory('views'),
-      createBuffer: () => CodeBuffer.noWhitespace(),
-    ));
+    await app.configure(jael(fileSystem.directory('views')));
 
     // Apply another plug-ins, i.e. ones that *you* have written.
     //

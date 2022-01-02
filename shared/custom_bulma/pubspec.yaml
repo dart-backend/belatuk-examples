@@ -1,0 +1,7 @@
+name: custom_bulma
+description: Custom Bulma CSS Builder
+version: 1.0.0
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+dev_dependencies:
+  sass: ^1.44.0

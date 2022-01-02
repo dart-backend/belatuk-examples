@@ -1,5 +1,5 @@
 # Default server configuration.
 postgres:
-  database_name: dchan_db
-  username: dchan
-  password: Dchan@1970
+  database_name: orm_test
+  username: test
+  password: test123

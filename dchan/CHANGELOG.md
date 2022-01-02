@@ -2,7 +2,7 @@
 
 ## 2.1.0
 
-* Upgraded from `package:pedantic` to `package:lints` linter
+* Upgraded to `package:lints` linter
 * Updated to use `package:belatuk_pretty_logging`
 
 ## 2.0.1

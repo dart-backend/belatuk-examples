@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom_bulma.css">
+
     <title>{{ title ?? 'dchan' }} | dchan</title>
+
+    
     <style>
         label {
             font-weight: bold;
@@ -16,13 +26,17 @@
     </style>
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/">dchan</a>
-        <span style="flex: 1"></span>
-        <a href="/compose">Compose</a>
-    </nav>
-</header>
-<block name="content"></block>
+    <div class="section content">
+        <header>
+            <nav>
+                <a href="/">dchan</a>
+                <span style="flex: 1"></span>
+                <a href="/compose">Compose</a>
+            </nav>
+        </header>
+
+        <block name="content"></block>
+
+    </div>
 </body>
 </html>

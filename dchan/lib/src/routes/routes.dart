@@ -18,7 +18,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
 
     app.get('/', (req, res) async {
       var query = PostQuery()..where!.inReplyTo.equals(-1);
-      var posts = await query.get(executor!).then((posts) {
+      var posts = await query.get(executor).then((posts) {
         return posts.map((p) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
           if (p.text!.isEmpty) {
@@ -32,6 +32,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
           }
         });
       });
+      print(posts);
       await res.render('index', {'posts': posts});
     });
 
@@ -116,7 +117,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
             ..userHash = userHash
             ..createdAt = now
             ..updatedAt = now;
-          var post = await query.insert(executor!);
+          var post = await query.insert(executor);
 
           // Upload the attachments, if any.
           var i = 0;
@@ -170,15 +171,20 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
 
     app.get('/post/int:id', (req, res) async {
       var id = req.params['id'] as int;
-      var query = PostQuery()..where!.id.equals(id);
-      var post = await query.getOne(executor!);
-      //if (post == null) throw AngelHttpException.notFound();
-      List<Post?> comments;
 
-      if (post.value.inReplyTo != -1) {
+      var query = PostQuery()..where!.id.equals(id);
+      var optPost = await query.getOne(executor);
+      if (!optPost.isPresent) {
+        throw AngelHttpException.notFound();
+      }
+
+      var post = optPost.value;
+
+      List<Post> comments;
+      if (post.inReplyTo != -1) {
         comments = [];
       } else {
-        var query = PostQuery()..where!.inReplyTo.equals(post.value.idAsInt);
+        var query = PostQuery()..where!.inReplyTo.equals(post.idAsInt);
         comments = await query.get(executor);
       }
 
@@ -195,7 +201,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.get('/user/:hash', (req, res) async {
       var hash = req.params['hash'] as String;
       var query = PostQuery()..where!.userHash.equals(hash);
-      var posts = await query.get(executor!).then((posts) {
+      var posts = await query.get(executor).then((posts) {
         return posts.map((p) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
           if (p.text!.isEmpty) {
