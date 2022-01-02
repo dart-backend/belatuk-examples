@@ -29,7 +29,7 @@ Supports:
     ```sql
         CREATE USER dchan PASSWORD 'Dchan@1970';
         CREATE DATABASE dchan_db OWNER dchan ENCODING 'UTF-8';
-        GRANT ALL ON DATABASE dchan_db TO dchan; 
+        GRANT ALL ON DATABASE  dchan_db TO dchan; 
     ```
 
 2. To use different database, username or password, update `config/default.yaml` file
