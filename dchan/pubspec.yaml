@@ -30,10 +30,10 @@ dev_dependencies:
   io: ^1.0.0
   lints: ^1.0.0
   test: ^1.17.5
-dependency_overrides:
-  angel3_orm_generator:
-    path: ../../belatuk/packages/orm/angel_orm_generator
-  angel3_orm:
-    path: ../../belatuk/packages/orm/angel_orm
+#dependency_overrides:
+#  angel3_orm_generator:
+#    path: ../../belatuk/packages/orm/angel_orm_generator
+#  angel3_orm:
+#    path: ../../belatuk/packages/orm/angel_orm
 
 
