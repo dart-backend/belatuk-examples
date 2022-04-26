@@ -110,7 +110,7 @@ class MessageSerializer extends Codec<Message, Map> {
 
   static Map<String, dynamic> toMap(_Message? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'user': UserSerializer.toMap(model.user),

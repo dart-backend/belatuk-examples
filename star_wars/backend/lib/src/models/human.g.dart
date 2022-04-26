@@ -10,7 +10,6 @@ part of 'human.dart';
 class Human extends _Human {
   Human(
       {this.id,
-      this.error,
       this.createdAt,
       this.updatedAt,
       this.name,
@@ -23,9 +22,6 @@ class Human extends _Human {
   /// A unique identifier corresponding to this item.
   @override
   String? id;
-
-  @override
-  String? error;
 
   /// The time at which this item was created.
   @override
@@ -49,7 +45,6 @@ class Human extends _Human {
 
   Human copyWith(
       {String? id,
-      String? error,
       DateTime? createdAt,
       DateTime? updatedAt,
       String? name,
@@ -58,7 +53,6 @@ class Human extends _Human {
       int? totalCredits}) {
     return Human(
         id: id ?? this.id,
-        error: error ?? this.error,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         name: name ?? this.name,
@@ -71,7 +65,6 @@ class Human extends _Human {
   bool operator ==(other) {
     return other is _Human &&
         other.id == id &&
-        other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.id == id &&
@@ -85,22 +78,13 @@ class Human extends _Human {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      error,
-      createdAt,
-      updatedAt,
-      id,
-      name,
-      appearsIn,
-      friends,
-      totalCredits
-    ]);
+    return hashObjects(
+        [id, createdAt, updatedAt, id, name, appearsIn, friends, totalCredits]);
   }
 
   @override
   String toString() {
-    return 'Human(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
+    return 'Human(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
   }
 
   Map<String, dynamic> toJson() {
@@ -138,7 +122,6 @@ class HumanSerializer extends Codec<Human, Map> {
   static Human fromMap(Map map) {
     return Human(
         id: map['id'] as String?,
-        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
@@ -161,11 +144,10 @@ class HumanSerializer extends Codec<Human, Map> {
 
   static Map<String, dynamic> toMap(_Human? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'id': model.id,
-      'error': model.error,
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
@@ -179,7 +161,6 @@ class HumanSerializer extends Codec<Human, Map> {
 abstract class HumanFields {
   static const List<String> allFields = <String>[
     id,
-    error,
     createdAt,
     updatedAt,
     name,
@@ -189,8 +170,6 @@ abstract class HumanFields {
   ];
 
   static const String id = 'id';
-
-  static const String error = 'error';
 
   static const String createdAt = 'created_at';
 
@@ -215,10 +194,8 @@ final GraphQLObjectType humanGraphQLType =
   characterGraphQLType
 ], fields: [
   field('id', graphQLString),
-  field('error', graphQLString),
   field('created_at', graphQLDate),
   field('updated_at', graphQLDate),
-  field('id', graphQLString),
   field('name', graphQLString),
   field('appears_in', listOf(episodeGraphQLType)),
   field('friends', listOf(characterGraphQLType)),

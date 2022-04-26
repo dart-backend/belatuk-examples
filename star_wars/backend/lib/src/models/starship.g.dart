@@ -8,20 +8,11 @@ part of 'starship.dart';
 
 @generatedSerializable
 class Starship extends _Starship {
-  Starship(
-      {this.id,
-      this.error,
-      this.createdAt,
-      this.updatedAt,
-      this.name,
-      this.length});
+  Starship({this.id, this.createdAt, this.updatedAt, this.name, this.length});
 
   /// A unique identifier corresponding to this item.
   @override
   String? id;
-
-  @override
-  String? error;
 
   /// The time at which this item was created.
   @override
@@ -39,14 +30,12 @@ class Starship extends _Starship {
 
   Starship copyWith(
       {String? id,
-      String? error,
       DateTime? createdAt,
       DateTime? updatedAt,
       String? name,
       int? length}) {
     return Starship(
         id: id ?? this.id,
-        error: error ?? this.error,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         name: name ?? this.name,
@@ -57,7 +46,6 @@ class Starship extends _Starship {
   bool operator ==(other) {
     return other is _Starship &&
         other.id == id &&
-        other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.name == name &&
@@ -66,12 +54,12 @@ class Starship extends _Starship {
 
   @override
   int get hashCode {
-    return hashObjects([id, error, createdAt, updatedAt, name, length]);
+    return hashObjects([id, createdAt, updatedAt, name, length]);
   }
 
   @override
   String toString() {
-    return 'Starship(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, length=$length)';
+    return 'Starship(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, length=$length)';
   }
 
   Map<String, dynamic> toJson() {
@@ -109,7 +97,6 @@ class StarshipSerializer extends Codec<Starship, Map> {
   static Starship fromMap(Map map) {
     return Starship(
         id: map['id'] as String?,
-        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
@@ -126,11 +113,10 @@ class StarshipSerializer extends Codec<Starship, Map> {
 
   static Map<String, dynamic> toMap(_Starship? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'id': model.id,
-      'error': model.error,
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
@@ -142,7 +128,6 @@ class StarshipSerializer extends Codec<Starship, Map> {
 abstract class StarshipFields {
   static const List<String> allFields = <String>[
     id,
-    error,
     createdAt,
     updatedAt,
     name,
@@ -150,8 +135,6 @@ abstract class StarshipFields {
   ];
 
   static const String id = 'id';
-
-  static const String error = 'error';
 
   static const String createdAt = 'created_at';
 
@@ -170,7 +153,6 @@ abstract class StarshipFields {
 final GraphQLObjectType starshipGraphQLType =
     objectType('Starship', isInterface: false, interfaces: [], fields: [
   field('id', graphQLString),
-  field('error', graphQLString),
   field('created_at', graphQLDate),
   field('updated_at', graphQLDate),
   field('name', graphQLString),
