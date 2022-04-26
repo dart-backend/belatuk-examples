@@ -1,5 +1,6 @@
 import 'package:dchan/dchan.dart';
 import 'package:angel3_production/angel3_production.dart';
+import 'package:angel3_container/mirrors.dart';
 
 // NOTE: By default, the Runner class does not use the `MirrorsReflector`, or any
 // reflector, by default.
@@ -16,7 +17,7 @@ import 'package:angel3_production/angel3_production.dart';
 // so use it if possible.
 //
 // However, the following alternatives exist:
-// * Generation via `package:angel_container_generator`
+// * Generation via `package:angel3_container_generator`
 // * Creating an instance of `StaticReflector`
 // * Manually implementing the `Reflector` interface (cumbersome; not recommended)
 //
@@ -24,4 +25,5 @@ import 'package:angel3_production/angel3_production.dart';
 // so in the meantime, visit the Angel chat for further questions:
 //
 // https://gitter.im/angel_dart/discussion
-void main(List<String> args) => Runner('dchan', configureServer).run(args);
+void main(List<String> args) =>
+    Runner('dchan', configureServer, reflector: MirrorsReflector()).run(args);
