@@ -1,23 +1,23 @@
 name: star_wars
-version: 2.1.0
+version: 3.0.0
 description: A star wars application in graphQL
 publish_to: none
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.16.0 <3.0.0'
 dependencies:
-  angel3_graphql: ^2.1.0
-  angel3_configuration: ^4.0.0
-  angel3_jael: ^4.0.0
-  angel3_production: ^3.0.0
-  angel3_serialize: ^4.0.0
-  angel3_container: ^3.0.0
-  angel3_static: ^4.0.0
+  angel3_graphql: ^6.0.0
+  angel3_configuration: ^6.0.0
+  angel3_jael: ^6.0.0
+  angel3_production: ^6.0.0
+  angel3_serialize: ^6.0.0
+  angel3_container: ^6.0.0
+  angel3_static: ^6.0.0
   io: ^1.0.0
 dev_dependencies:
-  angel3_hot: ^4.2.0
-  angel3_serialize_generator: ^4.2.0
+  angel3_hot: ^6.0.0
+  angel3_serialize_generator: ^6.0.0
   belatuk_pretty_logging: ^4.0.0
-  graphql_generator2: ^2.2.0
+  graphql_generator2: ^4.0.0
   build_runner: ^2.0.0
   lints: ^1.0.0
 #dependency_overrides:

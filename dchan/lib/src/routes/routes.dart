@@ -12,7 +12,7 @@ import 'package:path/path.dart' as p;
 
 AngelConfigurer configureServer(FileSystem fileSystem) {
   return (Angel app) async {
-    var executor = app.container!.make<QueryExecutor>();
+    var executor = app.container.make<QueryExecutor>();
     var webDir = fileSystem.directory('web');
     var uploadsDir = webDir.childDirectory('uploads');
 

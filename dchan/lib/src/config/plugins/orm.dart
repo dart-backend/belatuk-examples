@@ -10,7 +10,7 @@ Future<void> configureServer(Angel app) async {
   await connection.open();
 
   app
-    ..container!.registerSingleton<QueryExecutor>(PostgreSqlExecutor(connection))
+    ..container.registerSingleton<QueryExecutor>(PostgreSqlExecutor(connection))
     ..shutdownHooks.add((_) => connection.close());
 }
 

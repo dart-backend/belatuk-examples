@@ -10,7 +10,6 @@ part of 'droid.dart';
 class Droid extends _Droid {
   Droid(
       {this.id,
-      this.error,
       this.createdAt,
       this.updatedAt,
       this.name,
@@ -22,9 +21,6 @@ class Droid extends _Droid {
   /// A unique identifier corresponding to this item.
   @override
   String? id;
-
-  @override
-  String? error;
 
   /// The time at which this item was created.
   @override
@@ -46,7 +42,6 @@ class Droid extends _Droid {
 
   Droid copyWith(
       {String? id,
-      String? error,
       DateTime? createdAt,
       DateTime? updatedAt,
       String? name,
@@ -54,7 +49,6 @@ class Droid extends _Droid {
       List<Character>? friends}) {
     return Droid(
         id: id ?? this.id,
-        error: error ?? this.error,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         name: name ?? this.name,
@@ -66,9 +60,9 @@ class Droid extends _Droid {
   bool operator ==(other) {
     return other is _Droid &&
         other.id == id &&
-        other.error == error &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
+        other.id == id &&
         other.name == name &&
         ListEquality<Episode>(DefaultEquality<Episode>())
             .equals(other.appearsIn, appearsIn) &&
@@ -79,12 +73,12 @@ class Droid extends _Droid {
   @override
   int get hashCode {
     return hashObjects(
-        [id, error, createdAt, updatedAt, name, appearsIn, friends]);
+        [id, createdAt, updatedAt, id, name, appearsIn, friends]);
   }
 
   @override
   String toString() {
-    return 'Droid(id=$id, error=$error, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends)';
+    return 'Droid(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends)';
   }
 
   Map<String, dynamic> toJson() {
@@ -122,7 +116,6 @@ class DroidSerializer extends Codec<Droid, Map> {
   static Droid fromMap(Map map) {
     return Droid(
         id: map['id'] as String?,
-        error: map['error'] as String?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
@@ -144,11 +137,10 @@ class DroidSerializer extends Codec<Droid, Map> {
 
   static Map<String, dynamic> toMap(_Droid? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'id': model.id,
-      'error': model.error,
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
@@ -161,7 +153,6 @@ class DroidSerializer extends Codec<Droid, Map> {
 abstract class DroidFields {
   static const List<String> allFields = <String>[
     id,
-    error,
     createdAt,
     updatedAt,
     name,
@@ -170,8 +161,6 @@ abstract class DroidFields {
   ];
 
   static const String id = 'id';
-
-  static const String error = 'error';
 
   static const String createdAt = 'created_at';
 
@@ -197,7 +186,6 @@ final GraphQLObjectType droidGraphQLType = objectType('Droid',
     ],
     fields: [
       field('id', graphQLString),
-      field('error', graphQLString),
       field('created_at', graphQLDate),
       field('updated_at', graphQLDate),
       field('name', graphQLString),

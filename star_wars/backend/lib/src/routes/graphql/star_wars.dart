@@ -15,7 +15,7 @@ MapService? _getStarWarsService(Angel app) {
 
   // If there is already an existing singleton, return it.
   var container = app.container;
-  if (container != null && container.hasNamed(key)) {
+  if (container.hasNamed(key)) {
     return container.findByName<MapService>(key);
   }
 
@@ -25,7 +25,7 @@ MapService? _getStarWarsService(Angel app) {
 
   // Register this service as a named singleton in the app container,
   // so that we do not inadvertently create another instance.
-  container?.registerNamedSingleton(key, mapService);
+  container.registerNamedSingleton(key, mapService);
 
   return mapService;
 }
@@ -36,7 +36,7 @@ Iterable<GraphQLObjectField> starWarsQueryFields(
   var starWarsService = _getStarWarsService(app);
 
   if (starWarsService == null) {
-    app.logger?.warning('StarWarsService not found');
+    app.logger.warning('StarWarsService not found');
     return [];
   }
 
@@ -49,7 +49,7 @@ Iterable<GraphQLObjectField> starWarsQueryFields(
   if (droidService == null ||
       humansService == null ||
       starshipService == null) {
-    app.logger?.warning('StarWarsService not found');
+    app.logger.warning('StarWarsService not found');
     return [];
   }
 
@@ -97,14 +97,14 @@ Iterable<GraphQLObjectField> starWarsMutationFields(
   var starWarsService = _getStarWarsService(app);
 
   if (starWarsService == null) {
-    app.logger?.warning('StarWarsService not found');
+    app.logger.warning('StarWarsService not found');
     return [];
   }
 
   var humansService = services['humanService'];
 
   if (humansService == null) {
-    app.logger?.warning('StarWarsService not found');
+    app.logger.warning('StarWarsService not found');
     return [];
   }
   var humanChangesType = humanGraphQLType.toInputObject('HumanChanges');

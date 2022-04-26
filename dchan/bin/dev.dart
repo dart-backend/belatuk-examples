@@ -12,8 +12,8 @@ void main() async {
     var app = Angel(reflector: MirrorsReflector());
     await app.configure(configureServer);
     hierarchicalLoggingEnabled = true;
-    app.logger = Logger('angel');
-    var sub = app.logger!.onRecord.listen(prettyLog);
+    app.logger = Logger('dchan');
+    var sub = app.logger.onRecord.listen(prettyLog);
     app.shutdownHooks.add((_) => sub.cancel());
     return app;
   }, [
@@ -23,5 +23,5 @@ void main() async {
 
   var server = await hot.startServer('127.0.0.1', 3000);
   print(
-      'dchan server listening at http://${server.address.address}:${server.port}');
+      '[dchan] server listening at http://${server.address.address}:${server.port}');
 }

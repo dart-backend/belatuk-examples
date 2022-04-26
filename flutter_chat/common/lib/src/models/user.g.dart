@@ -94,7 +94,7 @@ class UserSerializer extends Codec<User, Map> {
 
   static Map<String, dynamic> toMap(_User? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'name': model.name,
