@@ -1,0 +1,13 @@
+name: angel3
+
+packages:
+  - dchan/**
+  - pub_serve_proxy/**
+  - docs_examples/**
+  - auth/**
+  - flutter_chat/**
+  - star_wars/**
+  - yewtube/**
+
+#scripts:
+#  analyze: melos exec -- "dart analyze ."

@@ -10,9 +10,10 @@
 pubspec.lock
 
 ## VisualStudioCode ###
-.vscode/*
+.vscode
 !.vscode/settings.json
 
 ## Misc ##
 build/
 .metals/
+.idea/
