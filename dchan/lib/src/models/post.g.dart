@@ -55,6 +55,8 @@ class PostQuery extends Query<Post, PostQueryWhere> {
   @override
   final PostQueryValues values = PostQueryValues();
 
+  List<String> _selectedFields = [];
+
   PostQueryWhere? _where;
 
   late AttachmentQuery _attachments;
@@ -71,7 +73,7 @@ class PostQuery extends Query<Post, PostQueryWhere> {
 
   @override
   List<String> get fields {
-    return const [
+    const _fields = [
       'id',
       'created_at',
       'updated_at',
@@ -79,6 +81,14 @@ class PostQuery extends Query<Post, PostQueryWhere> {
       'user_hash',
       'in_reply_to'
     ];
+    return _selectedFields.isEmpty
+        ? _fields
+        : _fields.where((field) => _selectedFields.contains(field)).toList();
+  }
+
+  PostQuery select(List<String> selectedFields) {
+    _selectedFields = selectedFields;
+    return this;
   }
 
   @override
@@ -91,19 +101,19 @@ class PostQuery extends Query<Post, PostQueryWhere> {
     return PostQueryWhere(this);
   }
 
-  static Optional<Post> parseRow(List row) {
+  Optional<Post> parseRow(List row) {
     if (row.every((x) => x == null)) {
       return Optional.empty();
     }
     var model = Post(
-        id: row[0].toString(),
-        createdAt: (row[1] as DateTime?),
-        updatedAt: (row[2] as DateTime?),
-        text: (row[3] as String?),
-        userHash: (row[4] as String?),
-        inReplyTo: (row[5] as int?));
+        id: fields.contains('id') ? row[0].toString() : null,
+        createdAt: fields.contains('created_at') ? mapToDateTime(row[1]) : null,
+        updatedAt: fields.contains('updated_at') ? mapToDateTime(row[2]) : null,
+        text: fields.contains('text') ? (row[3] as String?) : null,
+        userHash: fields.contains('user_hash') ? (row[4] as String?) : null,
+        inReplyTo: fields.contains('in_reply_to') ? (row[5] as int?) : null);
     if (row.length > 6) {
-      var modelOpt = AttachmentQuery.parseRow(row.skip(6).take(9).toList());
+      var modelOpt = AttachmentQuery().parseRow(row.skip(6).take(9).toList());
       modelOpt.ifPresent((m) {
         model = model.copyWith(attachments: [m]);
       });
@@ -389,7 +399,7 @@ class PostSerializer extends Codec<Post, Map> {
 
   static Map<String, dynamic> toMap(_Post? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'id': model.id,
