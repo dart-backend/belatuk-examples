@@ -43,6 +43,8 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
   @override
   final AttachmentQueryValues values = AttachmentQueryValues();
 
+  List<String> _selectedFields = [];
+
   AttachmentQueryWhere? _where;
 
   @override
@@ -57,7 +59,7 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
 
   @override
   List<String> get fields {
-    return const [
+    const _fields = [
       'id',
       'created_at',
       'updated_at',
@@ -68,6 +70,14 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
       'index',
       'content_type_string'
     ];
+    return _selectedFields.isEmpty
+        ? _fields
+        : _fields.where((field) => _selectedFields.contains(field)).toList();
+  }
+
+  AttachmentQuery select(List<String> selectedFields) {
+    _selectedFields = selectedFields;
+    return this;
   }
 
   @override
@@ -80,20 +90,22 @@ class AttachmentQuery extends Query<Attachment, AttachmentQueryWhere> {
     return AttachmentQueryWhere(this);
   }
 
-  static Optional<Attachment> parseRow(List row) {
+  Optional<Attachment> parseRow(List row) {
     if (row.every((x) => x == null)) {
       return Optional.empty();
     }
     var model = Attachment(
-        id: row[0].toString(),
-        createdAt: (row[1] as DateTime?),
-        updatedAt: (row[2] as DateTime?),
-        sizeInBytes: (row[3] as int?),
-        path: (row[4] as String?),
-        filename: (row[5] as String?),
-        postId: (row[6] as int?),
-        index: (row[7] as int?),
-        contentTypeString: (row[8] as String?));
+        id: fields.contains('id') ? row[0].toString() : null,
+        createdAt: fields.contains('created_at') ? mapToDateTime(row[1]) : null,
+        updatedAt: fields.contains('updated_at') ? mapToDateTime(row[2]) : null,
+        sizeInBytes: fields.contains('size_in_bytes') ? (row[3] as int?) : null,
+        path: fields.contains('path') ? (row[4] as String?) : null,
+        filename: fields.contains('filename') ? (row[5] as String?) : null,
+        postId: fields.contains('post_id') ? (row[6] as int?) : null,
+        index: fields.contains('index') ? (row[7] as int?) : null,
+        contentTypeString: fields.contains('content_type_string')
+            ? (row[8] as String?)
+            : null);
     return Optional.of(model);
   }
 
@@ -371,7 +383,7 @@ class AttachmentSerializer extends Codec<Attachment, Map> {
 
   static Map<String, dynamic> toMap(_Attachment? model) {
     if (model == null) {
-      return {};
+      throw FormatException("Required field [model] cannot be null");
     }
     return {
       'id': model.id,

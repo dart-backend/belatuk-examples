@@ -1,33 +1,37 @@
 name: dchan
-version: 3.0.0
+version: 4.0.0
 description: An app that's going to be amazing pretty soon.
-publish_to: none # Ensure we don't accidentally publish our private code! ;)
+publish_to: none
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 dependencies:
-  angel3_auth: ^6.0.0
-  angel3_configuration: ^6.0.0
-  angel3_framework: ^6.0.0
-  angel3_jael: ^6.0.0
-  angel3_migration: ^6.0.0
-  angel3_orm: ^6.0.0
-  angel3_orm_postgres: ^6.0.0
-  angel3_serialize: ^6.0.0
-  angel3_production: ^6.0.0
-  angel3_static: ^6.0.0
-  angel3_validate: ^6.0.0
+  analyzer: ^5.0.0
+  angel3_auth: ^7.0.0
+  angel3_configuration: ^7.0.0
+  angel3_framework: ^7.0.0
+  angel3_jael: ^7.0.0
+  angel3_migration: ^7.0.0
+  angel3_orm: ^7.0.0
+  angel3_orm_postgres: ^7.0.0
+  angel3_serialize: ^7.0.0
+  angel3_production: ^7.0.0
+  angel3_static: ^7.0.0
+  angel3_validate: ^7.0.0
+  file: ^6.1.4
+  http_parser: ^4.0.2
+  postgres: ^2.5.2
   filesize: ^2.0.0
-  markdown: ^4.0.0
+  markdown: ^6.0.0
   optional: ^6.0.0
 dev_dependencies:
-  angel3_hot: ^6.0.0
-  angel3_migration_runner: ^6.0.0
-  angel3_orm_generator: ^6.0.0
-  angel3_serialize_generator: ^6.0.0
-  angel3_test: ^6.0.0
-  belatuk_pretty_logging: ^4.0.0
+  angel3_hot: ^7.0.0
+  angel3_migration_runner: ^7.0.0
+  angel3_orm_generator: ^7.0.0
+  angel3_serialize_generator: ^7.0.0
+  angel3_test: ^7.0.0
+  belatuk_pretty_logging: ^5.0.0
   build_runner: ^2.0.4
   io: ^1.0.0
-  lints: ^1.0.0
+  lints: ^2.0.0
   test: ^1.21.0
 
