@@ -1,25 +1,26 @@
 import 'package:angel3_websocket/flutter.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart' hide State;
-import 'package:flutter/material.dart' as f show State;
-import 'package:statemachine/statemachine.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatHome extends StatefulWidget {
+import '../main.dart';
+
+class ChatHome extends ConsumerStatefulWidget {
   const ChatHome({Key? key}) : super(key: key);
 
   @override
-  f.State<StatefulWidget> createState() => _ChatHomeState();
+  ConsumerState<ChatHome> createState() => _ChatHomeState();
 }
 
-class _ChatHomeState extends f.State<ChatHome> {
+class _ChatHomeState extends ConsumerState<ChatHome> {
   WebSockets? app;
   User? user;
 
   // Because WebSockets are asynchronous in nature,
   // we're using a state machine to manage state changes.
-  late Machine chatState;
-  late State isNotConnected, isConnected, hasSentAuth, hasUser, hasError;
-  late Transition connect, sendAuth, setUser, setError;
+  //late Machine chatState;
+  //late State isNotConnected, isConnected, hasSentAuth, hasUser, hasError;
+  //late Transition connect, sendAuth, setUser, setError;
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _ChatHomeState extends f.State<ChatHome> {
     app = WebSockets('ws://localhost:3000/ws');
 
     // Initialize the state machine...
+    /*
     chatState = Machine<String>();
 
     isNotConnected = chatState.newState('not_connected');
@@ -34,8 +36,8 @@ class _ChatHomeState extends f.State<ChatHome> {
     hasSentAuth = chatState.newState('sent_auth');
     hasUser = chatState.newState('has_user');
     hasError = chatState.newState('has_error');
-
-    /*
+    
+    
     connect =
         chatState.newTransition('connect', [isNotConnected], isConnected);
     sendAuth =
@@ -50,25 +52,15 @@ class _ChatHomeState extends f.State<ChatHome> {
       });
     });
     chatState.start(isNotConnected);
+    */
 
     // Actually connect now...
     app?.connect().then((_) {
-      setState(connect);
+      //setState(connect);
+      ref.read(chatStateProvider.notifier).state = ChatState.isConnected;
     }).catchError((e, st) {
-      setState(setError);
-      print(e);
-      print(st);
-    });
-    */
-    chatState.start();
-    app?.connect().then((_) {
-      setState(() {
-        isConnected.enter();
-      });
-    }).catchError((e, st) {
-      setState(() {
-        hasError.enter();
-      });
+      //setState(setError);
+      ref.read(chatStateProvider.notifier).state = ChatState.hasError;
       print(e);
       print(st);
     });
@@ -79,19 +71,30 @@ class _ChatHomeState extends f.State<ChatHome> {
   @override
   void deactivate() {
     app?.close();
-    chatState.stop();
+    ref.read(chatStateProvider.notifier).state = ChatState.isNotConnected;
     super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (chatState.current == isNotConnected) {
+    return const ChatPanel();
+  }
+}
+
+class ChatPanel extends ConsumerWidget {
+  const ChatPanel({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ChatState currentChatState = ref.watch(chatStateProvider);
+
+    if (currentChatState == ChatState.isNotConnected) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    } else if (chatState.current == hasError) {
+    } else if (currentChatState == ChatState.hasError) {
       return const Scaffold(
         body: Center(
           child: Text(
@@ -103,7 +106,7 @@ class _ChatHomeState extends f.State<ChatHome> {
     } else {
       return Scaffold(
         body: Center(
-          child: Text('TODO: support state `${chatState.current?.name}`'),
+          child: Text('TODO: support state `${currentChatState.name}`'),
         ),
       );
     }
