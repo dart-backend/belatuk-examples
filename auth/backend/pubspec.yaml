@@ -3,11 +3,13 @@ version: 3.0.0
 description: A web application backend with authentication enabled
 publish_to: none
 environment:
-    sdk: '>=2.16.0 <3.0.0'
+    sdk: '>=3.0.0 <4.0.0'
 dependencies:
-  angel3_auth: ^6.0.0
-  angel3_framework: ^6.0.0
-  angel3_static: ^6.0.0
+  angel3_auth: ^8.0.0
+  angel3_framework: ^8.0.0
+  angel3_static: ^8.0.0
   dbcrypt: ^2.0.0
+  file: ^7.0.0
+  logging: ^1.2.0
 dev_dependencies:
-  lints: ^1.0.0
+  lints: ^2.1.0

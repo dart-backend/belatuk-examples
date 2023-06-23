@@ -3,12 +3,12 @@ version: 3.0.0
 description: A flutter common
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 dependencies:
-  angel3_model: ^6.0.0
-  angel3_serialize: ^6.0.0
+  angel3_model: ^8.0.0
+  angel3_serialize: ^8.0.0
 dev_dependencies:
-  angel3_serialize_generator: ^6.0.0
-  build_runner: ^2.0.0
-  lints: ^1.0.0
+  angel3_serialize_generator: ^8.0.0
+  build_runner: ^2.4.0
+  lints: ^2.1.0
  
