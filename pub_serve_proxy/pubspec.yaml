@@ -1,5 +1,5 @@
 name: pub_serve_proxy
-version: 3.0.0
+version: 4.0.0
 description: A reverse proxy for pub serve build with Angel 3 framework
 publish_to: none
 environment:

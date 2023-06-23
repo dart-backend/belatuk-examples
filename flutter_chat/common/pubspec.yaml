@@ -1,5 +1,5 @@
 name: common
-version: 3.0.0
+version: 4.0.0
 description: A flutter common
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:

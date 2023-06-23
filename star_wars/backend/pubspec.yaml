@@ -1,5 +1,5 @@
 name: star_wars
-version: 3.0.0
+version: 4.0.0
 description: A star wars application in graphQL
 publish_to: none
 environment:
@@ -20,14 +20,5 @@ dev_dependencies:
   graphql_generator2: ^6.0.0
   build_runner: ^2.4.0
   lints: ^2.1.0
-#dependency_overrides:
-#  angel3_graphql:
-#    path: ../graphql_dart/angel_graphql
-#  graphql_server2:
-#    path: ../graphql_dart/graphql_server
-#  graphql_parser2:
-#    path: ../graphql_dart/graphql_parser
-#  angel3_container:
-#    path: ../belatuk/packages/container/angel_container
 
     
