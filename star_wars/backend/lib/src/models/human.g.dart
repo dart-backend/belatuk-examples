@@ -8,18 +8,17 @@ part of 'human.dart';
 
 @generatedSerializable
 class Human extends _Human {
-  Human(
-      {this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.name,
-      List<Episode> appearsIn = const [],
-      List<Character> friends = const [],
-      this.totalCredits})
-      : appearsIn = List.unmodifiable(appearsIn),
+  Human({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    List<Episode> appearsIn = const [],
+    List<Character> friends = const [],
+    this.totalCredits,
+  })  : appearsIn = List.unmodifiable(appearsIn),
         friends = List.unmodifiable(friends);
 
-  /// A unique identifier corresponding to this item.
   @override
   String? id;
 
@@ -43,14 +42,15 @@ class Human extends _Human {
   @override
   int? totalCredits;
 
-  Human copyWith(
-      {String? id,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? name,
-      List<Episode>? appearsIn,
-      List<Character>? friends,
-      int? totalCredits}) {
+  Human copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? name,
+    List<Episode>? appearsIn,
+    List<Character>? friends,
+    int? totalCredits,
+  }) {
     return Human(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -67,7 +67,6 @@ class Human extends _Human {
         other.id == id &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.id == id &&
         other.name == name &&
         ListEquality<Episode>(DefaultEquality<Episode>())
             .equals(other.appearsIn, appearsIn) &&
@@ -78,13 +77,20 @@ class Human extends _Human {
 
   @override
   int get hashCode {
-    return hashObjects(
-        [id, createdAt, updatedAt, id, name, appearsIn, friends, totalCredits]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      appearsIn,
+      friends,
+      totalCredits,
+    ]);
   }
 
   @override
   String toString() {
-    return 'Human(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
+    return 'Human(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends, totalCredits=$totalCredits)';
   }
 
   Map<String, dynamic> toJson() {
@@ -166,7 +172,7 @@ abstract class HumanFields {
     name,
     appearsIn,
     friends,
-    totalCredits
+    totalCredits,
   ];
 
   static const String id = 'id';
@@ -189,16 +195,46 @@ abstract class HumanFields {
 // **************************************************************************
 
 /// Auto-generated from [Human].
-final GraphQLObjectType humanGraphQLType =
-    objectType('Human', isInterface: false, interfaces: [
-  characterGraphQLType
-], fields: [
-  field('id', graphQLString),
-  field('created_at', graphQLDate),
-  field('updated_at', graphQLDate),
-  field('name', graphQLString),
-  field('appears_in', listOf(episodeGraphQLType)),
-  field('friends', listOf(characterGraphQLType)),
-  field('total_credits', graphQLInt),
-  field('idAsInt', graphQLInt)
-]);
+final GraphQLObjectType humanGraphQLType = objectType(
+  'Human',
+  isInterface: false,
+  interfaces: [characterGraphQLType],
+  fields: [
+    field(
+      'id',
+      graphQLString,
+    ),
+    field(
+      'created_at',
+      graphQLDate,
+    ),
+    field(
+      'updated_at',
+      graphQLDate,
+    ),
+    field(
+      'name',
+      graphQLString,
+    ),
+    field(
+      'appears_in',
+      listOf(episodeGraphQLType),
+    ),
+    field(
+      'friends',
+      listOf(characterGraphQLType),
+    ),
+    field(
+      'total_credits',
+      graphQLInt,
+    ),
+    field(
+      'idAsInt',
+      graphQLInt,
+    ),
+    field(
+      'idAsString',
+      graphQLString,
+    ),
+  ],
+);

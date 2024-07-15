@@ -8,7 +8,7 @@ import 'package:file/local.dart';
 void main(List<String> args) async {
   var fs = LocalFileSystem();
   var configuration = await loadStandaloneConfiguration(fs);
-  var connection = await connectToPostgres(configuration);
+  var connection = await postgresConnection(configuration);
   var migrationRunner = PostgresMigrationRunner(connection, migrations: [
     PostMigration(),
     AttachmentMigration(),

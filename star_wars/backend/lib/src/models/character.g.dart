@@ -7,7 +7,18 @@ part of 'character.dart';
 // **************************************************************************
 
 /// Auto-generated from [Character].
-final GraphQLObjectType characterGraphQLType = objectType('Character',
-    isInterface: true,
-    interfaces: [],
-    fields: [field('id', graphQLString), field('name', graphQLString)]);
+final GraphQLObjectType characterGraphQLType = objectType(
+  'Character',
+  isInterface: true,
+  interfaces: [],
+  fields: [
+    field(
+      'id',
+      graphQLString,
+    ),
+    field(
+      'name',
+      graphQLString,
+    ),
+  ],
+);

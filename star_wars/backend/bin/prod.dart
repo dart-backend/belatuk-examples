@@ -6,7 +6,7 @@ void main(List<String> args) =>
     Runner('star wars', configureServer, reflector: MirrorsReflector())
         .run(args);
 
-  /*
+/*
   Future<Angel> createServer() async {
     hierarchicalLoggingEnabled = true;
     var logger = Logger.detached('star_wars')

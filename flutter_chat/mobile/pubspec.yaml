@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 4.0.0
+version: 5.0.0
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -30,8 +30,8 @@ dependencies:
   angel3_websocket: ^8.0.0
   common:
     path: ../common
-  image_picker: ^0.8.6
-  flutter_riverpod: ^2.0.0
+  image_picker: ^1.1.0
+  flutter_riverpod: ^2.3.0
   flutter:
     sdk: flutter
 
@@ -48,7 +48,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -92,5 +92,5 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-dependency_overrides:
-  matcher: 0.12.15
+#dependency_overrides:
+#  matcher: 0.12.15

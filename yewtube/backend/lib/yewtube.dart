@@ -69,8 +69,8 @@ Future<void> configureServer(Angel app) async {
       })),
       (req, res) async {
         // Find the first file the user uploaded.
-        var file = req.uploadedFiles!.firstWhereOrNull(
-            (v) => v.contentType.type == 'video');
+        var file = req.uploadedFiles!
+            .firstWhereOrNull((v) => v.contentType.type == 'video');
 
         if (file == null) {
           throw AngelHttpException.badRequest(message: 'Missing video file.');

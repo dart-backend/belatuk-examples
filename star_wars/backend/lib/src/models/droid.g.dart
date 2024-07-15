@@ -8,17 +8,16 @@ part of 'droid.dart';
 
 @generatedSerializable
 class Droid extends _Droid {
-  Droid(
-      {this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.name,
-      List<Episode> appearsIn = const [],
-      List<Character> friends = const []})
-      : appearsIn = List.unmodifiable(appearsIn),
+  Droid({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    List<Episode> appearsIn = const [],
+    List<Character> friends = const [],
+  })  : appearsIn = List.unmodifiable(appearsIn),
         friends = List.unmodifiable(friends);
 
-  /// A unique identifier corresponding to this item.
   @override
   String? id;
 
@@ -40,13 +39,14 @@ class Droid extends _Droid {
   @override
   List<Character> friends;
 
-  Droid copyWith(
-      {String? id,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? name,
-      List<Episode>? appearsIn,
-      List<Character>? friends}) {
+  Droid copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? name,
+    List<Episode>? appearsIn,
+    List<Character>? friends,
+  }) {
     return Droid(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -62,7 +62,6 @@ class Droid extends _Droid {
         other.id == id &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.id == id &&
         other.name == name &&
         ListEquality<Episode>(DefaultEquality<Episode>())
             .equals(other.appearsIn, appearsIn) &&
@@ -72,13 +71,19 @@ class Droid extends _Droid {
 
   @override
   int get hashCode {
-    return hashObjects(
-        [id, createdAt, updatedAt, id, name, appearsIn, friends]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      appearsIn,
+      friends,
+    ]);
   }
 
   @override
   String toString() {
-    return 'Droid(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, id=$id, name=$name, appearsIn=$appearsIn, friends=$friends)';
+    return 'Droid(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, appearsIn=$appearsIn, friends=$friends)';
   }
 
   Map<String, dynamic> toJson() {
@@ -157,7 +162,7 @@ abstract class DroidFields {
     updatedAt,
     name,
     appearsIn,
-    friends
+    friends,
   ];
 
   static const String id = 'id';
@@ -178,21 +183,45 @@ abstract class DroidFields {
 // **************************************************************************
 
 /// Auto-generated from [Droid].
-final GraphQLObjectType droidGraphQLType = objectType('Droid',
-    isInterface: false,
-    description: 'Beep! Boop!',
-    interfaces: [
-      characterGraphQLType
-    ],
-    fields: [
-      field('id', graphQLString),
-      field('created_at', graphQLDate),
-      field('updated_at', graphQLDate),
-      field('name', graphQLString),
-      field('appears_in', listOf(episodeGraphQLType),
-          description: 'The list of episodes this droid appears in.'),
-      field('friends', listOf(characterGraphQLType),
-          description:
-              'Doc comments automatically become GraphQL descriptions.'),
-      field('idAsInt', graphQLInt)
-    ]);
+final GraphQLObjectType droidGraphQLType = objectType(
+  'Droid',
+  isInterface: false,
+  description: 'Beep! Boop!',
+  interfaces: [characterGraphQLType],
+  fields: [
+    field(
+      'id',
+      graphQLString,
+    ),
+    field(
+      'created_at',
+      graphQLDate,
+    ),
+    field(
+      'updated_at',
+      graphQLDate,
+    ),
+    field(
+      'name',
+      graphQLString,
+    ),
+    field(
+      'appears_in',
+      listOf(episodeGraphQLType),
+      description: 'The list of episodes this droid appears in.',
+    ),
+    field(
+      'friends',
+      listOf(characterGraphQLType),
+      description: 'Doc comments automatically become GraphQL descriptions.',
+    ),
+    field(
+      'idAsInt',
+      graphQLInt,
+    ),
+    field(
+      'idAsString',
+      graphQLString,
+    ),
+  ],
+);

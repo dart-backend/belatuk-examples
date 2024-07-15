@@ -1,5 +1,10 @@
 # Change Log
 
+## 5.0.0
+
+* Upgrade to Angel3 8.x.x
+* Required Dart >= 3.x.x
+
 ## 4.0.0
 
 * Upgrade to Angel3 7.x.x
@@ -7,7 +12,7 @@
 
 ## 3.0.0
 
-* Updated to Angel3 version 6
+* Updated to Angel3 6.x.x
 * Updated to SDK 2.16.x
 
 ## 2.1.0

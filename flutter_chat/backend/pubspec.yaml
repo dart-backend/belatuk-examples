@@ -1,5 +1,5 @@
 name: backend
-version: 4.0.0
+version: 5.0.0
 description: A flutter backend
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
@@ -10,4 +10,4 @@ dependencies:
   common:
     path: ../common
 dev_dependencies:
-  lints: ^2.1.0
+  lints: ^4.0.0

@@ -8,7 +8,13 @@ part of 'starship.dart';
 
 @generatedSerializable
 class Starship extends _Starship {
-  Starship({this.id, this.createdAt, this.updatedAt, this.name, this.length});
+  Starship({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    this.length,
+  });
 
   /// A unique identifier corresponding to this item.
   @override
@@ -28,12 +34,13 @@ class Starship extends _Starship {
   @override
   int? length;
 
-  Starship copyWith(
-      {String? id,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? name,
-      int? length}) {
+  Starship copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? name,
+    int? length,
+  }) {
     return Starship(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -54,7 +61,13 @@ class Starship extends _Starship {
 
   @override
   int get hashCode {
-    return hashObjects([id, createdAt, updatedAt, name, length]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      length,
+    ]);
   }
 
   @override
@@ -131,7 +144,7 @@ abstract class StarshipFields {
     createdAt,
     updatedAt,
     name,
-    length
+    length,
   ];
 
   static const String id = 'id';
@@ -150,12 +163,38 @@ abstract class StarshipFields {
 // **************************************************************************
 
 /// Auto-generated from [Starship].
-final GraphQLObjectType starshipGraphQLType =
-    objectType('Starship', isInterface: false, interfaces: [], fields: [
-  field('id', graphQLString),
-  field('created_at', graphQLDate),
-  field('updated_at', graphQLDate),
-  field('name', graphQLString),
-  field('length', graphQLInt),
-  field('idAsInt', graphQLInt)
-]);
+final GraphQLObjectType starshipGraphQLType = objectType(
+  'Starship',
+  isInterface: false,
+  interfaces: [],
+  fields: [
+    field(
+      'id',
+      graphQLString,
+    ),
+    field(
+      'created_at',
+      graphQLDate,
+    ),
+    field(
+      'updated_at',
+      graphQLDate,
+    ),
+    field(
+      'name',
+      graphQLString,
+    ),
+    field(
+      'length',
+      graphQLInt,
+    ),
+    field(
+      'idAsInt',
+      graphQLInt,
+    ),
+    field(
+      'idAsString',
+      graphQLString,
+    ),
+  ],
+);

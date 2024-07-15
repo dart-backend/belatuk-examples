@@ -1,5 +1,10 @@
 # Change Log
 
+## 5.0.0
+
+* Required Dart >= 3.0.x
+* Updated to Angel3 8.x.x
+
 ## 4.0.0
 
 * Required Dart >= 2.18.x
