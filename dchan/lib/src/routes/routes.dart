@@ -23,9 +23,8 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
           if (p.text!.isEmpty) {
             return p.copyWith(
-              text: '${p.attachments.length} File(s) - [' +
-                  p.attachments.map((a) => a.filename).join(', ') +
-                  ']',
+              text:
+                  '${p.attachments.length} File(s) - [${p.attachments.map((a) => a.filename).join(', ')}]',
             );
           } else {
             return p;
@@ -206,9 +205,8 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
           // If there is no text, add some filler text, ex. [image.jpg], [2.png]
           if (p.text!.isEmpty) {
             return p.copyWith(
-              text: '${p.attachments.length} File(s) - [' +
-                  p.attachments.map((a) => a.filename).join(', ') +
-                  ']',
+              text:
+                  '${p.attachments.length} File(s) - [${p.attachments.map((a) => a.filename).join(', ')}]',
             );
           } else {
             return p;

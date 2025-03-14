@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../main.dart';
 
 class ChatHome extends ConsumerStatefulWidget {
-  const ChatHome({Key? key}) : super(key: key);
+  const ChatHome({super.key});
 
   @override
   ConsumerState<ChatHome> createState() => _ChatHomeState();

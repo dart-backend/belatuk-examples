@@ -1,4 +1,3 @@
-import 'package:angel3_model/angel3_model.dart';
 import 'package:angel3_serialize/angel3_serialize.dart';
 part 'video.g.dart';
 
