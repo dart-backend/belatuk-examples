@@ -3,7 +3,7 @@ version: 5.0.0
 description: A star wars application in graphQL
 publish_to: none
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 dependencies:
   angel3_graphql: ^8.0.0
   angel3_configuration: ^8.0.0
@@ -13,16 +13,17 @@ dependencies:
   angel3_serialize: ^8.0.0
   angel3_container: ^8.0.0
   angel3_static: ^8.0.0
+  angel3_hot: ^8.0.0
   graphql_server2: ^6.0.0
   graphql_schema2: ^6.0.0
+  belatuk_pretty_logging: ^6.0.0
   io: ^1.0.0
   file: ^7.0.0
+  logging: ^1.3.0
 dev_dependencies:
-  angel3_hot: ^8.0.0
   angel3_serialize_generator: ^8.0.0
-  belatuk_pretty_logging: ^6.0.0
   graphql_generator2: ^6.0.0
   build_runner: ^2.4.0
-  lints: ^4.0.0
+  lints: ^5.0.0
 
     

@@ -3,11 +3,11 @@ version: 5.0.0
 description: A flutter backend
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 dependencies:
   angel3_framework: ^8.0.0
   angel3_websocket: ^8.0.0
   common:
     path: ../common
 dev_dependencies:
-  lints: ^4.0.0
+  lints: ^5.0.0

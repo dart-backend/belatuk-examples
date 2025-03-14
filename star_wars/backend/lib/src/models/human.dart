@@ -1,6 +1,4 @@
-import 'package:angel3_model/angel3_model.dart';
 import 'package:angel3_serialize/angel3_serialize.dart';
-import 'package:collection/collection.dart';
 import 'package:graphql_schema2/graphql_schema2.dart';
 import 'character.dart';
 import 'episode.dart';

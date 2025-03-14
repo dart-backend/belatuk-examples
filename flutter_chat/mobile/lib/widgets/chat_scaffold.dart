@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ChatScaffold extends StatefulWidget {
   final WebSockets app;
 
-  const ChatScaffold({Key? key, required this.app}) : super(key: key);
+  const ChatScaffold({super.key, required this.app});
 
   @override
   State<StatefulWidget> createState() => _ChatScaffoldState();

@@ -7,7 +7,7 @@ import 'package:postgres/postgres.dart';
 
 Future<void> configureServer(Angel app) async {
   var connector = await pooledPostgresConnections(app.configuration);
-  var executor = PostgreSqlPoolExecutor(connector);
+  var executor = PostgreSqlPoolExecutor(connector, logger: app.logger);
 
   app
     ..container.registerSingleton<QueryExecutor>(executor)

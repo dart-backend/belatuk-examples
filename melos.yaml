@@ -1,4 +1,4 @@
-name: angel3
+name: angel3-examples
 
 packages:
   - dchan/**
