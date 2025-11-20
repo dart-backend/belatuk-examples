@@ -1,9 +1,9 @@
 name: yewtube
-version: 5.0.0
+version: 5.1.0
 description: A video streaming application.
 publish_to: none
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.9.0 <4.0.0'
 dependencies:
   angel3_configuration: ^8.0.0
   angel3_file_service: ^8.0.0
@@ -12,7 +12,7 @@ dependencies:
   angel3_serialize: ^8.0.0
   angel3_static: ^8.0.0
   angel3_validate: ^8.0.0
-  uuid: ^3.0.0
+  uuid: ^4.0.0
   collection: ^1.17.0
   file: ^7.0.1
   path: ^1.9.1
@@ -20,4 +20,4 @@ dependencies:
 dev_dependencies:
   angel3_serialize_generator: ^8.0.0
   build_runner: ^2.4.0
-  lints: ^5.0.0
+  lints: ^6.0.0

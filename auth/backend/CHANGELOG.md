@@ -1,6 +1,11 @@
 
 # Change Log
 
+## 5.1.0
+
+* Required Dart >= 3.9.x
+* Updated lints to 6.x.x
+
 ## 5.0.0
 
 * Updated to Angel3 8.x.x

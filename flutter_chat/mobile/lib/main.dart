@@ -4,7 +4,7 @@ import 'widgets/chat_app.dart';
 
 enum ChatState { isNotConnected, isConnected, hasSentAuth, hasUser, hasError }
 
-final chatStateProvider = StateProvider((ref) => ChatState.isNotConnected);
+final chatStateProvider = NotifierProvider((ref) => ChatState.isNotConnected);
 
 void main() {
   runApp(const ChatApp());
