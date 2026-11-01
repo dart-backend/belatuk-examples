@@ -14,15 +14,26 @@ void main() async {
   app.fallback((req, res) => throw AngelHttpException.notFound());
 
   // Think of socket.io - this callback is called whenever a client connects.
-  //
-  // For the sake of this example, assume all data is valid.
   ws.onConnection.listen((socket) {
     var req = socket.request;
+
+    // Data a client sends that is not a valid user or message is answered
+    // with an error, rather than throwing: an uncaught error in a listener
+    // would stop the server.
+    T? parse<T>(T Function(Map) fromMap, Map? data) {
+      try {
+        return fromMap(data ?? {});
+      } on FormatException catch (e) {
+        socket.sendError(AngelHttpException.badRequest(message: e.message));
+        return null;
+      }
+    }
 
     // Let everyone know when the user signs on.
     socket.on['sign_in'].listen((data) {
       if (!req.container!.has<User>()) {
-        var user = UserSerializer.fromMap(data!);
+        var user = parse(UserSerializer.fromMap, data);
+        if (user == null) return;
         req.container!.registerSingleton(user);
         socket.send('signed_in', user);
         ws.batchEvent(WebSocketEvent(eventName: 'user_joined', data: user));
@@ -34,7 +45,8 @@ void main() async {
       if (req.container!.has<User>()) {
         // Make sure they are signed in
         var user = req.container!.make<User>();
-        var message = MessageSerializer.fromMap(data!);
+        var message = parse(MessageSerializer.fromMap, data);
+        if (message == null) return;
 
         // Attach user info to the message
         message = message.copyWith(user: user);

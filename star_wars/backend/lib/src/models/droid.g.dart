@@ -72,7 +72,14 @@ class Droid extends _Droid {
 
   @override
   int get hashCode {
-    return hashObjects([id, createdAt, updatedAt, name, appearsIn, friends]);
+    return Object.hashAll([
+      id,
+      createdAt,
+      updatedAt,
+      name,
+      appearsIn.length,
+      friends.length,
+    ]);
   }
 
   @override
@@ -110,8 +117,10 @@ class DroidSerializer extends Codec<Droid, Map> {
 
   @override
   DroidEncoder get encoder => const DroidEncoder();
+
   @override
   DroidDecoder get decoder => const DroidDecoder();
+
   static Droid fromMap(Map map) {
     return Droid(
       id: map['id'] as String?,
@@ -184,21 +193,73 @@ final GraphQLObjectType droidGraphQLType = objectType(
   description: 'Beep! Boop!',
   interfaces: [characterGraphQLType],
   fields: [
-    field('id', graphQLString),
-    field('created_at', graphQLDate),
-    field('updated_at', graphQLDate),
-    field('name', graphQLString),
-    field(
+    field<dynamic, dynamic>(
+      'id',
+      graphQLId,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.id
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "id" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'created_at',
+      graphQLDate,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.createdAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "created_at" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'updated_at',
+      graphQLDate,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.updatedAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "updated_at" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'name',
+      graphQLString,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.name
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "name" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
+    ),
+    field<dynamic, dynamic>(
       'appears_in',
       listOf(episodeGraphQLType),
       description: 'The list of episodes this droid appears in.',
+      resolve: (obj, _) => obj is _Droid
+          ? obj.appearsIn
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "appears_in" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'friends',
       listOf(characterGraphQLType),
       description: 'Doc comments automatically become GraphQL descriptions.',
+      resolve: (obj, _) => obj is _Droid
+          ? obj.friends
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "friends" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field('idAsInt', graphQLInt),
-    field('idAsString', graphQLString),
   ],
 );

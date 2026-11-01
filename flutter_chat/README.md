@@ -17,13 +17,15 @@ A Flutter chat application with backend in Angel3
     dart pub get
     ```
 
-4. Go to `flutter_chat` directory and run:
+4. Go to `mobile` directory and run:
 
     ```bash
     flutter pub get
     ```
 
 5. Run flutter app
+
+   The app is not finished: once connected, it shows the state of its connection. The backend handles `sign_in` and `message` events, as in `backend/bin/main.dart`.
 
 ## For Development/Production
 

@@ -78,13 +78,13 @@ class Human extends _Human {
 
   @override
   int get hashCode {
-    return hashObjects([
+    return Object.hashAll([
       id,
       createdAt,
       updatedAt,
       name,
-      appearsIn,
-      friends,
+      appearsIn.length,
+      friends.length,
       totalCredits,
     ]);
   }
@@ -124,8 +124,10 @@ class HumanSerializer extends Codec<Human, Map> {
 
   @override
   HumanEncoder get encoder => const HumanEncoder();
+
   @override
   HumanDecoder get decoder => const HumanDecoder();
+
   static Human fromMap(Map map) {
     return Human(
       id: map['id'] as String?,
@@ -202,14 +204,82 @@ final GraphQLObjectType humanGraphQLType = objectType(
   isInterface: false,
   interfaces: [characterGraphQLType],
   fields: [
-    field('id', graphQLString),
-    field('created_at', graphQLDate),
-    field('updated_at', graphQLDate),
-    field('name', graphQLString),
-    field('appears_in', listOf(episodeGraphQLType)),
-    field('friends', listOf(characterGraphQLType)),
-    field('total_credits', graphQLInt),
-    field('idAsInt', graphQLInt),
-    field('idAsString', graphQLString),
+    field<dynamic, dynamic>(
+      'id',
+      graphQLId,
+      resolve: (obj, _) => obj is _Human
+          ? obj.id
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "id" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'created_at',
+      graphQLDate,
+      resolve: (obj, _) => obj is _Human
+          ? obj.createdAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "created_at" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'updated_at',
+      graphQLDate,
+      resolve: (obj, _) => obj is _Human
+          ? obj.updatedAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "updated_at" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'name',
+      graphQLString,
+      resolve: (obj, _) => obj is _Human
+          ? obj.name
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "name" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'appears_in',
+      listOf(episodeGraphQLType),
+      resolve: (obj, _) => obj is _Human
+          ? obj.appearsIn
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "appears_in" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'friends',
+      listOf(characterGraphQLType),
+      resolve: (obj, _) => obj is _Human
+          ? obj.friends
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "friends" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
+    field<dynamic, dynamic>(
+      'total_credits',
+      graphQLInt,
+      resolve: (obj, _) => obj is _Human
+          ? obj.totalCredits
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "total_credits" of "Human" from a value of type ${obj.runtimeType}: expected a Map or an instance of Human.',
+            ),
+    ),
   ],
 );

@@ -30,27 +30,10 @@ class PostMigration extends Migration {
 // **************************************************************************
 
 class PostQuery extends Query<Post, PostQueryWhere> {
-  PostQuery({Query? parent, Set<String>? trampoline}) : super(parent: parent) {
+  PostQuery({super.parent, Set<String>? trampoline}) {
     trampoline ??= <String>{};
     trampoline.add(tableName);
     _where = PostQueryWhere(this);
-    leftJoin(
-      _attachments = AttachmentQuery(trampoline: trampoline, parent: this),
-      'id',
-      'post_id',
-      additionalFields: const [
-        'id',
-        'created_at',
-        'updated_at',
-        'size_in_bytes',
-        'path',
-        'filename',
-        'post_id',
-        'index',
-        'content_type_string',
-      ],
-      trampoline: trampoline,
-    );
   }
 
   @override
@@ -60,7 +43,7 @@ class PostQuery extends Query<Post, PostQueryWhere> {
 
   PostQueryWhere? _where;
 
-  late AttachmentQuery _attachments;
+  late final AttachmentQuery _attachments = AttachmentQuery();
 
   @override
   Map<String, String> get casts {
@@ -74,7 +57,7 @@ class PostQuery extends Query<Post, PostQueryWhere> {
 
   @override
   List<String> get fields {
-    const _fields = [
+    const localFields = [
       'id',
       'created_at',
       'updated_at',
@@ -83,8 +66,10 @@ class PostQuery extends Query<Post, PostQueryWhere> {
       'in_reply_to',
     ];
     return _selectedFields.isEmpty
-        ? _fields
-        : _fields.where((field) => _selectedFields.contains(field)).toList();
+        ? localFields
+        : localFields
+              .where((field) => _selectedFields.contains(field))
+              .toList();
   }
 
   PostQuery select(List<String> selectedFields) {
@@ -107,19 +92,23 @@ class PostQuery extends Query<Post, PostQueryWhere> {
       return Optional.empty();
     }
     var model = Post(
-      id: fields.contains('id') ? row[0].toString() : null,
-      createdAt: fields.contains('created_at') ? mapToDateTime(row[1]) : null,
-      updatedAt: fields.contains('updated_at') ? mapToDateTime(row[2]) : null,
-      text: fields.contains('text') ? (row[3] as String?) : null,
-      userHash: fields.contains('user_hash') ? (row[4] as String?) : null,
-      inReplyTo: fields.contains('in_reply_to') ? (row[5] as int?) : null,
+      id: fields.contains('id') ? row[fields.indexOf('id')].toString() : null,
+      createdAt: fields.contains('created_at')
+          ? mapToNullableDateTime(row[fields.indexOf('created_at')])
+          : null,
+      updatedAt: fields.contains('updated_at')
+          ? mapToNullableDateTime(row[fields.indexOf('updated_at')])
+          : null,
+      text: fields.contains('text')
+          ? (row[fields.indexOf('text')] as String?)
+          : null,
+      userHash: fields.contains('user_hash')
+          ? (row[fields.indexOf('user_hash')] as String?)
+          : null,
+      inReplyTo: fields.contains('in_reply_to')
+          ? mapToInt(row[fields.indexOf('in_reply_to')])
+          : null,
     );
-    if (row.length > 6) {
-      var modelOpt = AttachmentQuery().parseRow(row.skip(6).take(9).toList());
-      modelOpt.ifPresent((m) {
-        model = model.copyWith(attachments: [m]);
-      });
-    }
     return Optional.of(model);
   }
 
@@ -128,68 +117,35 @@ class PostQuery extends Query<Post, PostQueryWhere> {
     return parseRow(row);
   }
 
+  /// The query [attachments] are loaded with, whose conditions and order apply.
   AttachmentQuery get attachments {
     return _attachments;
   }
 
   @override
-  Future<List<Post>> get(QueryExecutor executor) {
-    return super.get(executor).then((result) {
-      return result.fold<List<Post>>([], (out, model) {
-        var idx = out.indexWhere((m) => m.id == model.id);
-
-        if (idx == -1) {
-          return out..add(model);
-        } else {
-          var l = out[idx];
-          return out
-            ..[idx] = l.copyWith(
-              attachments: List<Attachment>.from(l.attachments)
-                ..addAll(model.attachments),
-            );
-        }
-      });
-    });
-  }
+  bool get loadsRelations => true;
 
   @override
-  Future<List<Post>> update(QueryExecutor executor) {
-    return super.update(executor).then((result) {
-      return result.fold<List<Post>>([], (out, model) {
-        var idx = out.indexWhere((m) => m.id == model.id);
-
-        if (idx == -1) {
-          return out..add(model);
-        } else {
-          var l = out[idx];
-          return out
-            ..[idx] = l.copyWith(
-              attachments: List<Attachment>.from(l.attachments)
-                ..addAll(model.attachments),
-            );
-        }
-      });
-    });
-  }
-
-  @override
-  Future<List<Post>> delete(QueryExecutor executor) {
-    return super.delete(executor).then((result) {
-      return result.fold<List<Post>>([], (out, model) {
-        var idx = out.indexWhere((m) => m.id == model.id);
-
-        if (idx == -1) {
-          return out..add(model);
-        } else {
-          var l = out[idx];
-          return out
-            ..[idx] = l.copyWith(
-              attachments: List<Attachment>.from(l.attachments)
-                ..addAll(model.attachments),
-            );
-        }
-      });
-    });
+  Future<List<Post>> loadRelations(
+    QueryExecutor executor,
+    List<List> rows,
+    List<Post> records,
+    Set<String> loading,
+  ) async {
+    if (records.isEmpty) return records;
+    var attachmentsByKey = loading.contains('attachments')
+        ? null
+        : await _attachments.getByKeys(executor, 'post_id', [
+            for (var row in rows) valueOf('id', row),
+          ], loading);
+    return [
+      for (var (i, r) in records.indexed)
+        r.copyWith(
+          attachments: attachmentsByKey == null
+              ? r.attachments
+              : [...?attachmentsByKey['${valueOf('id', rows[i])}']],
+        ),
+    ];
   }
 }
 
@@ -231,31 +187,37 @@ class PostQueryValues extends MapQueryValues {
   }
 
   set id(String? value) => values['id'] = value;
+
   DateTime? get createdAt {
     return (values['created_at'] as DateTime?);
   }
 
   set createdAt(DateTime? value) => values['created_at'] = value;
+
   DateTime? get updatedAt {
     return (values['updated_at'] as DateTime?);
   }
 
   set updatedAt(DateTime? value) => values['updated_at'] = value;
+
   String? get text {
     return (values['text'] as String?);
   }
 
   set text(String? value) => values['text'] = value;
+
   String? get userHash {
     return (values['user_hash'] as String?);
   }
 
   set userHash(String? value) => values['user_hash'] = value;
+
   int? get inReplyTo {
     return (values['in_reply_to'] as int?);
   }
 
   set inReplyTo(int? value) => values['in_reply_to'] = value;
+
   void copyFrom(Post model) {
     createdAt = model.createdAt;
     updatedAt = model.updatedAt;
@@ -340,14 +302,14 @@ class Post extends _Post {
 
   @override
   int get hashCode {
-    return hashObjects([
+    return Object.hashAll([
       id,
       createdAt,
       updatedAt,
       text,
       userHash,
       inReplyTo,
-      attachments,
+      attachments.length,
     ]);
   }
 
@@ -386,8 +348,10 @@ class PostSerializer extends Codec<Post, Map> {
 
   @override
   PostEncoder get encoder => const PostEncoder();
+
   @override
   PostDecoder get decoder => const PostDecoder();
+
   static Post fromMap(Map map) {
     return Post(
       id: map['id'] as String?,

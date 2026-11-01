@@ -1,5 +1,11 @@
 # Change Log
 
+## 5.0.0
+
+### Breaking changes in 5.0.0
+
+* **Breaking:** Requires Dart 3.13 or later, and uses Angel3 10 (`angel3_*` ^10.0.0)
+
 ## 4.1.0
 
 * Required Dart >= 3.9.x

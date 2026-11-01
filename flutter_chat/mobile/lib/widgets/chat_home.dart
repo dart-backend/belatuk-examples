@@ -59,11 +59,11 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
         ?.connect()
         .then((_) {
           //setState(connect);
-          ref.read(chatStateProvider.notifier).state = ChatState.isConnected;
+          ref.read(chatStateProvider.notifier).set(ChatState.isConnected);
         })
         .catchError((e, st) {
           //setState(setError);
-          ref.read(chatStateProvider.notifier).state = ChatState.hasError;
+          ref.read(chatStateProvider.notifier).set(ChatState.hasError);
           print(e);
           print(st);
         });
@@ -74,7 +74,7 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
   @override
   void deactivate() {
     app?.close();
-    ref.read(chatStateProvider.notifier).state = ChatState.isNotConnected;
+    ref.read(chatStateProvider.notifier).set(ChatState.isNotConnected);
     super.deactivate();
   }
 

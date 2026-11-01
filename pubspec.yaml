@@ -11,7 +11,6 @@ workspace:
   - docs_examples/getting_started
   - flutter_chat/backend
   - flutter_chat/common
-  - flutter_chat/mobile
   - pub_serve_proxy
   - star_wars/backend
   - yewtube/backend
@@ -20,6 +19,5 @@ dependencies:
   melos: ^8.10.0
 
 melos:
-  name: angel3-examples
   # scripts:
   #   analyze: melos exec -- "dart analyze ."

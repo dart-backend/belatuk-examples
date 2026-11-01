@@ -1,6 +1,22 @@
 
 # Change Log
 
+## 6.0.0
+
+### Breaking changes in 6.0.0
+
+* **Breaking:** Requires Dart 3.13 or later, and uses Angel3 10 (`angel3_*` ^10.0.0)
+
+### Fixes in 6.0.0
+
+* **Security:** The JWTs are signed with the key of the `JWT_SECRET` environment variable, which is required in production, where the key was in the code, so anyone could sign a JWT for any user. Without it, in development, a random key is used
+* **Security:** A JWT holds the username only, and its user is looked up for each request, where it held the user's password hash and was trusted as it was; a JWT of a user who no longer exists is refused
+* **Security:** A JWT expires after an hour, where it never did, and `POST /logout` logs out
+* **Security:** `/secret.html` is protected for every method, as `HEAD`, and sent with `Cache-Control: no-store`, where it was cached
+* **Security:** A log in takes as long for an unknown username as for a known one, and is not logged with the username, so it does not tell which usernames exist
+* **Redirects:** A logged-in user who opens `/login.html` is sent home, and a guest refused a page is sent to log in, where they were sent to `/forbidden.html`; other clients than browsers get the error
+* **Pages:** `login.html` has a title of its own and a charset; the unrelated `bin/example.dart` is removed
+
 ## 5.1.0
 
 * Required Dart >= 3.9.x

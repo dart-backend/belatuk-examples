@@ -1,5 +1,15 @@
 # Change Log
 
+## 6.0.0
+
+### Breaking changes in 6.0.0
+
+* **Breaking:** Requires Dart 3.13 or later, and uses Angel3 10 (`angel3_*` ^10.0.0)
+
+### Fixes in 6.0.0
+
+* **Server:** Runs without `dart:mirrors`, so `bin/prod.dart` can be compiled with `dart compile exe`, as it needs no reflector
+
 ## 5.1.0
 
 * Required Dart >= 3.9.x

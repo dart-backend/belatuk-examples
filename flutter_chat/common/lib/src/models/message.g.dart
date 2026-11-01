@@ -47,7 +47,7 @@ class Message implements _Message {
 
   @override
   int get hashCode {
-    return hashObjects([user, imageBytes, text, timestamp]);
+    return Object.hashAll([user, imageBytes?.length, text, timestamp]);
   }
 
   @override
@@ -85,8 +85,10 @@ class MessageSerializer extends Codec<Message, Map> {
 
   @override
   MessageEncoder get encoder => const MessageEncoder();
+
   @override
   MessageDecoder get decoder => const MessageDecoder();
+
   static Message fromMap(Map map) {
     if (map['user'] == null) {
       throw FormatException("Missing required field 'user' on Message.");

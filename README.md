@@ -12,15 +12,21 @@ A collection of thoroughly-commented example projects build with Angel3 framewor
 
 ## Setup
 
-The examples are a [pub workspace](https://dart.dev/tools/pub/workspaces), managed with [melos](https://melos.invertase.dev) 8, whose configuration is in the root `pubspec.yaml`. They are resolved together, and need the Flutter SDK, as `flutter_chat/mobile` is a Flutter app:
+The examples use Angel3 10 and Dart 3.13 or later. They are a [pub workspace](https://dart.dev/tools/pub/workspaces), managed with [melos](https://melos.invertase.dev) 8, whose configuration is in the root `pubspec.yaml`, and are resolved together:
 
 ```bash
-flutter pub get
-# Run melos with the Dart SDK of Flutter, which can resolve the Flutter app
-<flutter>/bin/dart run melos bootstrap
+dart pub get
+dart run melos bootstrap
 ```
 
-`dart pub get`, or `dart run melos` with a Dart SDK installed apart from Flutter, fail with "the Flutter SDK is not available".
+`dart pub get` in an example's directory resolves the whole workspace too.
+
+The Flutter app of `flutter_chat` (`flutter_chat/mobile`) is not in the workspace, as Flutter pins versions of test packages that the Angel3 10 code generators cannot use. Resolve it on its own:
+
+```bash
+cd flutter_chat/mobile
+flutter pub get
+```
 
 ## Getting Started
 

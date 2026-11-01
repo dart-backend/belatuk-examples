@@ -32,7 +32,7 @@ class User implements _User {
 
   @override
   int get hashCode {
-    return hashObjects([name, avatarBytes]);
+    return Object.hashAll([name, avatarBytes?.length]);
   }
 
   @override
@@ -70,8 +70,10 @@ class UserSerializer extends Codec<User, Map> {
 
   @override
   UserEncoder get encoder => const UserEncoder();
+
   @override
   UserDecoder get decoder => const UserDecoder();
+
   static User fromMap(Map map) {
     if (map['name'] == null) {
       throw FormatException("Missing required field 'name' on User.");
