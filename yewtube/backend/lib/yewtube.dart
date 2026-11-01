@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:angel3_configuration/angel3_configuration.dart';
 import 'package:angel3_file_service/angel3_file_service.dart';
 import 'package:angel3_framework/angel3_framework.dart';
@@ -9,6 +10,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:file/local.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
+
 import 'video.dart';
 
 Future<void> configureServer(Angel app) async {
@@ -64,13 +66,16 @@ Future<void> configureServer(Angel app) async {
   app.post(
     '/upload',
     chain([
-      validate(Validator({
-        requireFields(['title', 'description']): isNonEmptyString,
-      })),
+      validate(
+        Validator({
+          requireFields(['title', 'description']): isNonEmptyString,
+        }),
+      ),
       (req, res) async {
         // Find the first file the user uploaded.
-        var file = req.uploadedFiles!
-            .firstWhereOrNull((v) => v.contentType.type == 'video');
+        var file = req.uploadedFiles!.firstWhereOrNull(
+          (v) => v.contentType.type == 'video',
+        );
 
         if (file == null) {
           throw AngelHttpException.badRequest(message: 'Missing video file.');
@@ -81,8 +86,10 @@ Future<void> configureServer(Angel app) async {
         var description = req.bodyAsMap['description'] as String?;
 
         // Assume that for a video of type video/x, the extension is .x
-        var filePath =
-            p.setExtension(uuid.v4(), '.${file.contentType.subtype}');
+        var filePath = p.setExtension(
+          uuid.v4(),
+          '.${file.contentType.subtype}',
+        );
 
         // Pipe the video into the corresponding file.
         var videoFile = uploadDir.childFile(filePath);
@@ -111,8 +118,10 @@ Future<void> configureServer(Angel app) async {
   var oldErrorHandler = app.errorHandler;
   app.errorHandler = (e, req, res) {
     if (req.accepts('text/html', strict: true)) {
-      return res.render(
-          'error', {'title': 'Error ${e.statusCode}', 'error': e.message});
+      return res.render('error', {
+        'title': 'Error ${e.statusCode}',
+        'error': e.message,
+      });
     } else {
       return oldErrorHandler(e, req, res);
     }

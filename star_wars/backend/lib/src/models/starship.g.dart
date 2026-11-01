@@ -8,13 +8,7 @@ part of 'starship.dart';
 
 @generatedSerializable
 class Starship extends _Starship {
-  Starship({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.name,
-    this.length,
-  });
+  Starship({this.id, this.createdAt, this.updatedAt, this.name, this.length});
 
   /// A unique identifier corresponding to this item.
   @override
@@ -42,11 +36,12 @@ class Starship extends _Starship {
     int? length,
   }) {
     return Starship(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        name: name ?? this.name,
-        length: length ?? this.length);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      length: length ?? this.length,
+    );
   }
 
   @override
@@ -61,13 +56,7 @@ class Starship extends _Starship {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      createdAt,
-      updatedAt,
-      name,
-      length,
-    ]);
+    return Object.hashAll([id, createdAt, updatedAt, name, length]);
   }
 
   @override
@@ -105,23 +94,26 @@ class StarshipSerializer extends Codec<Starship, Map> {
 
   @override
   StarshipEncoder get encoder => const StarshipEncoder();
+
   @override
   StarshipDecoder get decoder => const StarshipDecoder();
+
   static Starship fromMap(Map map) {
     return Starship(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        name: map['name'] as String?,
-        length: map['length'] as int?);
+          : null,
+      name: map['name'] as String?,
+      length: map['length'] as int?,
+    );
   }
 
   static Map<String, dynamic> toMap(_Starship? model) {
@@ -133,7 +125,7 @@ class StarshipSerializer extends Codec<Starship, Map> {
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
-      'length': model.length
+      'length': model.length,
     };
   }
 }
@@ -168,33 +160,60 @@ final GraphQLObjectType starshipGraphQLType = objectType(
   isInterface: false,
   interfaces: [],
   fields: [
-    field(
+    field<dynamic, dynamic>(
       'id',
-      graphQLString,
+      graphQLId,
+      resolve: (obj, _) => obj is _Starship
+          ? obj.id
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "id" of "Starship" from a value of type ${obj.runtimeType}: expected a Map or an instance of Starship.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'created_at',
       graphQLDate,
+      resolve: (obj, _) => obj is _Starship
+          ? obj.createdAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "created_at" of "Starship" from a value of type ${obj.runtimeType}: expected a Map or an instance of Starship.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'updated_at',
       graphQLDate,
+      resolve: (obj, _) => obj is _Starship
+          ? obj.updatedAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "updated_at" of "Starship" from a value of type ${obj.runtimeType}: expected a Map or an instance of Starship.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'name',
       graphQLString,
+      resolve: (obj, _) => obj is _Starship
+          ? obj.name
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "name" of "Starship" from a value of type ${obj.runtimeType}: expected a Map or an instance of Starship.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'length',
       graphQLInt,
-    ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
+      resolve: (obj, _) => obj is _Starship
+          ? obj.length
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "length" of "Starship" from a value of type ${obj.runtimeType}: expected a Map or an instance of Starship.',
+            ),
     ),
   ],
 );

@@ -12,13 +12,27 @@ final GraphQLObjectType characterGraphQLType = objectType(
   isInterface: true,
   interfaces: [],
   fields: [
-    field(
+    field<dynamic, dynamic>(
       'id',
       graphQLString,
+      resolve: (obj, _) => obj is Character
+          ? obj.id
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "id" of "Character" from a value of type ${obj.runtimeType}: expected a Map or an instance of Character.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'name',
       graphQLString,
+      resolve: (obj, _) => obj is Character
+          ? obj.name
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "name" of "Character" from a value of type ${obj.runtimeType}: expected a Map or an instance of Character.',
+            ),
     ),
   ],
 );

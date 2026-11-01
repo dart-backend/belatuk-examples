@@ -1,6 +1,7 @@
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_static/angel3_static.dart';
 import 'package:file/file.dart';
+
 import 'controllers/controllers.dart' as controllers;
 import 'graphql/graphql.dart' as graphql;
 
@@ -49,8 +50,9 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.errorHandler = (e, req, res) async {
       if (req.accepts('text/html', strict: true)) {
         if (e.statusCode == 404 && req.accepts('text/html', strict: true)) {
-          await res
-              .render('error', {'message': 'No file exists at ${req.uri}.'});
+          await res.render('error', {
+            'message': 'No file exists at ${req.uri}.',
+          });
         } else {
           await res.render('error', {'message': e.message});
         }

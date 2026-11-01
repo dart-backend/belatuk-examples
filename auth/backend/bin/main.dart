@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:angel3_auth/angel3_auth.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_framework/http.dart';
@@ -9,60 +11,100 @@ import 'package:logging/logging.dart';
 void main() async {
   var app = Angel();
 
-  // Note: the `secureCookies` flag is important during development, iF you are using cookies.
-  //
-  // `localhost` cannot use `Secure` cookies, if it's not over HTTPS, which it often isn't.
-  //
-  // Add functions to (de)serialize a user for the purposes of representation within a token.
-  // In a real application, instead of serializing the user itself, you can just return its ID,
-  // and when deserializing, perform a database lookup.
+  // Add logging.
+  app.logger = Logger('auth')
+    ..onRecord.listen((rec) {
+      print(rec);
+      if (rec.error != null) print(rec.error);
+      if (rec.stackTrace != null) print(rec.stackTrace);
+    });
+
+  // In a real application, the users are in a database.
+  var users = {
+    for (var user in [User('demo', 'demo123'), User('admin', 'admin123')])
+      user.username: user,
+  };
+
+  // The key that signs the JWTs, which must stay secret: anyone who knows it
+  // can sign a JWT for any user. Keep it out of the code, as in the JWT_SECRET
+  // environment variable. Without one, a random key is used, so the logins do
+  // not survive a restart of the server.
+  var jwtSecret = Platform.environment['JWT_SECRET'];
+  if (jwtSecret == null) {
+    if (app.environment.isProduction) {
+      throw StateError('Set the JWT_SECRET environment variable.');
+    }
+    app.logger.warning(
+      'JWT_SECRET is not set: using a random key, so logins end when the '
+      'server restarts.',
+    );
+  }
+
   var auth = AngelAuth<User>(
-      serializer: (u) => u.serialize(),
-      deserializer: (serialized) => User.deserialize(serialized.toString()),
-      jwtKey: 'abcdefghijklmnopqrstuvwxyz012345',
-      secureCookies: app.environment.isProduction);
-
-  var fs = LocalFileSystem();
-
-  /// Using a `CachingVirtualDirectory` can improve page load times.
-  var vDir = CachingVirtualDirectory(app, fs, source: fs.directory('web'));
-
-  var users = [
-    User('demo', 'demo123'),
-    User('admin', 'admin123'),
-  ];
+    // A JWT holds the username only, which anyone holding it can read, and
+    // the user is looked up again for each request: one who no longer exists
+    // is refused, with a 403.
+    serializer: (user) => user.username,
+    deserializer: (username) =>
+        users[username] ??
+        (throw AngelHttpException.forbidden(
+          message: 'The user of the JWT does not exist.',
+        )),
+    jwtKey: jwtSecret,
+    // A JWT, which cannot be revoked, is valid for an hour.
+    jwtLifeSpan: const Duration(hours: 1).inMilliseconds,
+    // `localhost` cannot use `Secure` cookies when it is not over HTTPS, which
+    // it often is not in development.
+    secureCookies: app.environment.isProduction,
+  );
 
   // Tell the authenticator how to validate a username+password auth attempt.
   // Return `null` on a failed attempt.
   auth.strategies['local'] = LocalAuthStrategy((username, password) {
-    var list = users.where((u) => u.username == username);
-    if (list.isEmpty) {
-      print('User = null');
-      return null;
-    }
-    var user = list.first;
-    print('User = ${user.username}');
-    var result = user.validate(password ?? '') ? user : null;
-    print('Validation = ${result ?? "null"}');
-
-    return result;
+    var user = users[username];
+    // Checked even when there is no such user, so that the time it takes does
+    // not tell which usernames exist.
+    if (User.checkPassword(user, password ?? '')) return user;
+    app.logger.info('A log in failed.');
+    return null;
   });
 
   // Middleware to decode JWT's and inject a user object...
   await app.configure(auth.configureServer);
 
-  // Only authenticated users can access /secret.html.
-  // Place an auth guard in front of it, to deny guests from
-  // viewing critical content.
-  app.get('/secret.html', requireAuthentication<User>());
+  var fs = LocalFileSystem();
 
-  // In addition, already logged in users should be sent home when they try log in again.
-  app.get('/login.html', (req, res) {
-    if (req.container?.has<User>() ?? false) {
-      res.redirect('/');
-    } else {
+  // Only authenticated users can access /secret.html, by any method, as `HEAD`
+  // too: an auth guard in front of it denies guests. It is in `protected/`,
+  // not `web/`, which is cached, and is sent with `no-store`, so that neither
+  // a browser nor a proxy keeps it.
+  var protectedDir = VirtualDirectory(
+    app,
+    fs,
+    source: fs.directory('protected'),
+  );
+  app.all(
+    '/secret.html',
+    chain([
+      requireAuthentication<User>(),
+      (req, res) {
+        res.headers['cache-control'] = 'no-store';
+        return protectedDir.handleRequest(req, res);
+      },
+    ]),
+  );
+
+  // Users who are already logged in are sent home when they try to log in
+  // again. The JWT is only decoded when the user is asked for.
+  app.get('/login.html', (req, res) async {
+    try {
+      await req.container!.makeAsync<User>();
+    } on AngelHttpException {
+      // A guest, or a JWT that is no longer valid: show the form.
       return true;
     }
+    await res.redirect('/');
+    return false;
   });
 
   // Create a /login POST endpoint; it'll log a user in, and redirect to /secret.html.
@@ -74,31 +116,32 @@ void main() async {
     ),
   );
 
+  // Log out: the `token` cookie is removed. The JWT itself stays valid until
+  // it expires, as JWTs cannot be revoked.
+  app.post(
+    '/logout',
+    auth.logout(AngelAuthOptions<User>(successRedirect: '/')),
+  );
+
   // The rest of the interface consists of static files; serve them.
+  // `CachingVirtualDirectory` can improve page load times.
+  var vDir = CachingVirtualDirectory(app, fs, source: fs.directory('web'));
   app.fallback(vDir.handleRequest);
   app.fallback((req, res) => throw AngelHttpException.notFound());
 
-  // Error handling.
+  // Error handling: a browser that is refused a page, as a guest (403), or
+  // with a JWT that expired or is no longer valid, is sent to log in. Other
+  // clients, as of `/auth/token`, get the error itself.
   var oldHandler = app.errorHandler;
 
   app.errorHandler = (e, req, res) {
-    if (e.statusCode == 401) {
+    if ((e.statusCode == 401 || e.statusCode == 403) &&
+        req.accepts('text/html', strict: true)) {
       return res.redirect('/login.html');
-    } else if (e.statusCode == 403) {
-      return res.redirect('/forbidden.html');
     } else {
-      if (e.statusCode == 500) print('Fatal: ${e.error}\n${e.stackTrace}');
       return oldHandler(e, req, res);
     }
   };
-
-  // Add logging.
-  app.logger = Logger('auth')
-    ..onRecord.listen((rec) {
-      print(rec);
-      if (rec.error != null) print(rec.error);
-      if (rec.stackTrace != null) print(rec.stackTrace);
-    });
 
   // Mount the server.
   var http = AngelHttp(app);

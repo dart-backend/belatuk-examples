@@ -1,5 +1,20 @@
 # Change Log
 
+## 6.0.0
+
+### Breaking changes in 6.0.0
+
+* **Breaking:** Requires Dart 3.13 or later, and uses Angel3 10 (`angel3_*` ^10.0.0)
+
+### Fixes in 6.0.0
+
+* **App:** Starts, where it failed with `No ProviderScope found`, and its connection state is a Riverpod 3 `Notifier`
+* **Tests:** The widget test tests the app, where it was Flutter's counter template
+
+## 5.1.0
+
+* Required Dart >= 3.9.x
+
 ## 5.0.0
 
 * Required Dart >= 3.0.x

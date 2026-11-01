@@ -15,8 +15,8 @@ class Droid extends _Droid {
     this.name,
     List<Episode> appearsIn = const [],
     List<Character> friends = const [],
-  })  : appearsIn = List.unmodifiable(appearsIn),
-        friends = List.unmodifiable(friends);
+  }) : appearsIn = List.unmodifiable(appearsIn),
+       friends = List.unmodifiable(friends);
 
   @override
   String? id;
@@ -48,12 +48,13 @@ class Droid extends _Droid {
     List<Character>? friends,
   }) {
     return Droid(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        name: name ?? this.name,
-        appearsIn: appearsIn ?? this.appearsIn,
-        friends: friends ?? this.friends);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      appearsIn: appearsIn ?? this.appearsIn,
+      friends: friends ?? this.friends,
+    );
   }
 
   @override
@@ -71,13 +72,13 @@ class Droid extends _Droid {
 
   @override
   int get hashCode {
-    return hashObjects([
+    return Object.hashAll([
       id,
       createdAt,
       updatedAt,
       name,
-      appearsIn,
-      friends,
+      appearsIn.length,
+      friends.length,
     ]);
   }
 
@@ -116,28 +117,31 @@ class DroidSerializer extends Codec<Droid, Map> {
 
   @override
   DroidEncoder get encoder => const DroidEncoder();
+
   @override
   DroidDecoder get decoder => const DroidDecoder();
+
   static Droid fromMap(Map map) {
     return Droid(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        name: map['name'] as String?,
-        appearsIn: map['appears_in'] is Iterable
-            ? (map['appears_in'] as Iterable).cast<Episode>().toList()
-            : [],
-        friends: map['friends'] is Iterable
-            ? (map['friends'] as Iterable).cast<Character>().toList()
-            : []);
+          : null,
+      name: map['name'] as String?,
+      appearsIn: map['appears_in'] is Iterable
+          ? (map['appears_in'] as Iterable).cast<Episode>().toList()
+          : [],
+      friends: map['friends'] is Iterable
+          ? (map['friends'] as Iterable).cast<Character>().toList()
+          : [],
+    );
   }
 
   static Map<String, dynamic> toMap(_Droid? model) {
@@ -150,7 +154,7 @@ class DroidSerializer extends Codec<Droid, Map> {
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
       'appears_in': model.appearsIn,
-      'friends': model.friends
+      'friends': model.friends,
     };
   }
 }
@@ -189,39 +193,73 @@ final GraphQLObjectType droidGraphQLType = objectType(
   description: 'Beep! Boop!',
   interfaces: [characterGraphQLType],
   fields: [
-    field(
+    field<dynamic, dynamic>(
       'id',
-      graphQLString,
+      graphQLId,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.id
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "id" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'created_at',
       graphQLDate,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.createdAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "created_at" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'updated_at',
       graphQLDate,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.updatedAt
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "updated_at" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'name',
       graphQLString,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.name
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "name" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'appears_in',
       listOf(episodeGraphQLType),
       description: 'The list of episodes this droid appears in.',
+      resolve: (obj, _) => obj is _Droid
+          ? obj.appearsIn
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "appears_in" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
-    field(
+    field<dynamic, dynamic>(
       'friends',
       listOf(characterGraphQLType),
       description: 'Doc comments automatically become GraphQL descriptions.',
-    ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
+      resolve: (obj, _) => obj is _Droid
+          ? obj.friends
+          : obj == null
+          ? null
+          : throw GraphQLException.fromMessage(
+              'Cannot resolve field "friends" of "Droid" from a value of type ${obj.runtimeType}: expected a Map or an instance of Droid.',
+            ),
     ),
   ],
 );

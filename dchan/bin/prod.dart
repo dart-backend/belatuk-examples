@@ -1,29 +1,18 @@
-import 'package:dchan/dchan.dart';
 import 'package:angel3_production/angel3_production.dart';
-import 'package:angel3_container/mirrors.dart';
+import 'package:dchan/dchan.dart';
 
-// NOTE: By default, the Runner class does not use the `MirrorsReflector`, or any
-// reflector, by default.
+// The application runs without a reflector, so it needs no `dart:mirrors`, and
+// can be compiled with `dart compile exe`.
 //
-// If your application is using any sort of functionality reliant on annotations or reflection,
-// either include the MirrorsReflector, or use a static reflector variant.
+// These features need a reflector:
+// * Controllers, via @Expose() or @ExposeWs()
+// * Dependency injection into constructors, in controllers or `container.make`
+// * The `ioc` function, in a route without an explicit `injection:`
+// * @Hooks() and @Middleware() annotations
 //
-// The following use cases require reflection:
-// * Use of Controllers, via @Expose() or @ExposeWS()
-// * Use of dependency injection into constructors, whether in controllers or plain `container.make` calls
-// * Use of the `ioc` function in any route
-//
-// The `MirrorsReflector` from `package:angel_container/mirrors.dart` is by far the most convenient pattern,
-// so use it if possible.
-//
-// However, the following alternatives exist:
-// * Generation via `package:angel3_container_generator`
-// * Creating an instance of `StaticReflector`
-// * Manually implementing the `Reflector` interface (cumbersome; not recommended)
-//
-// As of January 4th, 2018, the documentation has not yet been updated to state this,
-// so in the meantime, visit the Angel chat for further questions:
-//
-// https://gitter.im/angel_dart/discussion
-void main(List<String> args) =>
-    Runner('dchan', configureServer, reflector: MirrorsReflector()).run(args);
+// To use them, pass a `reflector:` to the `Runner`:
+// * a `StaticReflector` of the data that `package:angel3_container_generator`
+//   generates, which can be compiled with `dart compile exe`; or
+// * the `MirrorsReflector` of `package:angel3_container_mirrors`, which needs
+//   the Dart VM, as `dart run`.
+void main(List<String> args) => Runner('dchan', configureServer).run(args);

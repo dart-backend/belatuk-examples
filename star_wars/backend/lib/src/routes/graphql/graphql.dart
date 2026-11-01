@@ -1,6 +1,7 @@
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_graphql/angel3_graphql.dart';
 import 'package:graphql_server2/graphql_server2.dart';
+
 import 'schema.dart';
 
 /// Configures the [app] to server GraphQL.

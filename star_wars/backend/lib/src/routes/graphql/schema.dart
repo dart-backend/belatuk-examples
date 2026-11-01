@@ -1,5 +1,6 @@
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:graphql_schema2/graphql_schema2.dart';
+
 import 'star_wars.dart';
 
 /// Creates a GraphQL schema that manages an in-memory store of
@@ -17,8 +18,5 @@ GraphQLSchema createSchema(Angel app, Map<String, HookedService> services) {
     fields: starWarsMutationFields(app, services),
   );
 
-  return graphQLSchema(
-    queryType: queryType,
-    mutationType: mutationType,
-  );
+  return graphQLSchema(queryType: queryType, mutationType: mutationType);
 }
