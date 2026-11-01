@@ -2,9 +2,11 @@ import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_production/angel3_production.dart';
 import 'package:star_wars/star_wars.dart';
 
-void main(List<String> args) =>
-    Runner('star wars', configureServer, reflector: MirrorsReflector())
-        .run(args);
+void main(List<String> args) => Runner(
+  'star wars',
+  configureServer,
+  reflector: MirrorsReflector(),
+).run(args);
 
 /*
   Future<Angel> createServer() async {

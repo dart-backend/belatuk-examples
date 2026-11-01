@@ -55,15 +55,18 @@ class _ChatHomeState extends ConsumerState<ChatHome> {
     */
 
     // Actually connect now...
-    app?.connect().then((_) {
-      //setState(connect);
-      ref.read(chatStateProvider.notifier).state = ChatState.isConnected;
-    }).catchError((e, st) {
-      //setState(setError);
-      ref.read(chatStateProvider.notifier).state = ChatState.hasError;
-      print(e);
-      print(st);
-    });
+    app
+        ?.connect()
+        .then((_) {
+          //setState(connect);
+          ref.read(chatStateProvider.notifier).state = ChatState.isConnected;
+        })
+        .catchError((e, st) {
+          //setState(setError);
+          ref.read(chatStateProvider.notifier).state = ChatState.hasError;
+          print(e);
+          print(st);
+        });
 
     super.initState();
   }
@@ -89,11 +92,7 @@ class ChatPanel extends ConsumerWidget {
     final ChatState currentChatState = ref.watch(chatStateProvider);
 
     if (currentChatState == ChatState.isNotConnected) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     } else if (currentChatState == ChatState.hasError) {
       return const Scaffold(
         body: Center(

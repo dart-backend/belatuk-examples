@@ -11,14 +11,5 @@ final GraphQLObjectType characterGraphQLType = objectType(
   'Character',
   isInterface: true,
   interfaces: [],
-  fields: [
-    field(
-      'id',
-      graphQLString,
-    ),
-    field(
-      'name',
-      graphQLString,
-    ),
-  ],
+  fields: [field('id', graphQLString), field('name', graphQLString)],
 );

@@ -15,8 +15,8 @@ class Droid extends _Droid {
     this.name,
     List<Episode> appearsIn = const [],
     List<Character> friends = const [],
-  })  : appearsIn = List.unmodifiable(appearsIn),
-        friends = List.unmodifiable(friends);
+  }) : appearsIn = List.unmodifiable(appearsIn),
+       friends = List.unmodifiable(friends);
 
   @override
   String? id;
@@ -48,12 +48,13 @@ class Droid extends _Droid {
     List<Character>? friends,
   }) {
     return Droid(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        name: name ?? this.name,
-        appearsIn: appearsIn ?? this.appearsIn,
-        friends: friends ?? this.friends);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      appearsIn: appearsIn ?? this.appearsIn,
+      friends: friends ?? this.friends,
+    );
   }
 
   @override
@@ -71,14 +72,7 @@ class Droid extends _Droid {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      createdAt,
-      updatedAt,
-      name,
-      appearsIn,
-      friends,
-    ]);
+    return hashObjects([id, createdAt, updatedAt, name, appearsIn, friends]);
   }
 
   @override
@@ -120,24 +114,25 @@ class DroidSerializer extends Codec<Droid, Map> {
   DroidDecoder get decoder => const DroidDecoder();
   static Droid fromMap(Map map) {
     return Droid(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        name: map['name'] as String?,
-        appearsIn: map['appears_in'] is Iterable
-            ? (map['appears_in'] as Iterable).cast<Episode>().toList()
-            : [],
-        friends: map['friends'] is Iterable
-            ? (map['friends'] as Iterable).cast<Character>().toList()
-            : []);
+          : null,
+      name: map['name'] as String?,
+      appearsIn: map['appears_in'] is Iterable
+          ? (map['appears_in'] as Iterable).cast<Episode>().toList()
+          : [],
+      friends: map['friends'] is Iterable
+          ? (map['friends'] as Iterable).cast<Character>().toList()
+          : [],
+    );
   }
 
   static Map<String, dynamic> toMap(_Droid? model) {
@@ -150,7 +145,7 @@ class DroidSerializer extends Codec<Droid, Map> {
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
       'appears_in': model.appearsIn,
-      'friends': model.friends
+      'friends': model.friends,
     };
   }
 }
@@ -189,22 +184,10 @@ final GraphQLObjectType droidGraphQLType = objectType(
   description: 'Beep! Boop!',
   interfaces: [characterGraphQLType],
   fields: [
-    field(
-      'id',
-      graphQLString,
-    ),
-    field(
-      'created_at',
-      graphQLDate,
-    ),
-    field(
-      'updated_at',
-      graphQLDate,
-    ),
-    field(
-      'name',
-      graphQLString,
-    ),
+    field('id', graphQLString),
+    field('created_at', graphQLDate),
+    field('updated_at', graphQLDate),
+    field('name', graphQLString),
     field(
       'appears_in',
       listOf(episodeGraphQLType),
@@ -215,13 +198,7 @@ final GraphQLObjectType droidGraphQLType = objectType(
       listOf(characterGraphQLType),
       description: 'Doc comments automatically become GraphQL descriptions.',
     ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
-    ),
+    field('idAsInt', graphQLInt),
+    field('idAsString', graphQLString),
   ],
 );

@@ -22,13 +22,18 @@ class Message implements _Message {
   @override
   DateTime? timestamp;
 
-  Message copyWith(
-      {User? user, Uint8List? imageBytes, String? text, DateTime? timestamp}) {
+  Message copyWith({
+    User? user,
+    Uint8List? imageBytes,
+    String? text,
+    DateTime? timestamp,
+  }) {
     return Message(
-        user: user ?? this.user,
-        imageBytes: imageBytes ?? this.imageBytes,
-        text: text ?? this.text,
-        timestamp: timestamp ?? this.timestamp);
+      user: user ?? this.user,
+      imageBytes: imageBytes ?? this.imageBytes,
+      text: text ?? this.text,
+      timestamp: timestamp ?? this.timestamp,
+    );
   }
 
   @override
@@ -88,24 +93,27 @@ class MessageSerializer extends Codec<Message, Map> {
     }
 
     return Message(
-        user: map['user'] != null
-            ? UserSerializer.fromMap(map['user'] as Map)
-            : null,
-        imageBytes: map['image_bytes'] is Uint8List
-            ? (map['image_bytes'] as Uint8List)
-            : (map['image_bytes'] is Iterable<int>
+      user: map['user'] != null
+          ? UserSerializer.fromMap(map['user'] as Map)
+          : null,
+      imageBytes: map['image_bytes'] is Uint8List
+          ? (map['image_bytes'] as Uint8List)
+          : (map['image_bytes'] is Iterable<int>
                 ? Uint8List.fromList(
-                    (map['image_bytes'] as Iterable<int>).toList())
+                    (map['image_bytes'] as Iterable<int>).toList(),
+                  )
                 : (map['image_bytes'] is String
-                    ? Uint8List.fromList(
-                        base64.decode(map['image_bytes'] as String))
-                    : null)),
-        text: map['text'] as String?,
-        timestamp: map['timestamp'] != null
-            ? (map['timestamp'] is DateTime
+                      ? Uint8List.fromList(
+                          base64.decode(map['image_bytes'] as String),
+                        )
+                      : null)),
+      text: map['text'] as String?,
+      timestamp: map['timestamp'] != null
+          ? (map['timestamp'] is DateTime
                 ? (map['timestamp'] as DateTime)
                 : DateTime.parse(map['timestamp'].toString()))
-            : null);
+          : null,
+    );
   }
 
   static Map<String, dynamic> toMap(_Message? model) {
@@ -114,10 +122,11 @@ class MessageSerializer extends Codec<Message, Map> {
     }
     return {
       'user': UserSerializer.toMap(model.user),
-      'image_bytes':
-          model.imageBytes != null ? base64.encode(model.imageBytes!) : null,
+      'image_bytes': model.imageBytes != null
+          ? base64.encode(model.imageBytes!)
+          : null,
       'text': model.text,
-      'timestamp': model.timestamp?.toIso8601String()
+      'timestamp': model.timestamp?.toIso8601String(),
     };
   }
 }
@@ -127,7 +136,7 @@ abstract class MessageFields {
     user,
     imageBytes,
     text,
-    timestamp
+    timestamp,
   ];
 
   static const String user = 'user';

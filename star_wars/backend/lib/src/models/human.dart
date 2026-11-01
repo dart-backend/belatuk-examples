@@ -1,5 +1,6 @@
 import 'package:angel3_serialize/angel3_serialize.dart';
 import 'package:graphql_schema2/graphql_schema2.dart';
+
 import 'character.dart';
 import 'episode.dart';
 part 'human.g.dart';

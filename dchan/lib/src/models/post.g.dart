@@ -35,21 +35,22 @@ class PostQuery extends Query<Post, PostQueryWhere> {
     trampoline.add(tableName);
     _where = PostQueryWhere(this);
     leftJoin(
-        _attachments = AttachmentQuery(trampoline: trampoline, parent: this),
+      _attachments = AttachmentQuery(trampoline: trampoline, parent: this),
+      'id',
+      'post_id',
+      additionalFields: const [
         'id',
+        'created_at',
+        'updated_at',
+        'size_in_bytes',
+        'path',
+        'filename',
         'post_id',
-        additionalFields: const [
-          'id',
-          'created_at',
-          'updated_at',
-          'size_in_bytes',
-          'path',
-          'filename',
-          'post_id',
-          'index',
-          'content_type_string'
-        ],
-        trampoline: trampoline);
+        'index',
+        'content_type_string',
+      ],
+      trampoline: trampoline,
+    );
   }
 
   @override
@@ -79,7 +80,7 @@ class PostQuery extends Query<Post, PostQueryWhere> {
       'updated_at',
       'text',
       'user_hash',
-      'in_reply_to'
+      'in_reply_to',
     ];
     return _selectedFields.isEmpty
         ? _fields
@@ -106,12 +107,13 @@ class PostQuery extends Query<Post, PostQueryWhere> {
       return Optional.empty();
     }
     var model = Post(
-        id: fields.contains('id') ? row[0].toString() : null,
-        createdAt: fields.contains('created_at') ? mapToDateTime(row[1]) : null,
-        updatedAt: fields.contains('updated_at') ? mapToDateTime(row[2]) : null,
-        text: fields.contains('text') ? (row[3] as String?) : null,
-        userHash: fields.contains('user_hash') ? (row[4] as String?) : null,
-        inReplyTo: fields.contains('in_reply_to') ? (row[5] as int?) : null);
+      id: fields.contains('id') ? row[0].toString() : null,
+      createdAt: fields.contains('created_at') ? mapToDateTime(row[1]) : null,
+      updatedAt: fields.contains('updated_at') ? mapToDateTime(row[2]) : null,
+      text: fields.contains('text') ? (row[3] as String?) : null,
+      userHash: fields.contains('user_hash') ? (row[4] as String?) : null,
+      inReplyTo: fields.contains('in_reply_to') ? (row[5] as int?) : null,
+    );
     if (row.length > 6) {
       var modelOpt = AttachmentQuery().parseRow(row.skip(6).take(9).toList());
       modelOpt.ifPresent((m) {
@@ -142,8 +144,9 @@ class PostQuery extends Query<Post, PostQueryWhere> {
           var l = out[idx];
           return out
             ..[idx] = l.copyWith(
-                attachments: List<Attachment>.from(l.attachments)
-                  ..addAll(model.attachments));
+              attachments: List<Attachment>.from(l.attachments)
+                ..addAll(model.attachments),
+            );
         }
       });
     });
@@ -161,8 +164,9 @@ class PostQuery extends Query<Post, PostQueryWhere> {
           var l = out[idx];
           return out
             ..[idx] = l.copyWith(
-                attachments: List<Attachment>.from(l.attachments)
-                  ..addAll(model.attachments));
+              attachments: List<Attachment>.from(l.attachments)
+                ..addAll(model.attachments),
+            );
         }
       });
     });
@@ -180,8 +184,9 @@ class PostQuery extends Query<Post, PostQueryWhere> {
           var l = out[idx];
           return out
             ..[idx] = l.copyWith(
-                attachments: List<Attachment>.from(l.attachments)
-                  ..addAll(model.attachments));
+              attachments: List<Attachment>.from(l.attachments)
+                ..addAll(model.attachments),
+            );
         }
       });
     });
@@ -190,12 +195,12 @@ class PostQuery extends Query<Post, PostQueryWhere> {
 
 class PostQueryWhere extends QueryWhere {
   PostQueryWhere(PostQuery query)
-      : id = NumericSqlExpressionBuilder<int>(query, 'id'),
-        createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
-        updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
-        text = StringSqlExpressionBuilder(query, 'text'),
-        userHash = StringSqlExpressionBuilder(query, 'user_hash'),
-        inReplyTo = NumericSqlExpressionBuilder<int>(query, 'in_reply_to');
+    : id = NumericSqlExpressionBuilder<int>(query, 'id'),
+      createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
+      updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
+      text = StringSqlExpressionBuilder(query, 'text'),
+      userHash = StringSqlExpressionBuilder(query, 'user_hash'),
+      inReplyTo = NumericSqlExpressionBuilder<int>(query, 'in_reply_to');
 
   final NumericSqlExpressionBuilder<int> id;
 
@@ -266,15 +271,15 @@ class PostQueryValues extends MapQueryValues {
 
 @generatedSerializable
 class Post extends _Post {
-  Post(
-      {this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.text,
-      this.userHash,
-      this.inReplyTo,
-      List<Attachment> attachments = const []})
-      : attachments = List.unmodifiable(attachments);
+  Post({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.text,
+    this.userHash,
+    this.inReplyTo,
+    List<Attachment> attachments = const [],
+  }) : attachments = List.unmodifiable(attachments);
 
   /// A unique identifier corresponding to this item.
   @override
@@ -300,22 +305,24 @@ class Post extends _Post {
   @override
   List<Attachment> attachments;
 
-  Post copyWith(
-      {String? id,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? text,
-      String? userHash,
-      int? inReplyTo,
-      List<Attachment>? attachments}) {
+  Post copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? text,
+    String? userHash,
+    int? inReplyTo,
+    List<Attachment>? attachments,
+  }) {
     return Post(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        text: text ?? this.text,
-        userHash: userHash ?? this.userHash,
-        inReplyTo: inReplyTo ?? this.inReplyTo,
-        attachments: attachments ?? this.attachments);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      text: text ?? this.text,
+      userHash: userHash ?? this.userHash,
+      inReplyTo: inReplyTo ?? this.inReplyTo,
+      attachments: attachments ?? this.attachments,
+    );
   }
 
   @override
@@ -333,8 +340,15 @@ class Post extends _Post {
 
   @override
   int get hashCode {
-    return hashObjects(
-        [id, createdAt, updatedAt, text, userHash, inReplyTo, attachments]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      text,
+      userHash,
+      inReplyTo,
+      attachments,
+    ]);
   }
 
   @override
@@ -376,25 +390,28 @@ class PostSerializer extends Codec<Post, Map> {
   PostDecoder get decoder => const PostDecoder();
   static Post fromMap(Map map) {
     return Post(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        text: map['text'] as String?,
-        userHash: map['user_hash'] as String?,
-        inReplyTo: map['in_reply_to'] as int?,
-        attachments: map['attachments'] is Iterable
-            ? List.unmodifiable(
-                ((map['attachments'] as Iterable).whereType<Map>())
-                    .map(AttachmentSerializer.fromMap))
-            : []);
+          : null,
+      text: map['text'] as String?,
+      userHash: map['user_hash'] as String?,
+      inReplyTo: map['in_reply_to'] as int?,
+      attachments: map['attachments'] is Iterable
+          ? List.unmodifiable(
+              ((map['attachments'] as Iterable).whereType<Map>()).map(
+                AttachmentSerializer.fromMap,
+              ),
+            )
+          : [],
+    );
   }
 
   static Map<String, dynamic> toMap(_Post? model) {
@@ -408,8 +425,9 @@ class PostSerializer extends Codec<Post, Map> {
       'text': model.text,
       'user_hash': model.userHash,
       'in_reply_to': model.inReplyTo,
-      'attachments':
-          model.attachments.map((m) => AttachmentSerializer.toMap(m)).toList()
+      'attachments': model.attachments
+          .map((m) => AttachmentSerializer.toMap(m))
+          .toList(),
     };
   }
 }
@@ -422,7 +440,7 @@ abstract class PostFields {
     text,
     userHash,
     inReplyTo,
-    attachments
+    attachments,
   ];
 
   static const String id = 'id';

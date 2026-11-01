@@ -16,8 +16,8 @@ class Human extends _Human {
     List<Episode> appearsIn = const [],
     List<Character> friends = const [],
     this.totalCredits,
-  })  : appearsIn = List.unmodifiable(appearsIn),
-        friends = List.unmodifiable(friends);
+  }) : appearsIn = List.unmodifiable(appearsIn),
+       friends = List.unmodifiable(friends);
 
   @override
   String? id;
@@ -52,13 +52,14 @@ class Human extends _Human {
     int? totalCredits,
   }) {
     return Human(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        name: name ?? this.name,
-        appearsIn: appearsIn ?? this.appearsIn,
-        friends: friends ?? this.friends,
-        totalCredits: totalCredits ?? this.totalCredits);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      appearsIn: appearsIn ?? this.appearsIn,
+      friends: friends ?? this.friends,
+      totalCredits: totalCredits ?? this.totalCredits,
+    );
   }
 
   @override
@@ -127,25 +128,26 @@ class HumanSerializer extends Codec<Human, Map> {
   HumanDecoder get decoder => const HumanDecoder();
   static Human fromMap(Map map) {
     return Human(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        name: map['name'] as String?,
-        appearsIn: map['appears_in'] is Iterable
-            ? (map['appears_in'] as Iterable).cast<Episode>().toList()
-            : [],
-        friends: map['friends'] is Iterable
-            ? (map['friends'] as Iterable).cast<Character>().toList()
-            : [],
-        totalCredits: map['total_credits'] as int?);
+          : null,
+      name: map['name'] as String?,
+      appearsIn: map['appears_in'] is Iterable
+          ? (map['appears_in'] as Iterable).cast<Episode>().toList()
+          : [],
+      friends: map['friends'] is Iterable
+          ? (map['friends'] as Iterable).cast<Character>().toList()
+          : [],
+      totalCredits: map['total_credits'] as int?,
+    );
   }
 
   static Map<String, dynamic> toMap(_Human? model) {
@@ -159,7 +161,7 @@ class HumanSerializer extends Codec<Human, Map> {
       'name': model.name,
       'appears_in': model.appearsIn,
       'friends': model.friends,
-      'total_credits': model.totalCredits
+      'total_credits': model.totalCredits,
     };
   }
 }
@@ -200,41 +202,14 @@ final GraphQLObjectType humanGraphQLType = objectType(
   isInterface: false,
   interfaces: [characterGraphQLType],
   fields: [
-    field(
-      'id',
-      graphQLString,
-    ),
-    field(
-      'created_at',
-      graphQLDate,
-    ),
-    field(
-      'updated_at',
-      graphQLDate,
-    ),
-    field(
-      'name',
-      graphQLString,
-    ),
-    field(
-      'appears_in',
-      listOf(episodeGraphQLType),
-    ),
-    field(
-      'friends',
-      listOf(characterGraphQLType),
-    ),
-    field(
-      'total_credits',
-      graphQLInt,
-    ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
-    ),
+    field('id', graphQLString),
+    field('created_at', graphQLDate),
+    field('updated_at', graphQLDate),
+    field('name', graphQLString),
+    field('appears_in', listOf(episodeGraphQLType)),
+    field('friends', listOf(characterGraphQLType)),
+    field('total_credits', graphQLInt),
+    field('idAsInt', graphQLInt),
+    field('idAsString', graphQLString),
   ],
 );

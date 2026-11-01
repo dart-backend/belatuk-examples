@@ -9,9 +9,9 @@ void main(List<String> args) async {
   var fs = LocalFileSystem();
   var configuration = await loadStandaloneConfiguration(fs);
   var connection = await postgresConnection(configuration);
-  var migrationRunner = PostgresMigrationRunner(connection, migrations: [
-    PostMigration(),
-    AttachmentMigration(),
-  ]);
+  var migrationRunner = PostgresMigrationRunner(
+    connection,
+    migrations: [PostMigration(), AttachmentMigration()],
+  );
   await runMigrations(migrationRunner, args);
 }

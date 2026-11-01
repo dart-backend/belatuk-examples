@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_orm/angel3_orm.dart';
 import 'package:angel3_static/angel3_static.dart';
@@ -39,9 +40,11 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       '/compose',
       chain([
         autoParseQuery(['in_reply_to']),
-        validateQuery(Validator({
-          'in_reply_to': [isInt, isPositive]
-        })),
+        validateQuery(
+          Validator({
+            'in_reply_to': [isInt, isPositive],
+          }),
+        ),
         (req, res) {
           var params = Map<String, dynamic>.from(req.queryParameters);
           params
@@ -52,121 +55,123 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       ]),
     );
 
-    app.post(
-      '/compose',
-      (req, res) async {
-        var params = <String, dynamic>{'title': 'Compose'};
+    app.post('/compose', (req, res) async {
+      var params = <String, dynamic>{'title': 'Compose'};
 
+      try {
+        var body = await req.parseBody().then((_) => req.bodyAsMap);
+        body = autoParse(body, ['in_reply_to']);
+        var validator = Validator({
+          'meta': isString,
+          'in_reply_to': [isInt, isPositive],
+          'text': isString,
+          'user_hash': isString,
+        });
+        validator.enforce(body);
+
+        // Try to persist data sent to the client.
         try {
-          var body = await req.parseBody().then((_) => req.bodyAsMap);
-          body = autoParse(body, ['in_reply_to']);
-          var validator = Validator({
-            'meta': isString,
-            'in_reply_to': [isInt, isPositive],
-            'text': isString,
-            'user_hash': isString
-          });
-          validator.enforce(body);
+          params.addAll(
+            ((json.decode(body['meta'] as String? ?? '{}'))
+                  as Map<String, dynamic>)
+              ..remove('title'),
+          );
+        } catch (_) {}
 
-          // Try to persist data sent to the client.
-          try {
-            params.addAll(((json.decode(body['meta'] as String? ?? '{}'))
-                as Map<String, dynamic>)
-              ..remove('title'));
-          } catch (_) {}
+        // If there is no text, there must be at least one file.
+        var text = body['text']?.toString().trim() ?? '';
+        if (text.isEmpty &&
+            (req.uploadedFiles == null || req.uploadedFiles?.isEmpty == true)) {
+          throw FormatException(
+            'Either a title or uploaded files are required.',
+          );
+        }
 
-          // If there is no text, there must be at least one file.
-          var text = body['text']?.toString().trim() ?? '';
-          if (text.isEmpty &&
-              (req.uploadedFiles == null ||
-                  req.uploadedFiles?.isEmpty == true)) {
-            throw FormatException(
-                'Either a title or uploaded files are required.');
-          }
+        // If this is a reply, the referenced post must exist.
+        var inReplyTo = int.tryParse(body['in_reply_to']?.toString() ?? '-1')!;
+        if (inReplyTo > -1) {
+          //var query = PostQuery()..where!.id.equals(inReplyTo);
+          //var reference = await query.get(executor!);
 
-          // If this is a reply, the referenced post must exist.
-          var inReplyTo =
-              int.tryParse(body['in_reply_to']?.toString() ?? '-1')!;
-          if (inReplyTo > -1) {
-            //var query = PostQuery()..where!.id.equals(inReplyTo);
-            //var reference = await query.get(executor!);
+          //if (reference == null) {
+          //  params.remove('in_reply_to');
+          //  throw FormatException(
+          //      'The referenced post does not exist. Creating a new thread instead.');
+          //}
+        }
 
-            //if (reference == null) {
-            //  params.remove('in_reply_to');
-            //  throw FormatException(
-            //      'The referenced post does not exist. Creating a new thread instead.');
-            //}
-          }
+        // Apply the user's hash identifier, if they have supplied one.
+        var userHash = body['user_hash']?.toString().trim();
+        if (userHash?.isNotEmpty == true) {
+          var hashBytes = sha256.convert(utf8.encode(userHash!)).bytes;
+          userHash = hex.encode(hashBytes);
+        } else {
+          userHash = null;
+        }
 
-          // Apply the user's hash identifier, if they have supplied one.
-          var userHash = body['user_hash']?.toString().trim();
-          if (userHash?.isNotEmpty == true) {
-            var hashBytes = sha256.convert(utf8.encode(userHash!)).bytes;
-            userHash = hex.encode(hashBytes);
-          } else {
-            userHash = null;
-          }
+        // Create the post.
+        var now = DateTime.now();
+        var query = PostQuery();
+        query.values
+          ..inReplyTo = inReplyTo
+          ..text = text
+          ..userHash = userHash
+          ..createdAt = now
+          ..updatedAt = now;
+        var post = await query.insert(executor);
 
-          // Create the post.
+        // Upload the attachments, if any.
+        var i = 0;
+        for (var attachment in req.uploadedFiles!) {
+          var file = uploadsDir
+              .childDirectory(post.value.id!)
+              .childFile(
+                p.setExtension(
+                  i.toString(),
+                  attachment.filename == null
+                      ? ''
+                      : p.extension(attachment.filename!),
+                ),
+              );
+          await file.create(recursive: true);
+          await attachment.data.pipe(file.openWrite());
+
           var now = DateTime.now();
-          var query = PostQuery();
+          var query = AttachmentQuery();
           query.values
-            ..inReplyTo = inReplyTo
-            ..text = text
-            ..userHash = userHash
+            ..postId = post.value.idAsInt
+            ..contentTypeString = attachment.contentType.toString()
+            ..filename = attachment.filename ?? 'unknown'
+            ..index = i++
+            ..path = p.relative(file.path, from: webDir.path)
+            ..sizeInBytes = await file.length()
             ..createdAt = now
             ..updatedAt = now;
-          var post = await query.insert(executor);
-
-          // Upload the attachments, if any.
-          var i = 0;
-          for (var attachment in req.uploadedFiles!) {
-            var file = uploadsDir.childDirectory(post.value.id!).childFile(
-                p.setExtension(
-                    i.toString(),
-                    attachment.filename == null
-                        ? ''
-                        : p.extension(attachment.filename!)));
-            await file.create(recursive: true);
-            await attachment.data.pipe(file.openWrite());
-
-            var now = DateTime.now();
-            var query = AttachmentQuery();
-            query.values
-              ..postId = post.value.idAsInt
-              ..contentTypeString = attachment.contentType.toString()
-              ..filename = attachment.filename ?? 'unknown'
-              ..index = i++
-              ..path = p.relative(file.path, from: webDir.path)
-              ..sizeInBytes = await file.length()
-              ..createdAt = now
-              ..updatedAt = now;
-            await query.insert(executor);
-          }
-
-          // Send the user to either the new thread, or their comment (using URL fragment)
-          if (post.value.inReplyTo == -1) {
-            var url = Uri(path: '/post/${post.value.id}');
-            await res.redirect(url);
-          } else {
-            var url = Uri(
-              path: '/post/${post.value.inReplyTo}',
-              fragment: 'comment-${post.value.id}',
-            );
-            await res.redirect(url);
-          }
-        } on AngelHttpException catch (e) {
-          if (e.statusCode != 400) rethrow;
-          params['error'] = e.errors.first;
-          res.statusCode = 400;
-          return res.render('compose', params);
-        } on FormatException catch (e) {
-          params['error'] = e.message;
-          res.statusCode = 400;
-          return res.render('compose', params);
+          await query.insert(executor);
         }
-      },
-    );
+
+        // Send the user to either the new thread, or their comment (using URL fragment)
+        if (post.value.inReplyTo == -1) {
+          var url = Uri(path: '/post/${post.value.id}');
+          await res.redirect(url);
+        } else {
+          var url = Uri(
+            path: '/post/${post.value.inReplyTo}',
+            fragment: 'comment-${post.value.id}',
+          );
+          await res.redirect(url);
+        }
+      } on AngelHttpException catch (e) {
+        if (e.statusCode != 400) rethrow;
+        params['error'] = e.errors.first;
+        res.statusCode = 400;
+        return res.render('compose', params);
+      } on FormatException catch (e) {
+        params['error'] = e.message;
+        res.statusCode = 400;
+        return res.render('compose', params);
+      }
+    });
 
     app.get('/post/int:id', (req, res) async {
       var id = req.params['id'] as int;
@@ -191,9 +196,11 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
         'comments': comments,
         'post': post,
         'md': (String s) {
-          return markdown.markdownToHtml(s,
-              extensionSet: markdown.ExtensionSet.gitHubWeb);
-        }
+          return markdown.markdownToHtml(
+            s,
+            extensionSet: markdown.ExtensionSet.gitHubWeb,
+          );
+        },
       });
     });
 
@@ -220,8 +227,11 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     var vDir = CachingVirtualDirectory(app, fileSystem, source: webDir);
     app.fallback(vDir.handleRequest);
 
-    app.fallback((req, res) => throw AngelHttpException.notFound(
-        message: 'The requested path does not exist.'));
+    app.fallback(
+      (req, res) => throw AngelHttpException.notFound(
+        message: 'The requested path does not exist.',
+      ),
+    );
 
     var oldErrorHandler = app.errorHandler;
     app.errorHandler = (e, req, res) async {

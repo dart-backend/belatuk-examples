@@ -1,7 +1,25 @@
-name: angel
+name: angel3_examples
 
+publish_to: none
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.13.0 <4.0.0'
+
+# The examples, resolved together as a pub workspace, which melos manages.
+workspace:
+  - auth/backend
+  - dchan
+  - docs_examples/getting_started
+  - flutter_chat/backend
+  - flutter_chat/common
+  - flutter_chat/mobile
+  - pub_serve_proxy
+  - star_wars/backend
+  - yewtube/backend
 
 dependencies:
-  melos: ^6.0.0
+  melos: ^8.10.0
+
+melos:
+  name: angel3-examples
+  # scripts:
+  #   analyze: melos exec -- "dart analyze ."

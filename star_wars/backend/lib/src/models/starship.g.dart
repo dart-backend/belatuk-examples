@@ -8,13 +8,7 @@ part of 'starship.dart';
 
 @generatedSerializable
 class Starship extends _Starship {
-  Starship({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.name,
-    this.length,
-  });
+  Starship({this.id, this.createdAt, this.updatedAt, this.name, this.length});
 
   /// A unique identifier corresponding to this item.
   @override
@@ -42,11 +36,12 @@ class Starship extends _Starship {
     int? length,
   }) {
     return Starship(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        name: name ?? this.name,
-        length: length ?? this.length);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      length: length ?? this.length,
+    );
   }
 
   @override
@@ -61,13 +56,7 @@ class Starship extends _Starship {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      createdAt,
-      updatedAt,
-      name,
-      length,
-    ]);
+    return hashObjects([id, createdAt, updatedAt, name, length]);
   }
 
   @override
@@ -109,19 +98,20 @@ class StarshipSerializer extends Codec<Starship, Map> {
   StarshipDecoder get decoder => const StarshipDecoder();
   static Starship fromMap(Map map) {
     return Starship(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        name: map['name'] as String?,
-        length: map['length'] as int?);
+          : null,
+      name: map['name'] as String?,
+      length: map['length'] as int?,
+    );
   }
 
   static Map<String, dynamic> toMap(_Starship? model) {
@@ -133,7 +123,7 @@ class StarshipSerializer extends Codec<Starship, Map> {
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'name': model.name,
-      'length': model.length
+      'length': model.length,
     };
   }
 }
@@ -168,33 +158,12 @@ final GraphQLObjectType starshipGraphQLType = objectType(
   isInterface: false,
   interfaces: [],
   fields: [
-    field(
-      'id',
-      graphQLString,
-    ),
-    field(
-      'created_at',
-      graphQLDate,
-    ),
-    field(
-      'updated_at',
-      graphQLDate,
-    ),
-    field(
-      'name',
-      graphQLString,
-    ),
-    field(
-      'length',
-      graphQLInt,
-    ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
-    ),
+    field('id', graphQLString),
+    field('created_at', graphQLDate),
+    field('updated_at', graphQLDate),
+    field('name', graphQLString),
+    field('length', graphQLInt),
+    field('idAsInt', graphQLInt),
+    field('idAsString', graphQLString),
   ],
 );

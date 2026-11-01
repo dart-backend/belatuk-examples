@@ -10,6 +10,18 @@
 
 A collection of thoroughly-commented example projects build with Angel3 framework.
 
+## Setup
+
+The examples are a [pub workspace](https://dart.dev/tools/pub/workspaces), managed with [melos](https://melos.invertase.dev) 8, whose configuration is in the root `pubspec.yaml`. They are resolved together, and need the Flutter SDK, as `flutter_chat/mobile` is a Flutter app:
+
+```bash
+flutter pub get
+# Run melos with the Dart SDK of Flutter, which can resolve the Flutter app
+<flutter>/bin/dart run melos bootstrap
+```
+
+`dart pub get`, or `dart run melos` with a Dart SDK installed apart from Flutter, fail with "the Flutter SDK is not available".
+
 ## Getting Started
 
 The source code for [`Getting Started`](https://angel3-docs.dukefirehawk.com/guides/getting-started) in Angel3

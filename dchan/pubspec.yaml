@@ -3,7 +3,9 @@ version: 5.1.0
 description: An app that's going to be amazing pretty soon.
 publish_to: none
 environment:
-  sdk: '>=3.9.0 <4.0.0'
+  sdk: '>=3.13.0 <4.0.0'
+resolution: workspace
+
 dependencies:
   angel3_auth: ^8.0.0
   angel3_configuration: ^8.0.0

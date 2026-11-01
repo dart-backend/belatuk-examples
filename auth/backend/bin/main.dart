@@ -17,20 +17,18 @@ void main() async {
   // In a real application, instead of serializing the user itself, you can just return its ID,
   // and when deserializing, perform a database lookup.
   var auth = AngelAuth<User>(
-      serializer: (u) => u.serialize(),
-      deserializer: (serialized) => User.deserialize(serialized.toString()),
-      jwtKey: 'abcdefghijklmnopqrstuvwxyz012345',
-      secureCookies: app.environment.isProduction);
+    serializer: (u) => u.serialize(),
+    deserializer: (serialized) => User.deserialize(serialized.toString()),
+    jwtKey: 'abcdefghijklmnopqrstuvwxyz012345',
+    secureCookies: app.environment.isProduction,
+  );
 
   var fs = LocalFileSystem();
 
   /// Using a `CachingVirtualDirectory` can improve page load times.
   var vDir = CachingVirtualDirectory(app, fs, source: fs.directory('web'));
 
-  var users = [
-    User('demo', 'demo123'),
-    User('admin', 'admin123'),
-  ];
+  var users = [User('demo', 'demo123'), User('admin', 'admin123')];
 
   // Tell the authenticator how to validate a username+password auth attempt.
   // Return `null` on a failed attempt.

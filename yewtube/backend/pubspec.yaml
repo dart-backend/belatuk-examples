@@ -3,7 +3,9 @@ version: 5.1.0
 description: A video streaming application.
 publish_to: none
 environment:
-  sdk: '>=3.9.0 <4.0.0'
+  sdk: '>=3.13.0 <4.0.0'
+resolution: workspace
+
 dependencies:
   angel3_configuration: ^8.0.0
   angel3_file_service: ^8.0.0

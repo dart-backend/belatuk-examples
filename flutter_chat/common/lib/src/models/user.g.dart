@@ -18,7 +18,9 @@ class User implements _User {
 
   User copyWith({String? name, Uint8List? avatarBytes}) {
     return User(
-        name: name ?? this.name, avatarBytes: avatarBytes ?? this.avatarBytes);
+      name: name ?? this.name,
+      avatarBytes: avatarBytes ?? this.avatarBytes,
+    );
   }
 
   @override
@@ -80,16 +82,19 @@ class UserSerializer extends Codec<User, Map> {
     }
 
     return User(
-        name: map['name'] as String?,
-        avatarBytes: map['avatar_bytes'] is Uint8List
-            ? (map['avatar_bytes'] as Uint8List)
-            : (map['avatar_bytes'] is Iterable<int>
+      name: map['name'] as String?,
+      avatarBytes: map['avatar_bytes'] is Uint8List
+          ? (map['avatar_bytes'] as Uint8List)
+          : (map['avatar_bytes'] is Iterable<int>
                 ? Uint8List.fromList(
-                    (map['avatar_bytes'] as Iterable<int>).toList())
+                    (map['avatar_bytes'] as Iterable<int>).toList(),
+                  )
                 : (map['avatar_bytes'] is String
-                    ? Uint8List.fromList(
-                        base64.decode(map['avatar_bytes'] as String))
-                    : null)));
+                      ? Uint8List.fromList(
+                          base64.decode(map['avatar_bytes'] as String),
+                        )
+                      : null)),
+    );
   }
 
   static Map<String, dynamic> toMap(_User? model) {
@@ -98,8 +103,9 @@ class UserSerializer extends Codec<User, Map> {
     }
     return {
       'name': model.name,
-      'avatar_bytes':
-          model.avatarBytes != null ? base64.encode(model.avatarBytes!) : null
+      'avatar_bytes': model.avatarBytes != null
+          ? base64.encode(model.avatarBytes!)
+          : null,
     };
   }
 }

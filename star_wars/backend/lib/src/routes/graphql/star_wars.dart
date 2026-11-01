@@ -32,7 +32,9 @@ MapService? _getStarWarsService(Angel app) {
 
 /// Returns fields to be inserted into the query type.
 Iterable<GraphQLObjectField> starWarsQueryFields(
-    Angel app, Map<String, HookedService> services) {
+  Angel app,
+  Map<String, HookedService> services,
+) {
   var starWarsService = _getStarWarsService(app);
 
   if (starWarsService == null) {
@@ -81,11 +83,8 @@ Iterable<GraphQLObjectField> starWarsQueryFields(
     field(
       'hero',
       heroType,
-      description:
-          'Finds a random hero within the known galaxy, whether a Droid or Human.',
-      inputs: [
-        GraphQLFieldInput('ep', episodeGraphQLType),
-      ],
+      description: 'Finds a random hero within the known galaxy, whether a Droid or Human.',
+      inputs: [GraphQLFieldInput('ep', episodeGraphQLType)],
       resolve: randomHeroResolver(droidService, humansService, rnd),
     ),
   ];
@@ -93,7 +92,9 @@ Iterable<GraphQLObjectField> starWarsQueryFields(
 
 /// Returns fields to be inserted into the query type.
 Iterable<GraphQLObjectField> starWarsMutationFields(
-    Angel app, Map<String, HookedService> services) {
+  Angel app,
+  Map<String, HookedService> services,
+) {
   var starWarsService = _getStarWarsService(app);
 
   if (starWarsService == null) {
@@ -126,7 +127,10 @@ Iterable<GraphQLObjectField> starWarsMutationFields(
 }
 
 GraphQLFieldResolver randomHeroResolver(
-    Service droidService, Service humansService, Random rnd) {
+  Service droidService,
+  Service humansService,
+  Random rnd,
+) {
   return (_, args) async {
     var allHeroes = [];
     var allDroids = await droidService.index();
@@ -137,9 +141,11 @@ GraphQLFieldResolver randomHeroResolver(
 
     // Ignore the annoying cast here, hopefully Dart 2 fixes cases like this
     allHeroes = allHeroes
-        .where((m) =>
-            !args.containsKey('ep') ||
-            (m['appears_in'].contains(args['ep']) as bool))
+        .where(
+          (m) =>
+              !args.containsKey('ep') ||
+              (m['appears_in'].contains(args['ep']) as bool),
+        )
         .toList();
 
     return allHeroes.isEmpty ? null : allHeroes[rnd.nextInt(allHeroes.length)];

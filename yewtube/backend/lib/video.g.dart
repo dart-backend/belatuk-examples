@@ -8,14 +8,15 @@ part of 'video.dart';
 
 @generatedSerializable
 class Video extends _Video {
-  Video(
-      {this.id,
-      this.title,
-      this.description,
-      this.filePath,
-      this.mimeType,
-      this.createdAt,
-      this.updatedAt});
+  Video({
+    this.id,
+    this.title,
+    this.description,
+    this.filePath,
+    this.mimeType,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   @override
   final String? id;
@@ -38,22 +39,24 @@ class Video extends _Video {
   @override
   final DateTime? updatedAt;
 
-  Video copyWith(
-      {String? id,
-      String? title,
-      String? description,
-      String? filePath,
-      String? mimeType,
-      DateTime? createdAt,
-      DateTime? updatedAt}) {
+  Video copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? filePath,
+    String? mimeType,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
     return Video(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        filePath: filePath ?? this.filePath,
-        mimeType: mimeType ?? this.mimeType,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt);
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      filePath: filePath ?? this.filePath,
+      mimeType: mimeType ?? this.mimeType,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 
   @override
@@ -70,8 +73,15 @@ class Video extends _Video {
 
   @override
   int get hashCode {
-    return hashObjects(
-        [id, title, description, filePath, mimeType, createdAt, updatedAt]);
+    return hashObjects([
+      id,
+      title,
+      description,
+      filePath,
+      mimeType,
+      createdAt,
+      updatedAt,
+    ]);
   }
 
   Map<String, dynamic> toJson() {
@@ -86,21 +96,22 @@ class Video extends _Video {
 abstract class VideoSerializer {
   static Video fromMap(Map map) {
     return Video(
-        id: map['id'] as String?,
-        title: map['title'] as String?,
-        description: map['description'] as String?,
-        filePath: map['file_path'] as String?,
-        mimeType: map['mime_type'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      title: map['title'] as String?,
+      description: map['description'] as String?,
+      filePath: map['file_path'] as String?,
+      mimeType: map['mime_type'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null);
+          : null,
+    );
   }
 
   static Map<String, dynamic> toMap(_Video model) {
@@ -111,7 +122,7 @@ abstract class VideoSerializer {
       'file_path': model.filePath,
       'mime_type': model.mimeType,
       'created_at': model.createdAt?.toIso8601String(),
-      'updated_at': model.updatedAt?.toIso8601String()
+      'updated_at': model.updatedAt?.toIso8601String(),
     };
   }
 }
@@ -124,7 +135,7 @@ abstract class VideoFields {
     filePath,
     mimeType,
     createdAt,
-    updatedAt
+    updatedAt,
   ];
 
   static const String id = 'id';
